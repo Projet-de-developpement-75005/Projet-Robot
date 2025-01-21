@@ -1,4 +1,3 @@
-# Fonction_deplacement
 class Robot:
     def __init__(self):
         self.x = 0
@@ -29,7 +28,7 @@ class Environment:
         self.longueur = longueur
         self.obstacles = obstacles
 
-    def is_valid_position(self, x, y):
+    def estValidePosition(self, x, y):
         if x < 0 or x >= self.largeur or y < 0 or y >= self.longueur:
             return False
         if (x, y) in self.obstacles:
@@ -37,7 +36,7 @@ class Environment:
         return True
 
 
-class RobotController:
+class EnvRobot:
     def __init__(self, robot, environment):
         self.robot = robot
         self.environment = environment
@@ -53,7 +52,7 @@ class RobotController:
         elif direction == "droite":
             new_x += 1
 
-        if self.environment.is_valid_position(new_x, new_y):
+        if self.environment.estValidePosition(new_x, new_y):
             self.robot.x, self.robot.y = new_x, new_y
         else:
             print("Mouvement impossible : obstacle ou hors des limites.")
@@ -67,7 +66,7 @@ if __name__ == "__main__":
     robot = Robot()
 
     # Crée un contrôleur
-    controller = RobotController(robot, env)
+    controller = EnvRobot(robot, env)
 
     # Mode interactif
     while True:
