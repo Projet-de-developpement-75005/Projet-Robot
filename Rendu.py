@@ -41,30 +41,7 @@ class Environment:
             return False
         return True
     
-    def afficher(self, screen, robot):
-        """Affiche l'environnement en 2D avec le robot (point rouge) et sa direction (flèche noire)"""
-        # Remplir le fond
-        screen.fill(WHITE)
-
-    # Dessiner les obstacles (carrés rouges)
-        for (obstacle_x, obstacle_y) in self.obstacles:
-            pygame.draw.rect(screen, RED, (obstacle_x * 50, obstacle_y * 50, 50, 50))
-
-    # Dessiner le robot comme un point rouge
-        center_x = robot.x * 50 + 25  # Centre du point rouge
-        center_y = robot.y * 50 + 25
-        pygame.draw.circle(screen, BLUE, (center_x, center_y), 10)  # Rayon de 5 pour un petit point
-
-    # Dessiner la flèche indiquant la direction du robot
-        direction_x = center_x + 20 * math.cos(math.radians(robot.orientation))
-        direction_y = center_y - 20 * math.sin(math.radians(robot.orientation))
-        pygame.draw.line(screen, BLACK, (center_x, center_y), (direction_x, direction_y), 3)
-
-        pygame.display.flip()  # Met à jour l'affichage
-
-
-
-
+    
 
 class EnvRobot:
     def __init__(self, robot, environment):
@@ -90,61 +67,79 @@ class EnvRobot:
         """Tourne le robot d'un certain angle"""
         self.robot.tourner(angle)
 
+class InterfaceGraphique: 
+     def __init__(self, env_robot):
+        pygame.init()
+        self.screen_width = 500
+        self.screen_height = 500
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+        pygame.display.set_caption("Robot dans l'environnement")
+        self.env_robot = env_robot
+        self.running = True
+
+     def afficher(self):
+        """Affiche l'environnement en 2D avec le robot et les obstacles"""
+        self.screen.fill(WHITE)
+
+        # Dessiner les obstacles
+        for (obstacle_x, obstacle_y) in self.env_robot.environment.obstacles:
+            pygame.draw.rect(self.screen, RED, (obstacle_x * 50, obstacle_y * 50, 50, 50))
+
+        # Dessiner le robot
+        robot = self.env_robot.robot
+        center_x = robot.x * 50 + 25
+        center_y = robot.y * 50 + 25
+        pygame.draw.circle(self.screen, BLUE, (center_x, center_y), 10)
+
+        # Dessiner la direction du robot
+        direction_x = center_x + 20 * math.cos(math.radians(robot.orientation))
+        direction_y = center_y - 20 * math.sin(math.radians(robot.orientation))
+        pygame.draw.line(self.screen, BLACK, (center_x, center_y), (direction_x, direction_y), 3)
+
+        pygame.display.flip()
+
+     def run(self):
+            """Boucle principale de l'interface graphique"""
+            print("Commandes :")
+            print(" - Flèches directionnelles pour avancer/reculer")
+            print(" - Flèche gauche pour tourner à gauche")
+            print(" - Flèche droite pour tourner à droite")
+            print(" - 'q' pour quitter")
+
+            while self.running:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.running = False
+
+                # Vérifier les entrées clavier
+                if keyboard.is_pressed("down"):
+                    self.env_robot.deplacer_robot(-1)
+                    time.sleep(0.2)
+                elif keyboard.is_pressed("up"):
+                    self.env_robot.deplacer_robot(1)
+                    time.sleep(0.2)
+                elif keyboard.is_pressed("left"):
+                    self.env_robot.tourner_robot(45)
+                    time.sleep(0.2)
+                elif keyboard.is_pressed("right"):
+                    self.env_robot.tourner_robot(-45)
+                    time.sleep(0.2)
+                elif keyboard.is_pressed("q"):
+                    print("Fin du programme.")
+                    self.running = False
+
+                # Mise à jour de l'affichage
+                self.afficher()
+
+            pygame.quit()
    
 
-    
-
-
 if __name__ == "__main__":
-
-    pygame.init()
-
-    # Configuration de la fenêtre
-    screen_width = 500
-    screen_height = 500
-    screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption("Robot dans l'environnement")
-
-
-    print("Commandes :")
-    print(" - Flèches directionnelles pour avancer/reculer")
-    print(" - Flèche gauche pour tourner à gauche")
-    print(" - Flèche droite pour tourner à droite")
-    print(" - 'q' pour quitter")
-
-    # Initialiser le robot et l'environnement
+    # Initialisation du robot et de l'environnement
     robot = Robot()
     environment = Environment(10, 10, [(2, 2), (4, 4)])  # Exemple d'obstacles
     controller = EnvRobot(robot, environment)
 
-    last_action_time = time.time()  # Temps de la dernière action
-    debounce_time = 0.2  # Temps minimum entre deux actions (en secondes)
-
-    
-    # Boucle principale pour les commandes interactives
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        # Vérifier les entrées du clavier
-        if keyboard.is_pressed("down"):
-            controller.deplacer_robot(-1)  # Avance d'une unité dans la direction actuelle
-            time.sleep(0.2)  # Pause pour éviter un mouvement trop rapide
-        elif keyboard.is_pressed("up"):
-            controller.deplacer_robot(1)  # Recule d'une unité dans la direction actuelle
-            time.sleep(0.2)  # Pause pour éviter un mouvement trop rapide
-        elif keyboard.is_pressed("left"):
-            controller.tourner_robot(45)  # Tourne à gauche de 15°
-            time.sleep(0.2)  # Pause pour éviter une rotation trop rapide
-        elif keyboard.is_pressed("right"):
-           controller.tourner_robot(-45)  # Tourne à droite de 15°
-           time.sleep(0.2)  # Pause pour éviter une rotation trop rapide
-        elif keyboard.is_pressed("q"):
-            print("Fin du programme.")
-            break 
-
-        # Afficher l'environnement après chaque action
-        environment.afficher(screen, robot)
-
-pygame.quit()
+    # Lancer l'interface graphique
+    interface = InterfaceGraphique(controller)
+    interface.run()
