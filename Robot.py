@@ -19,9 +19,16 @@ class Robot:
 
     
 
+    def deplacer(self):
+        """Déplace le robot en fonction des vitesses des roues."""
+        vitesse_moyenne = (self.vitesse_roue_gauche + self.vitesse_roue_droite) / 2
+        difference_vitesse = self.vitesse_roue_droite - self.vitesse_roue_gauche
 
-    def afficher_position(self):
-        print(f"Position actuelle : ({self.x}, {self.y}), Orientation : {self.orientation}°")
+        self.angle += difference_vitesse * 0.5  # Rotation
+        self.x += math.cos(math.radians(self.angle)) * vitesse_moyenne
+        self.y += math.sin(math.radians(self.angle)) * vitesse_moyenne
+
+    
 
    
     def tourner(self, angle):
