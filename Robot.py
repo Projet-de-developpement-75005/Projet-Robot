@@ -2,7 +2,9 @@ class Robot:
     def __init__(self):
         self.x = 0
         self.y = 0
-        self.orientation = 0  # Orientation en degrés (0 = droite, 90 = haut, 180 = gauche, 270 = bas)
+        self.angle = 0  # Orientation de la voiture
+        self.vitesse_roue_gauche = 0  # Vitesse de la roue gauche
+        self.vitesse_roue_droite = 0  # Vitesse de la roue droite
 
 
     def afficher_position(self):
