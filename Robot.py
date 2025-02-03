@@ -1,5 +1,5 @@
 import math
-import pygame
+
 
 # Couleurs
 ROUGE = (200, 0, 0)
@@ -28,28 +28,6 @@ class Robot:
         self.x += math.cos(math.radians(self.angle)) * vitesse_moyenne
         self.y += math.sin(math.radians(self.angle)) * vitesse_moyenne
 
-    
-
-   
-    def dessiner(self, fenetre):
-        """Dessine le robot et ses roues."""
-        robot_surface = pygame.Surface((ROBOT_LONGUEUR, ROBOT_LARGEUR), pygame.SRCALPHA)
-        robot_surface.fill(ROUGE)
-        robot_surface_rotated = pygame.transform.rotate(robot_surface, -self.angle)
-        robot_rect = robot_surface_rotated.get_rect(center=(self.x, self.y))
-        fenetre.blit(robot_surface_rotated, robot_rect)
-
-        # Dessiner les roues
-        roue_gauche = (
-            self.x + math.cos(math.radians(self.angle + 90)) * ROBOT_LARGEUR // 2,
-            self.y + math.sin(math.radians(self.angle + 90)) * ROBOT_LARGEUR // 2,
-        )
-        roue_droite = (
-            self.x + math.cos(math.radians(self.angle - 90)) * ROBOT_LARGEUR // 2,
-            self.y + math.sin(math.radians(self.angle - 90)) * ROBOT_LARGEUR // 2,
-        )
-        pygame.draw.circle(fenetre, BLEU, (int(roue_gauche[0]), int(roue_gauche[1])), 5)
-        pygame.draw.circle(fenetre, BLEU, (int(roue_droite[0]), int(roue_droite[1])), 5)
 
     def limiter_position(self, largeur_fenetre, hauteur_fenetre):
         """Empêche le robot de sortir des limites."""
