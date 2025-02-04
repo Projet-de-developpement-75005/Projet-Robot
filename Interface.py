@@ -1,7 +1,7 @@
 import math
-import pygame
+import pygame # type: ignore
 import time
-import keyboard
+import keyboard # type: ignore
 
 
 # Configuration des couleurs
@@ -76,3 +76,4 @@ class InterfaceGraphique:
                 self.afficher()
 
             pygame.quit()
+
