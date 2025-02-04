@@ -27,7 +27,10 @@ class Robot:
         self.angle += difference_vitesse * 0.5  # Rotation
         self.x += math.cos(math.radians(self.angle)) * vitesse_moyenne
         self.y += math.sin(math.radians(self.angle)) * vitesse_moyenne
-
+    # Vérifier la collision après le déplacement
+        if self.verifier_collision(obstacles, longueur, largeur):
+            # Revenir à la position précédente en cas de collision
+            self.x, self.y = ancien_x, ancien_y
 
     def limiter_position(self, largeur_fenetre, hauteur_fenetre):
         """Empêche le robot de sortir des limites."""
