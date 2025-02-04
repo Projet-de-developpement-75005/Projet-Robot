@@ -17,7 +17,16 @@ class Robot:
         self.vitesse_roue_gauche = 0
         self.vitesse_roue_droite = 0
 
-    
+    def verifier_collision(self, obstacles, longueur, largeur):
+        """Vérifie si la voiture entre en collision avec un obstacle."""
+        voiture_rect = self.obtenir_rect(longueur, largeur)
+        for obstacle in obstacles:
+            if (voiture_rect[0] < obstacle[0] + obstacle[2] and
+                voiture_rect[0] + voiture_rect[2] > obstacle[0] and
+                voiture_rect[1] < obstacle[1] + obstacle[3] and
+                voiture_rect[1] + voiture_rect[3] > obstacle[1]):
+                return True
+            return False
 
     def deplacer(self):
         """Déplace le robot en fonction des vitesses des roues."""
