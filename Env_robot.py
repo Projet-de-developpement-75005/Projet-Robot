@@ -67,3 +67,31 @@ class EnvRobot:
             if keys[pygame.K_RIGHT]:  # Tourner à droite
                 self.voiture.vitesse_roue_gauche = 8
                 self.voiture.vitesse_roue_droite = -8
+
+    def run(self):
+        """Boucle principale de la simulation."""
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+
+            if not self.entrer_manuellement:
+                self.gerer_evenements()
+
+            # Déplacer la voiture en vérifiant les collisions
+            self.voiture.deplacer(self.environnement.obstacles, VOITURE_LONGUEUR, VOITURE_LARGEUR)
+            self.voiture.limiter_position(self.largeur, self.hauteur, VOITURE_LONGUEUR, VOITURE_LARGEUR)
+
+            # Calculer le temps écoulé
+            temps_ecoule = time.time() - self.temps_depart
+
+            # Rafraîchir l'interface avec le temps écoulé
+            self.interface.rafraichir_ecran(self.voiture, self.environnement.obstacles, temps_ecoule)
+            self.clock.tick(30)
+
+        pygame.quit()
+
+# Lancer la simulation
+if _name_ == "_main_":
+    simulation = Simulation()
+    simulation.run()
