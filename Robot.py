@@ -31,6 +31,14 @@ class Robot:
         if self.verifier_collision(obstacles, longueur, largeur):
             # Revenir à la position précédente en cas de collision
             self.x, self.y = ancien_x, ancien_y
+    def obtenir_rect(self, longueur, largeur):
+        """Retourne le rectangle de collision de la voiture."""
+        return (
+            self.x - longueur // 2,
+            self.y - largeur // 2,
+            longueur,
+            largeur
+        )
 
     def limiter_position(self, largeur_fenetre, hauteur_fenetre):
         """Empêche le robot de sortir des limites."""
