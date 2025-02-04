@@ -39,3 +39,23 @@ class Interface:
         pygame.draw.line(self.screen, BLACK, (center_x, center_y), (direction_x, direction_y), 3)
 
         pygame.display.flip()
+    def dessiner_voiture(self, voiture):
+        """Dessine la voiture et ses roues."""
+        # Rotation de la voiture
+        voiture_surface = pygame.Surface((VOITURE_LONGUEUR, VOITURE_LARGEUR), pygame.SRCALPHA)
+        voiture_surface.fill(ROUGE)
+        voiture_surface_rotated = pygame.transform.rotate(voiture_surface, -voiture.angle)
+        voiture_rect = voiture_surface_rotated.get_rect(center=(voiture.x, voiture.y))
+        self.fenetre.blit(voiture_surface_rotated, voiture_rect)
+
+        # Dessiner les roues
+        roue_avant_gauche = (
+            voiture.x + math.cos(math.radians(voiture.angle + 90)) * VOITURE_LARGEUR // 2,
+            voiture.y + math.sin(math.radians(voiture.angle + 90)) * VOITURE_LARGEUR // 2,
+        )
+        roue_avant_droite = (
+            voiture.x + math.cos(math.radians(voiture.angle - 90)) * VOITURE_LARGEUR // 2,
+            voiture.y + math.sin(math.radians(voiture.angle - 90)) * VOITURE_LARGEUR // 2,
+        )
+        pygame.draw.circle(self.fenetre, BLEU, (int(roue_avant_gauche[0]), int(roue_avant_gauche[1])), 5)
+        pygame.draw.circle(self.fenetre, BLEU, (int(roue_avant_droite[0]), int(roue_avant_droite[1])), 5)
