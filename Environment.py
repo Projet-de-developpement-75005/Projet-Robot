@@ -1,5 +1,5 @@
 class Environment:
-    def _init_(self, largeur, hauteur):
+    def __init__(self, largeur, hauteur):
         self.largeur = largeur
         self.hauteur = hauteur
         self.obstacles = [

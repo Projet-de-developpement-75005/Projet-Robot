@@ -3,17 +3,17 @@ import pygame # type: ignore
 
 
 # Configuration des couleurs
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-BLUE = (0,0, 255)
+NOIR = (0, 0, 0)
+BLANC = (255, 255, 255)
+ROUGE = (255, 0, 0)
+BLEU = (0,0, 255)
 # Paramètres de la voiture
 VOITURE_LONGUEUR = 60
 VOITURE_LARGEUR = 30
 
 
 class Interface:
-    def _init_(self, largeur, hauteur):
+    def __init__(self, largeur, hauteur):
         self.largeur = largeur
         self.hauteur = hauteur
         self.fenetre = pygame.display.set_mode((largeur, hauteur))

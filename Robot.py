@@ -28,7 +28,7 @@ class Robot:
                 return True
             return False
 
-    def deplacer(self):
+    def deplacer(self, obstacles, longueur, largeur):
         """Déplace le robot en fonction des vitesses des roues."""
         vitesse_moyenne = (self.vitesse_roue_gauche + self.vitesse_roue_droite) / 2
         difference_vitesse = self.vitesse_roue_droite - self.vitesse_roue_gauche
@@ -49,7 +49,7 @@ class Robot:
             largeur
         )
 
-    def limiter_position(self, largeur_fenetre, hauteur_fenetre):
+    def limiter_position(self, largeur_fenetre, hauteur_fenetre, longueur, largeur):
         """Empêche le robot de sortir des limites."""
         self.x = max(ROBOT_LONGUEUR // 2, min(self.x, largeur_fenetre - ROBOT_LONGUEUR // 2))
         self.y = max(ROBOT_LARGEUR // 2, min(self.y, hauteur_fenetre - ROBOT_LARGEUR // 2))
