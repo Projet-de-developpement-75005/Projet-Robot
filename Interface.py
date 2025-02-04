@@ -59,3 +59,9 @@ class Interface:
         )
         pygame.draw.circle(self.fenetre, BLEU, (int(roue_avant_gauche[0]), int(roue_avant_gauche[1])), 5)
         pygame.draw.circle(self.fenetre, BLEU, (int(roue_avant_droite[0]), int(roue_avant_droite[1])), 5)
+    
+    
+    def dessiner_obstacles(self, obstacles):
+        """Dessine les obstacles."""
+        for obstacle in obstacles:
+            pygame.draw.rect(self.fenetre, NOIR, obstacle)
