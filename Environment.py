@@ -1,15 +1,10 @@
-import pygame
-
-# Couleurs
-BLANC = (255, 255, 255)
-NOIR = (0, 0, 0)
-
 class Environment:
-    def __init__(self, largeur, longueur):
+    def _init_(self, largeur, hauteur):
         self.largeur = largeur
-        self.longueur = longueur
-        self.fenetre = pygame.display.set_mode((largeur, hauteur))
-        pygame.display.set_caption("Simulation de Robot 🤖")
-
-
+        self.hauteur = hauteur
+        self.obstacles = [
+            (200, 300, 50, 50),  # Obstacle 1: (x, y, largeur, hauteur)
+            (500, 400, 60, 60),  # Obstacle 2
+            (700, 200, 40, 40)   # Obstacle 3
+        ]
     
