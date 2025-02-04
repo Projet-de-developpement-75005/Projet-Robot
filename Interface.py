@@ -39,39 +39,3 @@ class Interface:
         pygame.draw.line(self.screen, BLACK, (center_x, center_y), (direction_x, direction_y), 3)
 
         pygame.display.flip()
-
-    def run(self):
-            """Boucle principale de l'interface graphique"""
-            print("Commandes :")
-            print(" - Flèches directionnelles pour avancer/reculer")
-            print(" - Flèche gauche pour tourner à gauche")
-            print(" - Flèche droite pour tourner à droite")
-            print(" - 'q' pour quitter")
-
-            while self.running:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.running = False
-
-                # Vérifier les entrées clavier
-                if keyboard.is_pressed("down"):
-                    self.env_robot.deplacer_robot(-1)
-                    time.sleep(0.2)
-                elif keyboard.is_pressed("up"):
-                    self.env_robot.deplacer_robot(1)
-                    time.sleep(0.2)
-                elif keyboard.is_pressed("left"):
-                    self.env_robot.tourner_robot(45)
-                    time.sleep(0.2)
-                elif keyboard.is_pressed("right"):
-                    self.env_robot.tourner_robot(-45)
-                    time.sleep(0.2)
-                elif keyboard.is_pressed("q"):
-                    print("Fin du programme.")
-                    self.running = False
-
-                # Mise à jour de l'affichage
-                self.afficher()
-
-            pygame.quit()
-
