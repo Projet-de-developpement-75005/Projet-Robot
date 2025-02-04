@@ -66,4 +66,10 @@ class Interface:
         """Dessine les obstacles."""
         for obstacle in obstacles:
             pygame.draw.rect(self.fenetre, NOIR, obstacle)
-    
+    def rafraichir_ecran(self, voiture, obstacles, temps_ecoule):
+        """Rafraîchit l'écran avec les nouvelles informations."""
+        self.fenetre.fill(BLANC)  # Nettoyer l'écran
+        self.dessiner_voiture(voiture)  # Dessiner la voiture
+        self.dessiner_obstacles(obstacles)  # Dessiner les obstacles
+        self.afficher_infos(voiture, temps_ecoule)  # Afficher infos vitesse + temps
+        pygame.display.flip()  # Mettre à jour l'affichage
