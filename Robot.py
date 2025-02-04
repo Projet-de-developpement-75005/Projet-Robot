@@ -26,7 +26,7 @@ class Robot:
                 voiture_rect[1] < obstacle[1] + obstacle[3] and
                 voiture_rect[1] + voiture_rect[3] > obstacle[1]):
                 return True
-            return False
+            return False
 
     def deplacer(self):
         """Déplace le robot en fonction des vitesses des roues."""
