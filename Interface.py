@@ -19,26 +19,27 @@ class Interface:
         self.fenetre = pygame.display.set_mode((largeur, hauteur))
         pygame.display.set_caption("Simulation de Voiture avec Pygame")
         
-    def afficher(self):
-        """Affiche l'environnement en 2D avec le robot et les obstacles"""
-        self.screen.fill(WHITE)
+    def afficher_infos(self, voiture, temps_ecoule):
+        """Affiche les informations de vitesse et le temps écoulé en dessous des vitesses."""
+        font = pygame.font.SysFont(None, 30)
+    
+        # Convertir le temps écoulé en format hh:mm:ss
+        heures = int(temps_ecoule // 3600)
+        minutes = int((temps_ecoule % 3600) // 60)
+        secondes = int(temps_ecoule % 60)
+        temps_formate = f"{heures:02d}:{minutes:02d}:{secondes:02d}"
 
-        # Dessiner les obstacles
-        for (obstacle_x, obstacle_y) in self.env_robot.environment.obstacles:
-            pygame.draw.rect(self.screen, RED, (obstacle_x * 50, obstacle_y * 50, 50, 50))
+        # Création des textes
+        texte_vitesse_gauche = font.render(f"Vitesse Roue Gauche: {voiture.vitesse_roue_gauche}", True, NOIR)
+        texte_vitesse_droite = font.render(f"Vitesse Roue Droite: {voiture.vitesse_roue_droite}", True, NOIR)
+        texte_temps = font.render(f"Temps écoulé: {temps_formate}", True, NOIR)
 
-        # Dessiner le robot
-        robot = self.env_robot.robot
-        center_x = robot.x * 50 + 25
-        center_y = robot.y * 50 + 25
-        pygame.draw.circle(self.screen, BLUE, (center_x, center_y), 10)
+        # Affichage des textes à gauche en haut
+        self.fenetre.blit(texte_vitesse_gauche, (20, 20))
+        self.fenetre.blit(texte_vitesse_droite, (20, 50))
+        self.fenetre.blit(texte_temps, (20, 80))  # Temps écoulé affiché en dessous des vitesses  
 
-        # Dessiner la direction du robot
-        direction_x = center_x + 20 * math.cos(math.radians(robot.orientation))
-        direction_y = center_y - 20 * math.sin(math.radians(robot.orientation))
-        pygame.draw.line(self.screen, BLACK, (center_x, center_y), (direction_x, direction_y), 3)
 
-        pygame.display.flip()
     def dessiner_voiture(self, voiture):
         """Dessine la voiture et ses roues."""
         # Rotation de la voiture
@@ -65,3 +66,4 @@ class Interface:
         """Dessine les obstacles."""
         for obstacle in obstacles:
             pygame.draw.rect(self.fenetre, NOIR, obstacle)
+    
