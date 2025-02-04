@@ -41,3 +41,29 @@ class EnvRobot:
             else:
                 print("Direction non reconnue. Utilisation de la direction par défaut (haut).")
                 self.voiture.angle = 90
+
+    def gerer_evenements(self):
+        """Gère les événements du clavier."""
+        if not self.entrer_manuellement:
+            keys = pygame.key.get_pressed()
+
+            # Réinitialiser les vitesses des roues
+            self.voiture.vitesse_roue_gauche = 0
+            self.voiture.vitesse_roue_droite = 0
+
+            # Contrôle des vitesses des roues
+            if keys[pygame.K_UP]:  # Avancer
+                self.voiture.vitesse_roue_gauche = 8
+                self.voiture.vitesse_roue_droite = 8
+
+            if keys[pygame.K_DOWN]:  # Reculer
+                self.voiture.vitesse_roue_gauche = -8
+                self.voiture.vitesse_roue_droite = -8
+
+            if keys[pygame.K_LEFT]:  # Tourner à gauche
+                self.voiture.vitesse_roue_gauche = -8
+                self.voiture.vitesse_roue_droite = 8
+
+            if keys[pygame.K_RIGHT]:  # Tourner à droite
+                self.voiture.vitesse_roue_gauche = 8
+                self.voiture.vitesse_roue_droite = -8
