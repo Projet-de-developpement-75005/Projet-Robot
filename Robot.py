@@ -30,6 +30,7 @@ class Robot:
 
     def deplacer(self):
         """Déplace le robot en fonction des vitesses des roues."""
+        ancien_x, ancien_y = self.x, self.y
         vitesse_moyenne = (self.vitesse_roue_gauche + self.vitesse_roue_droite) / 2
         difference_vitesse = self.vitesse_roue_droite - self.vitesse_roue_gauche
 
