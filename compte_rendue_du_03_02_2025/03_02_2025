@@ -11,7 +11,7 @@ Objectifs de la réunion : \
 - Montrer le code qui fait deplacer le robot en fonction de la vitesse de ses roues en prenant compte les collisions  avec obstacles ,en mesurant le temps écoulé .
 Remarques des clients : 
 -Manque des tests unitaires pour chaque fonction.
-- Isolation  de la bibliotheque  pygame des classes a part la classe Environnement
+- Isolation  de la bibliotheque  pygame des classes a part la classe interface.
 - Enlever les directions :haut,bas,gauche,droite .
 - Ajouter une branche dev qui effectuera la simulation 
 Prochaines missions :
