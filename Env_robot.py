@@ -88,4 +88,4 @@ class EnvRobot:
             self.interface.rafraichir_ecran(self.robot, self.environnement.obstacles, temps_ecoule)
             self.clock.tick(30)
 
-        pygame.quit()
+    pygame.quit()
