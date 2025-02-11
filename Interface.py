@@ -42,13 +42,8 @@ class Interface:
 
     def dessiner_voiture(self, voiture):
         """Dessine la voiture et ses roues."""
-        # Rotation de la voiture
-        voiture_surface = pygame.Surface((VOITURE_LONGUEUR, VOITURE_LARGEUR), pygame.SRCALPHA)
-        voiture_surface.fill(ROUGE)
-        voiture_surface_rotated = pygame.transform.rotate(voiture_surface, -voiture.angle)
-        voiture_rect = voiture_surface_rotated.get_rect(center=(voiture.x, voiture.y))
-        self.fenetre.blit(voiture_surface_rotated, voiture_rect)
-
+        self.canvas.delete("robot")
+        
         # Dessiner les roues
         roue_avant_gauche = (
             voiture.x + math.cos(math.radians(voiture.angle + 90)) * VOITURE_LARGEUR // 2,
