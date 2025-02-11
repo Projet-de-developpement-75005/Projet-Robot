@@ -81,9 +81,19 @@ class EnvRobot:
             self.root.update_idletasks()
             self.root.update()
             time.sleep(0.02)
-
+        def _deplacer_trajectoire_carre(self):
+            """Déplace le robot sur une trajectoire en carré tout en vérifiant les limites."""
+            if self.cote_parcouru < self.cote_carre:
+                # Avancer dans la direction actuelle
+                self.robot.vitesse_roue_gauche = self.robot.vitesse_roue_droite = 5  # Vitesse de déplacement
+                self.cote_parcouru += 1
+             else:
+              # Après avoir parcouru un côté, tourner de 90°
+              self.robot.angle += 90
+              self.cote_courant = (self.cote_courant % 4) + 1
+              self.cote_parcouru = 0
             # Calculer le temps écoulé
-            temps_ecoule = time.time() - self.temps_depart
+              temps_ecoule = time.time() - self.temps_depart
 
             # Rafraîchir l'interface avec le temps écoulé
             self.interface.rafraichir_ecran(self.robot, self.environnement.obstacles, temps_ecoule)
