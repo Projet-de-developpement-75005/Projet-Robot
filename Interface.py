@@ -40,21 +40,16 @@ class Interface:
         self.canvas.create_text(20, 80, anchor="nw", text=texte_temps, fill=NOIR)
 
 
-    def dessiner_voiture(self, voiture):
-        """Dessine la voiture et ses roues."""
+    def dessiner_voiture(self, robot):
+        """Dessine le robot et ses roues."""
         self.canvas.delete("robot")
-        
-        # Dessiner les roues
-        roue_avant_gauche = (
-            voiture.x + math.cos(math.radians(voiture.angle + 90)) * VOITURE_LARGEUR // 2,
-            voiture.y + math.sin(math.radians(voiture.angle + 90)) * VOITURE_LARGEUR // 2,
-        )
-        roue_avant_droite = (
-            voiture.x + math.cos(math.radians(voiture.angle - 90)) * VOITURE_LARGEUR // 2,
-            voiture.y + math.sin(math.radians(voiture.angle - 90)) * VOITURE_LARGEUR // 2,
-        )
-        pygame.draw.circle(self.fenetre, BLEU, (int(roue_avant_gauche[0]), int(roue_avant_gauche[1])), 5)
-        pygame.draw.circle(self.fenetre, BLEU, (int(roue_avant_droite[0]), int(roue_avant_droite[1])), 5)
+
+       # Calculer les coins du rectangle après rotation
+        x, y, angle = robot.x, robot.y, math.radians(robot.angle)
+        cos_a, sin_a = math.cos(angle), math.sin(angle)
+
+        demi_longueur = VOITURE_LONGUEUR / 2
+        demi_largeur = VOITURE_LARGEUR / 2
     
     
     def dessiner_obstacles(self, obstacles):
