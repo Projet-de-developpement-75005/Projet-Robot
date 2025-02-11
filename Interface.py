@@ -94,8 +94,15 @@ class Interface:
                                          fill=NOIR)
     def rafraichir_ecran(self, voiture, obstacles, temps_ecoule):
        """Rafraîchit l'écran avec les nouvelles informations."""
-        self.canvas.delete("all")  # Nettoyer l'écran
-        self.dessiner_voiture(robot)  # Dessiner la voiture avec les roues
-        self.dessiner_obstacles(obstacles)  # Dessiner les obstacles
-        self.afficher_infos(robot, temps_ecoule)  # Afficher les infos (vitesse, temps)
-        self.canvas.update()  # Mettre à jour l'affichage
+       self.canvas.delete("all")  # Nettoyer l'écran
+       self.dessiner_voiture(robot)  # Dessiner la voiture avec les roues
+       self.dessiner_obstacles(obstacles)  # Dessiner les obstacles
+       self.afficher_infos(robot, temps_ecoule)  # Afficher les infos (vitesse, temps)
+       self.canvas.update()  # Mettre à jour l'affichage
+
+    def _dessiner_roue(self, x, y, angle):
+        """Dessine une roue avec la bonne orientation."""
+        cos_a, sin_a = math.cos(angle), math.sin(angle)
+
+        demi_l = ROUE_LONGUEUR / 2
+        demi_w = ROUE_LARGEUR / 2
