@@ -1,12 +1,11 @@
 import math
-import pygame # type: ignore
+import tkinter as tk
 
 
 # Configuration des couleurs
-NOIR = (0, 0, 0)
-BLANC = (255, 255, 255)
-ROUGE = (255, 0, 0)
-BLEU = (0,0, 255)
+NOIR = "#000000"
+ROUGE = "#FF0000"
+GRIS_FONCE = "#333333"
 # Paramètres de la voiture
 VOITURE_LONGUEUR = 60
 VOITURE_LARGEUR = 30
