@@ -9,14 +9,15 @@ GRIS_FONCE = "#333333"
 # Paramètres de la voiture
 VOITURE_LONGUEUR = 60
 VOITURE_LARGEUR = 30
+ROUE_LARGEUR = 6
+ROUE_LONGUEUR = 12
 
 
 class Interface:
-    def __init__(self, largeur, hauteur):
+    def __init__(self, canvas, largeur, hauteur):
+        self.canvas = canvas
         self.largeur = largeur
         self.hauteur = hauteur
-        self.fenetre = pygame.display.set_mode((largeur, hauteur))
-        pygame.display.set_caption("Simulation de Voiture avec Pygame")
         
     def afficher_infos(self, voiture, temps_ecoule):
         """Affiche les informations de vitesse et le temps écoulé en dessous des vitesses."""
