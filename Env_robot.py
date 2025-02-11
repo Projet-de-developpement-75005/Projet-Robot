@@ -20,26 +20,24 @@ class EnvRobot:
         self.robot = Robot(self.largeur // 2, self.hauteur // 2)
         self.interface = Interface(self.canvas, self.largeur, self.hauteur)
 
-    # Suivi du temps et des touches pressées
+        # Suivi du temps et des touches pressées
         self.temps_depart = time.time()
         self.touches_pressees = set()  # Initialisation des touches pressées
-            # Contrôle des vitesses des roues
-            if keys[pygame.K_UP]:  # Avancer
-                self.robot.vitesse_roue_gauche = 8
-                self.robot.vitesse_roue_droite = 8
-
-            if keys[pygame.K_DOWN]:  # Reculer
-                self.robot.vitesse_roue_gauche = -8
-                self.robot.vitesse_roue_droite = -8
-
-            if keys[pygame.K_LEFT]:  # Tourner à gauche
-                self.robot.vitesse_roue_gauche = -8
-                self.robot.vitesse_roue_droite = 8
-
-            if keys[pygame.K_RIGHT]:  # Tourner à droite
-                self.robot.vitesse_roue_gauche = 8
-                self.robot.vitesse_roue_droite = -8
-
+        # Choix du mode de déplacement
+        self.mode_deplacement = input("Choisissez le mode de déplacement : \n1 - Carré \n2 - Mode classique \nEntrez votre choix (1 ou 2): ")
+        if self.mode_deplacement == "1":
+            self.cote_carre = 100  # Longueur d'un côté du carré
+            self.cote_parcouru = 0
+            self.cote_courant = 1
+        else:
+            self.cote_carre = None  # Mode classique, pas de carré
+            self.choix_controle = input("Voulez-vous entrer manuellement les vitesses et la direction ? (o/n) : ").lower()
+            
+            if self.choix_controle == "o":
+                self._initialiser_vitesses_manuellement()
+                self.controle_clavier = False
+            else:
+                self.controle_clavier = True
     def run(self):
         """Boucle principale de la simulation."""
         while self.running:
