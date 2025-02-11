@@ -106,3 +106,12 @@ class Interface:
 
         demi_l = ROUE_LONGUEUR / 2
         demi_w = ROUE_LARGEUR / 2
+
+        # cions de la roue avant rotation
+        coins = [
+            (-demi_l, -demi_w),
+            (demi_l, -demi_w),
+            (demi_l, demi_w),
+            (-demi_l, demi_w),
+        ]
+
