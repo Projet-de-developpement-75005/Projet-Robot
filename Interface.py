@@ -50,6 +50,20 @@ class Interface:
 
         demi_longueur = VOITURE_LONGUEUR / 2
         demi_largeur = VOITURE_LARGEUR / 2
+
+         # Coins de la voiture avant rotation
+        coins = [
+            (-demi_longueur, -demi_largeur),
+            (demi_longueur, -demi_largeur),
+            (demi_longueur, demi_largeur),
+            (-demi_longueur, demi_largeur),
+        ]
+
+        # Appliquer la rotation aux coins
+        coins_rotates = [
+            (x + cx * cos_a - cy * sin_a, y + cx * sin_a + cy * cos_a)
+            for cx, cy in coins
+        ]
     
     
     def dessiner_obstacles(self, obstacles):
