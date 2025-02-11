@@ -20,15 +20,9 @@ class EnvRobot:
         self.robot = Robot(self.largeur // 2, self.hauteur // 2)
         self.interface = Interface(self.canvas, self.largeur, self.hauteur)
 
-    def gerer_evenements(self):
-        """Gère les événements du clavier."""
-        if not self.entrer_manuellement:
-            keys = pygame.key.get_pressed()
-
-            # Réinitialiser les vitesses des roues
-            self.robot.vitesse_roue_gauche = 0
-            self.robot.vitesse_roue_droite = 0
-
+    # Suivi du temps et des touches pressées
+        self.temps_depart = time.time()
+        self.touches_pressees = set()  # Initialisation des touches pressées
             # Contrôle des vitesses des roues
             if keys[pygame.K_UP]:  # Avancer
                 self.robot.vitesse_roue_gauche = 8
