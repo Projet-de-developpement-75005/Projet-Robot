@@ -14,27 +14,11 @@ class EnvRobot:
         self.root.title("Simulation Robot")
         self.canvas = tk.Canvas(self.root, width=self.largeur, height=self.hauteur, bg="white")
         self.canvas.pack()
-        # Demander à l'utilisateur s'il veut entrer manuellement les vitesses et la direction
-        self.entrer_manuellement = input("Voulez-vous entrer manuellement les vitesses et la direction ? (o/n) : ").lower() == "o"
-
-        if self.entrer_manuellement:
-            # Entrer les vitesses des roues
-            self.robot.vitesse_roue_gauche = int(input("Entrez la vitesse de la roue gauche (-8 à 8) : "))
-            self.robot.vitesse_roue_droite = int(input("Entrez la vitesse de la roue droite (-8 à 8) : "))
-
-            # Entrer la direction
-            direction = input("Entrez la direction (haut, bas, gauche, droite) : ").lower()
-            if direction == "haut":
-                self.robot.angle = 90
-            elif direction == "bas":
-                self.robot.angle = 270
-            elif direction == "gauche":
-                self.robot.angle = 180
-            elif direction == "droite":
-                self.robot.angle = 0
-            else:
-                print("Direction non reconnue. Utilisation de la direction par défaut (haut).")
-                self.robot.angle = 90
+        
+        # Initialisation des composants
+        self.environnement = Environment(self.largeur, self.hauteur)
+        self.robot = Robot(self.largeur // 2, self.hauteur // 2)
+        self.interface = Interface(self.canvas, self.largeur, self.hauteur)
 
     def gerer_evenements(self):
         """Gère les événements du clavier."""
