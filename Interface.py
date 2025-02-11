@@ -50,16 +50,52 @@ class Interface:
 
         demi_longueur = VOITURE_LONGUEUR / 2
         demi_largeur = VOITURE_LARGEUR / 2
+
+         # Coins du robot avant rotation
+        coins = [
+            (-demi_longueur, -demi_largeur),
+            (demi_longueur, -demi_largeur),
+            (demi_longueur, demi_largeur),
+            (-demi_longueur, demi_largeur),
+        ]
+
+        # Appliquer la rotation aux coins
+        coins_rotates = [
+            (x + cx * cos_a - cy * sin_a, y + cx * sin_a + cy * cos_a)
+            for cx, cy in coins
+        ]
+
+        # Dessiner le corps du robot
+        self.canvas.create_polygon(
+            [coord for point in coins_rotates for coord in point],
+            fill=ROUGE, outline=NOIR, tags="robot"
+        )
+
+        # Position des roues par rapport au centre
+        positions_roues = [
+            (-demi_longueur + ROUE_LONGUEUR / 2, -demi_largeur - ROUE_LARGEUR / 2),  # Roue avant gauche
+            (-demi_longueur + ROUE_LONGUEUR / 2, demi_largeur + ROUE_LARGEUR / 2),   # Roue avant droite
+            (demi_longueur - ROUE_LONGUEUR / 2, -demi_largeur - ROUE_LARGEUR / 2),   # Roue arrière gauche
+            (demi_longueur - ROUE_LONGUEUR / 2, demi_largeur + ROUE_LARGEUR / 2),    # Roue arrière droite
+        ]
+
+        # Dessiner les roues après rotation
+        for dx, dy in positions_roues:
+            roue_x = x + dx * cos_a - dy * sin_a
+            roue_y = y + dx * sin_a + dy * cos_a
+            self._dessiner_roue(roue_x, roue_y, angle)
     
     
     def dessiner_obstacles(self, obstacles):
-        """Dessine les obstacles."""
-        for obstacle in obstacles:
-            pygame.draw.rect(self.fenetre, NOIR, obstacle)
+         """Dessine les obstacles."""
+         for obstacle in obstacles:
+            self.canvas.create_rectangle(obstacle[0], obstacle[1],
+                                         obstacle[0] + obstacle[2], obstacle[1] + obstacle[3],
+                                         fill=NOIR)
     def rafraichir_ecran(self, voiture, obstacles, temps_ecoule):
-        """Rafraîchit l'écran avec les nouvelles informations."""
-        self.fenetre.fill(BLANC)  # Nettoyer l'écran
-        self.dessiner_voiture(voiture)  # Dessiner la voiture
+       """Rafraîchit l'écran avec les nouvelles informations."""
+        self.canvas.delete("all")  # Nettoyer l'écran
+        self.dessiner_voiture(robot)  # Dessiner la voiture avec les roues
         self.dessiner_obstacles(obstacles)  # Dessiner les obstacles
-        self.afficher_infos(voiture, temps_ecoule)  # Afficher infos vitesse + temps
-        pygame.display.flip()  # Mettre à jour l'affichage
+        self.afficher_infos(robot, temps_ecoule)  # Afficher les infos (vitesse, temps)
+        self.canvas.update()  # Mettre à jour l'affichage
