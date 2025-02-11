@@ -51,7 +51,7 @@ class Interface:
         demi_longueur = VOITURE_LONGUEUR / 2
         demi_largeur = VOITURE_LARGEUR / 2
 
-         # Coins de la voiture avant rotation
+         # Coins du robot avant rotation
         coins = [
             (-demi_longueur, -demi_largeur),
             (demi_longueur, -demi_largeur),
@@ -64,6 +64,26 @@ class Interface:
             (x + cx * cos_a - cy * sin_a, y + cx * sin_a + cy * cos_a)
             for cx, cy in coins
         ]
+
+        # Dessiner le corps du robot
+        self.canvas.create_polygon(
+            [coord for point in coins_rotates for coord in point],
+            fill=ROUGE, outline=NOIR, tags="robot"
+        )
+
+        # Position des roues par rapport au centre
+        positions_roues = [
+            (-demi_longueur + ROUE_LONGUEUR / 2, -demi_largeur - ROUE_LARGEUR / 2),  # Roue avant gauche
+            (-demi_longueur + ROUE_LONGUEUR / 2, demi_largeur + ROUE_LARGEUR / 2),   # Roue avant droite
+            (demi_longueur - ROUE_LONGUEUR / 2, -demi_largeur - ROUE_LARGEUR / 2),   # Roue arrière gauche
+            (demi_longueur - ROUE_LONGUEUR / 2, demi_largeur + ROUE_LARGEUR / 2),    # Roue arrière droite
+        ]
+
+        # Dessiner les roues après rotation
+        for dx, dy in positions_roues:
+            roue_x = x + dx * cos_a - dy * sin_a
+            roue_y = y + dx * sin_a + dy * cos_a
+            self._dessiner_roue(roue_x, roue_y, angle)
     
     
     def dessiner_obstacles(self, obstacles):
