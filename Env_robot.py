@@ -47,6 +47,10 @@ class EnvRobot:
             """Ajoute la touche pressée à touches_pressees"""
             self.touches_pressees.add(event.keysym)
 
+        def _on_key_release(self, event):
+            """Retire la touche relâchée de touches_pressees"""
+            self.touches_pressees.discard(event.keysym)
+            
             # Calculer le temps écoulé
             temps_ecoule = time.time() - self.temps_depart
 
