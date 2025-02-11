@@ -59,6 +59,28 @@ class EnvRobot:
             direction = input("Entrez la direction (haut, bas, gauche, droite) : ").lower()
             self.robot.angle = {"haut": 90, "bas": 270, "gauche": 180, "droite": 0}.get(direction, 90)
 
+        def demarrer_simulation(self):
+            """Démarre la simulation, selon le mode de déplacement choisi."""
+            while True:
+                if self.mode_deplacement == "1":
+                    # Déplacer le robot sur la trajectoire carrée en respectant les limites
+                    self._deplacer_trajectoire_carre()
+                else:
+                    if self.controle_clavier:
+                    self._gerer_deplacement_clavier()
+
+            # Effectuer le déplacement et limiter la position du robot
+            self.robot.deplacer(self.environnement.obstacles)
+            self.robot.limiter_position(self.largeur, self.hauteur)  # Limiter la position
+
+            # Rafraîchir l'écran de la simulation
+            temps_ecoule = time.time() - self.temps_depart
+            self.interface.rafraichir_ecran(self.robot, self.environnement.obstacles, temps_ecoule)
+
+            # Mettre à jour l'interface graphique
+            self.root.update_idletasks()
+            self.root.update()
+            time.sleep(0.02)
 
             # Calculer le temps écoulé
             temps_ecoule = time.time() - self.temps_depart
