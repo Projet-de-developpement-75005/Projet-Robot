@@ -21,7 +21,7 @@ class Interface:
         
     def afficher_infos(self, voiture, temps_ecoule):
         """Affiche les informations de vitesse et le temps écoulé en dessous des vitesses."""
-        font = pygame.font.SysFont(None, 30)
+        
     
         # Convertir le temps écoulé en format hh:mm:ss
         heures = int(temps_ecoule // 3600)
@@ -30,14 +30,14 @@ class Interface:
         temps_formate = f"{heures:02d}:{minutes:02d}:{secondes:02d}"
 
         # Création des textes
-        texte_vitesse_gauche = font.render(f"Vitesse Roue Gauche: {voiture.vitesse_roue_gauche}", True, NOIR)
-        texte_vitesse_droite = font.render(f"Vitesse Roue Droite: {voiture.vitesse_roue_droite}", True, NOIR)
-        texte_temps = font.render(f"Temps écoulé: {temps_formate}", True, NOIR)
+        texte_vitesse_gauche = f"Vitesse Roue Gauche: {robot.vitesse_roue_gauche}"
+        texte_vitesse_droite = f"Vitesse Roue Droite: {robot.vitesse_roue_droite}"
+        texte_temps = f"Temps écoulé: {temps_formate}"
 
         # Affichage des textes à gauche en haut
-        self.fenetre.blit(texte_vitesse_gauche, (20, 20))
-        self.fenetre.blit(texte_vitesse_droite, (20, 50))
-        self.fenetre.blit(texte_temps, (20, 80))  # Temps écoulé affiché en dessous des vitesses  
+        self.canvas.create_text(20, 20, anchor="nw", text=texte_vitesse_gauche, fill=NOIR)
+        self.canvas.create_text(20, 50, anchor="nw", text=texte_vitesse_droite, fill=NOIR)
+        self.canvas.create_text(20, 80, anchor="nw", text=texte_temps, fill=NOIR)
 
 
     def dessiner_voiture(self, voiture):
