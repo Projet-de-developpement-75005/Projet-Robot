@@ -106,3 +106,24 @@ class Interface:
 
         demi_l = ROUE_LONGUEUR / 2
         demi_w = ROUE_LARGEUR / 2
+
+        # cions de la roue avant rotation
+        coins = [
+            (-demi_l, -demi_w),
+            (demi_l, -demi_w),
+            (demi_l, demi_w),
+            (-demi_l, demi_w),
+        ]
+
+        # Appliquer la rotation aux coins
+        coins_rotates = [
+            (x + cx * cos_a - cy * sin_a, y + cx * sin_a + cy * cos_a)
+            for cx, cy in coins
+        ]
+
+        #dessine la roue
+        self.canvas.create_polygon(
+            [coord for point in coins_rotates for coord in point],
+            fill=GRIS_FONCE, outline=NOIR, tags="robot"
+        )
+
