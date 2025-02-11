@@ -1,24 +1,19 @@
-import pygame
+import tkinter as tk 
 import time
-import math 
-from Robot import Robot
 from Environment import Environment
-from Interface import Interface, VOITURE_LONGUEUR, VOITURE_LARGEUR
+from Robot import Robot
+from Interface import Interface
 
 class EnvRobot:
-    def _init_(self):
-        pygame.init()
-        self.largeur = 900
-        self.hauteur = 800
-        self.environnement = Environment(self.largeur, self.hauteur)
-        self.robot = Robot(self.largeur // 2, self.hauteur // 2)
-        self.interface = Interface(self.largeur, self.hauteur)
-        self.clock = pygame.time.Clock()
-        self.running = True
+    def __init__(self, largeur=900, hauteur=800):
+        self.largeur = largeur
+        self.hauteur = hauteur
 
-        # Démarrer l'horloge
-        self.temps_depart = time.time()
-
+        # Configuration de la fenêtre principale
+        self.root = tk.Tk()
+        self.root.title("Simulation Robot")
+        self.canvas = tk.Canvas(self.root, width=self.largeur, height=self.hauteur, bg="white")
+        self.canvas.pack()
         # Demander à l'utilisateur s'il veut entrer manuellement les vitesses et la direction
         self.entrer_manuellement = input("Voulez-vous entrer manuellement les vitesses et la direction ? (o/n) : ").lower() == "o"
 
