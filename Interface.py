@@ -93,9 +93,9 @@ class Interface:
                                          obstacle[0] + obstacle[2], obstacle[1] + obstacle[3],
                                          fill=NOIR)
     def rafraichir_ecran(self, voiture, obstacles, temps_ecoule):
-        """Rafraîchit l'écran avec les nouvelles informations."""
-        self.fenetre.fill(BLANC)  # Nettoyer l'écran
-        self.dessiner_voiture(voiture)  # Dessiner la voiture
+       """Rafraîchit l'écran avec les nouvelles informations."""
+        self.canvas.delete("all")  # Nettoyer l'écran
+        self.dessiner_voiture(robot)  # Dessiner la voiture avec les roues
         self.dessiner_obstacles(obstacles)  # Dessiner les obstacles
-        self.afficher_infos(voiture, temps_ecoule)  # Afficher infos vitesse + temps
-        pygame.display.flip()  # Mettre à jour l'affichage
+        self.afficher_infos(robot, temps_ecoule)  # Afficher les infos (vitesse, temps)
+        self.canvas.update()  # Mettre à jour l'affichage
