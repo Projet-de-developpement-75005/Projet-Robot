@@ -81,6 +81,7 @@ class EnvRobot:
             self.root.update_idletasks()
             self.root.update()
             time.sleep(0.02)
+
         def _deplacer_trajectoire_carre(self):
             """Déplace le robot sur une trajectoire en carré tout en vérifiant les limites."""
             if self.cote_parcouru < self.cote_carre:
@@ -92,6 +93,22 @@ class EnvRobot:
               self.robot.angle += 90
               self.cote_courant = (self.cote_courant % 4) + 1
               self.cote_parcouru = 0
+
+        def _gerer_deplacement_clavier(self):
+            """Gère les déplacements du robot via le clavier en mode classique."""
+            if "Up" in self.touches_pressees:
+                self.robot.vitesse_roue_gauche = self.robot.vitesse_roue_droite = 5
+            elif "Down" in self.touches_pressees:
+                self.robot.vitesse_roue_gauche = self.robot.vitesse_roue_droite = -5
+            elif "Left" in self.touches_pressees:
+                self.robot.vitesse_roue_gauche = -3
+                self.robot.vitesse_roue_droite = 3
+            elif "Right" in self.touches_pressees:
+                self.robot.vitesse_roue_gauche = 3
+                self.robot.vitesse_roue_droite = -3
+            else:
+                self.robot.vitesse_roue_gauche = 0
+                self.robot.vitesse_roue_droite = 0
             # Calculer le temps écoulé
               temps_ecoule = time.time() - self.temps_depart
 
