@@ -87,9 +87,11 @@ class Interface:
     
     
     def dessiner_obstacles(self, obstacles):
-        """Dessine les obstacles."""
-        for obstacle in obstacles:
-            pygame.draw.rect(self.fenetre, NOIR, obstacle)
+         """Dessine les obstacles."""
+         for obstacle in obstacles:
+            self.canvas.create_rectangle(obstacle[0], obstacle[1],
+                                         obstacle[0] + obstacle[2], obstacle[1] + obstacle[3],
+                                         fill=NOIR)
     def rafraichir_ecran(self, voiture, obstacles, temps_ecoule):
         """Rafraîchit l'écran avec les nouvelles informations."""
         self.fenetre.fill(BLANC)  # Nettoyer l'écran
