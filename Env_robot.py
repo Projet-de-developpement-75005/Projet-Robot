@@ -39,14 +39,13 @@ class EnvRobot:
             else:
                 self.controle_clavier = True
 
-                
+
             # Événements clavier
             self.root.bind_all("<KeyPress>", self._on_key_press)
             self.root.bind_all("<KeyRelease>", self._on_key_release)
-
-            # Déplacer le robot en vérifiant les collisions
-            self.robot.deplacer(self.environnement.obstacles, VOITURE_LONGUEUR, VOITURE_LARGEUR)
-            self.robot.limiter_position(self.largeur, self.hauteur, VOITURE_LONGUEUR, VOITURE_LARGEUR)
+        def _on_key_press(self, event):
+            """Ajoute la touche pressée à touches_pressees"""
+            self.touches_pressees.add(event.keysym)
 
             # Calculer le temps écoulé
             temps_ecoule = time.time() - self.temps_depart
