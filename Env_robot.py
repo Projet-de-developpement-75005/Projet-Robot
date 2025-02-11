@@ -38,15 +38,11 @@ class EnvRobot:
                 self.controle_clavier = False
             else:
                 self.controle_clavier = True
-    def run(self):
-        """Boucle principale de la simulation."""
-        while self.running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
 
-            if not self.entrer_manuellement:
-                self.gerer_evenements()
+                
+            # Événements clavier
+            self.root.bind_all("<KeyPress>", self._on_key_press)
+            self.root.bind_all("<KeyRelease>", self._on_key_release)
 
             # Déplacer le robot en vérifiant les collisions
             self.robot.deplacer(self.environnement.obstacles, VOITURE_LONGUEUR, VOITURE_LARGEUR)
