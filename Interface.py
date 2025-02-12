@@ -11,9 +11,13 @@ NOIR = "#000000"
 ROUGE = "#FF0000"
 GRIS_FONCE = "#333333"
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> f7fb46a ( changement des bibliotheques de Interface)
+=======
+
+>>>>>>> a8b5a9992312964e6d435561c7dfd779549365ad
 # Paramètres de la voiture
 VOITURE_LONGUEUR = 60
 VOITURE_LARGEUR = 30
@@ -21,15 +25,17 @@ ROUE_LARGEUR = 6
 ROUE_LONGUEUR = 12
 <<<<<<< HEAD
 
+<<<<<<< HEAD
 =======
 >>>>>>> f7fb46a ( changement des bibliotheques de Interface)
 
+=======
+>>>>>>> a8b5a9992312964e6d435561c7dfd779549365ad
 class Interface:
     def __init__(self, canvas, largeur, hauteur):
         self.canvas = canvas
         self.largeur = largeur
         self.hauteur = hauteur
-        
     def afficher_infos(self, voiture, temps_ecoule):
         """Affiche les informations de vitesse et le temps écoulé en dessous des vitesses."""
         
@@ -40,7 +46,7 @@ class Interface:
         secondes = int(temps_ecoule % 60)
         temps_formate = f"{heures:02d}:{minutes:02d}:{secondes:02d}"
 
-        # Création des textes
+
         texte_vitesse_gauche = f"Vitesse Roue Gauche: {robot.vitesse_roue_gauche}"
         texte_vitesse_droite = f"Vitesse Roue Droite: {robot.vitesse_roue_droite}"
         texte_temps = f"Temps écoulé: {temps_formate}"
@@ -50,6 +56,9 @@ class Interface:
         self.canvas.create_text(20, 50, anchor="nw", text=texte_vitesse_droite, fill=NOIR)
         self.canvas.create_text(20, 80, anchor="nw", text=texte_temps, fill=NOIR)
 
+    def dessiner_voiture(self, robot):
+        """Dessine le robot avec des roues en tenant compte de la rotation."""
+        self.canvas.delete("robot")
 
     def dessiner_voiture(self, robot):
         """Dessine le robot et ses roues."""
@@ -95,8 +104,6 @@ class Interface:
             roue_x = x + dx * cos_a - dy * sin_a
             roue_y = y + dx * sin_a + dy * cos_a
             self._dessiner_roue(roue_x, roue_y, angle)
-    
-    
     def dessiner_obstacles(self, obstacles):
          """Dessine les obstacles."""
          for obstacle in obstacles:
@@ -118,7 +125,7 @@ class Interface:
         demi_l = ROUE_LONGUEUR / 2
         demi_w = ROUE_LARGEUR / 2
 
-        # cions de la roue avant rotation
+ # cions de la roue avant rotation
         coins = [
             (-demi_l, -demi_w),
             (demi_l, -demi_w),
@@ -132,9 +139,11 @@ class Interface:
             for cx, cy in coins
         ]
 
-        #dessine la roue
+
+        # Dessiner la roue
         self.canvas.create_polygon(
             [coord for point in coins_rotates for coord in point],
             fill=GRIS_FONCE, outline=NOIR, tags="robot"
         )
+
 
