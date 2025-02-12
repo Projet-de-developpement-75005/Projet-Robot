@@ -33,23 +33,6 @@ VOITURE_LARGEUR = 30
 ROUE_LARGEUR = 6
 ROUE_LONGUEUR = 12
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> f7fb46a ( changement des bibliotheques de Interface)
-
->>>>>>> b42f163 (initialisation des vitesses manuellement)
-=======
->>>>>>> f7fb46a ( changement des bibliotheques de Interface)
-
-=======
->>>>>>> a8b5a9992312964e6d435561c7dfd779549365ad
->>>>>>> 16e90d664fb290abbb161d3843fd47a49ba4c78b
-=======
-
->>>>>>> ff8f0036818ed81f014bd5fb05ac933265f30580
 class Interface:
     def __init__(self, canvas, largeur, hauteur):
         self.canvas = canvas
