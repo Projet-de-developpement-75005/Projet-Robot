@@ -1,88 +1,116 @@
-import pygame
+import tkinter as tk 
 import time
-import math 
-from Robot import Robot
 from Environment import Environment
-from Interface import Interface, VOITURE_LONGUEUR, VOITURE_LARGEUR
+from Robot import Robot
+from Interface import Interface
 
 class EnvRobot:
-    def _init_(self):
-        pygame.init()
-        self.largeur = 900
-        self.hauteur = 800
+    def __init__(self, largeur=900, hauteur=800):
+        self.largeur = largeur
+        self.hauteur = hauteur
+
+        # Configuration de la fenêtre principale
+        self.root = tk.Tk()
+        self.root.title("Simulation Robot")
+        self.canvas = tk.Canvas(self.root, width=self.largeur, height=self.hauteur, bg="white")
+        self.canvas.pack()
+        
+        # Initialisation des composants
         self.environnement = Environment(self.largeur, self.hauteur)
         self.robot = Robot(self.largeur // 2, self.hauteur // 2)
-        self.interface = Interface(self.largeur, self.hauteur)
-        self.clock = pygame.time.Clock()
-        self.running = True
+        self.interface = Interface(self.canvas, self.largeur, self.hauteur)
 
-        # Démarrer l'horloge
+        # Suivi du temps et des touches pressées
         self.temps_depart = time.time()
+        self.touches_pressees = set()  # Initialisation des touches pressées
+        # Choix du mode de déplacement
+        self.mode_deplacement = input("Choisissez le mode de déplacement : \n1 - Carré \n2 - Mode classique \nEntrez votre choix (1 ou 2): ")
+        if self.mode_deplacement == "1":
+            self.cote_carre = 100  # Longueur d'un côté du carré
+            self.cote_parcouru = 0
+            self.cote_courant = 1
+        else:
+            self.cote_carre = None  # Mode classique, pas de carré
+            self.choix_controle = input("Voulez-vous entrer manuellement les vitesses et la direction ? (o/n) : ").lower()
+            
+            if self.choix_controle == "o":
+                self._initialiser_vitesses_manuellement()
+                self.controle_clavier = False
+            else:
+                self.controle_clavier = True
 
-        # Demander à l'utilisateur s'il veut entrer manuellement les vitesses et la direction
-        self.entrer_manuellement = input("Voulez-vous entrer manuellement les vitesses et la direction ? (o/n) : ").lower() == "o"
 
-        if self.entrer_manuellement:
-            # Entrer les vitesses des roues
+            # Événements clavier
+            self.root.bind_all("<KeyPress>", self._on_key_press)
+            self.root.bind_all("<KeyRelease>", self._on_key_release)
+        def _on_key_press(self, event):
+            """Ajoute la touche pressée à touches_pressees"""
+            self.touches_pressees.add(event.keysym)
+
+       
+        def _on_key_release(self, event):
+            """Retire la touche relâchée de touches_pressees"""
+            self.touches_pressees.discard(event.keysym)
+         def _initialiser_vitesses_manuellement(self):
+            """Initialise les vitesses et la direction du robot en mode classique (manuel)."""
             self.robot.vitesse_roue_gauche = int(input("Entrez la vitesse de la roue gauche (-8 à 8) : "))
             self.robot.vitesse_roue_droite = int(input("Entrez la vitesse de la roue droite (-8 à 8) : "))
-
-            # Entrer la direction
+            
             direction = input("Entrez la direction (haut, bas, gauche, droite) : ").lower()
-            if direction == "haut":
-                self.robot.angle = 90
-            elif direction == "bas":
-                self.robot.angle = 270
-            elif direction == "gauche":
-                self.robot.angle = 180
-            elif direction == "droite":
-                self.robot.angle = 0
-            else:
-                print("Direction non reconnue. Utilisation de la direction par défaut (haut).")
-                self.robot.angle = 90
+            self.robot.angle = {"haut": 90, "bas": 270, "gauche": 180, "droite": 0}.get(direction, 90)
 
-    def gerer_evenements(self):
-        """Gère les événements du clavier."""
-        if not self.entrer_manuellement:
-            keys = pygame.key.get_pressed()
+        def demarrer_simulation(self):
+            """Démarre la simulation, selon le mode de déplacement choisi."""
+            while True:
+                if self.mode_deplacement == "1":
+                    # Déplacer le robot sur la trajectoire carrée en respectant les limites
+                    self._deplacer_trajectoire_carre()
+                else:
+                    if self.controle_clavier:
+                    self._gerer_deplacement_clavier()
 
-            # Réinitialiser les vitesses des roues
-            self.robot.vitesse_roue_gauche = 0
-            self.robot.vitesse_roue_droite = 0
+            # Effectuer le déplacement et limiter la position du robot
+            self.robot.deplacer(self.environnement.obstacles)
+            self.robot.limiter_position(self.largeur, self.hauteur)  # Limiter la position
 
-            # Contrôle des vitesses des roues
-            if keys[pygame.K_UP]:  # Avancer
-                self.robot.vitesse_roue_gauche = 8
-                self.robot.vitesse_roue_droite = 8
-
-            if keys[pygame.K_DOWN]:  # Reculer
-                self.robot.vitesse_roue_gauche = -8
-                self.robot.vitesse_roue_droite = -8
-
-            if keys[pygame.K_LEFT]:  # Tourner à gauche
-                self.robot.vitesse_roue_gauche = -8
-                self.robot.vitesse_roue_droite = 8
-
-            if keys[pygame.K_RIGHT]:  # Tourner à droite
-                self.robot.vitesse_roue_gauche = 8
-                self.robot.vitesse_roue_droite = -8
-
-    def run(self):
-        """Boucle principale de la simulation."""
-        while self.running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-
-            if not self.entrer_manuellement:
-                self.gerer_evenements()
-
-            # Déplacer le robot en vérifiant les collisions
-            self.robot.deplacer(self.environnement.obstacles, VOITURE_LONGUEUR, VOITURE_LARGEUR)
-            self.robot.limiter_position(self.largeur, self.hauteur, VOITURE_LONGUEUR, VOITURE_LARGEUR)
-
-            # Calculer le temps écoulé
+            # Rafraîchir l'écran de la simulation
             temps_ecoule = time.time() - self.temps_depart
+            self.interface.rafraichir_ecran(self.robot, self.environnement.obstacles, temps_ecoule)
+
+            # Mettre à jour l'interface graphique
+            self.root.update_idletasks()
+            self.root.update()
+            time.sleep(0.02)
+
+        def _deplacer_trajectoire_carre(self):
+            """Déplace le robot sur une trajectoire en carré tout en vérifiant les limites."""
+            if self.cote_parcouru < self.cote_carre:
+                # Avancer dans la direction actuelle
+                self.robot.vitesse_roue_gauche = self.robot.vitesse_roue_droite = 5  # Vitesse de déplacement
+                self.cote_parcouru += 1
+             else:
+              # Après avoir parcouru un côté, tourner de 90°
+              self.robot.angle += 90
+              self.cote_courant = (self.cote_courant % 4) + 1
+              self.cote_parcouru = 0
+
+        def _gerer_deplacement_clavier(self):
+            """Gère les déplacements du robot via le clavier en mode classique."""
+            if "Up" in self.touches_pressees:
+                self.robot.vitesse_roue_gauche = self.robot.vitesse_roue_droite = 5
+            elif "Down" in self.touches_pressees:
+                self.robot.vitesse_roue_gauche = self.robot.vitesse_roue_droite = -5
+            elif "Left" in self.touches_pressees:
+                self.robot.vitesse_roue_gauche = -3
+                self.robot.vitesse_roue_droite = 3
+            elif "Right" in self.touches_pressees:
+                self.robot.vitesse_roue_gauche = 3
+                self.robot.vitesse_roue_droite = -3
+            else:
+                self.robot.vitesse_roue_gauche = 0
+                self.robot.vitesse_roue_droite = 0
+            # Calculer le temps écoulé
+              temps_ecoule = time.time() - self.temps_depart
 
             # Rafraîchir l'interface avec le temps écoulé
             self.interface.rafraichir_ecran(self.robot, self.environnement.obstacles, temps_ecoule)
