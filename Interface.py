@@ -38,10 +38,6 @@ class Interface:
         self.canvas.create_text(20, 80, anchor="nw", text=texte_temps, fill=NOIR)
 
     def dessiner_voiture(self, robot):
-        """Dessine le robot avec des roues en tenant compte de la rotation."""
-        self.canvas.delete("robot")
-
-    def dessiner_voiture(self, robot):
         """Dessine le robot et ses roues."""
         self.canvas.delete("robot")
 
@@ -85,19 +81,6 @@ class Interface:
             roue_x = x + dx * cos_a - dy * sin_a
             roue_y = y + dx * sin_a + dy * cos_a
             self._dessiner_roue(roue_x, roue_y, angle)
-    def dessiner_obstacles(self, obstacles):
-         """Dessine les obstacles."""
-         for obstacle in obstacles:
-            self.canvas.create_rectangle(obstacle[0], obstacle[1],
-                                         obstacle[0] + obstacle[2], obstacle[1] + obstacle[3],
-                                         fill=NOIR)
-    def rafraichir_ecran(self, voiture, obstacles, temps_ecoule):
-       """Rafraîchit l'écran avec les nouvelles informations."""
-       self.canvas.delete("all")  # Nettoyer l'écran
-       self.dessiner_voiture(robot)  # Dessiner la voiture avec les roues
-       self.dessiner_obstacles(obstacles)  # Dessiner les obstacles
-       self.afficher_infos(robot, temps_ecoule)  # Afficher les infos (vitesse, temps)
-       self.canvas.update()  # Mettre à jour l'affichage
 
     def _dessiner_roue(self, x, y, angle):
         """Dessine une roue avec la bonne orientation."""
@@ -106,7 +89,7 @@ class Interface:
         demi_l = ROUE_LONGUEUR / 2
         demi_w = ROUE_LARGEUR / 2
 
- # cions de la roue avant rotation
+    # coins de la roue avant rotation
         coins = [
             (-demi_l, -demi_w),
             (demi_l, -demi_w),
@@ -128,3 +111,19 @@ class Interface:
         )
 
 
+
+    def dessiner_obstacles(self, obstacles):
+         """Dessine les obstacles."""
+         for obstacle in obstacles:
+            self.canvas.create_rectangle(obstacle[0], obstacle[1],
+                                         obstacle[0] + obstacle[2], obstacle[1] + obstacle[3],
+                                         fill=NOIR)
+    def rafraichir_ecran(self, voiture, obstacles, temps_ecoule):
+       """Rafraîchit l'écran avec les nouvelles informations."""
+       self.canvas.delete("all")  # Nettoyer l'écran
+       self.dessiner_voiture(robot)  # Dessiner la voiture avec les roues
+       self.dessiner_obstacles(obstacles)  # Dessiner les obstacles
+       self.afficher_infos(robot, temps_ecoule)  # Afficher les infos (vitesse, temps)
+       self.canvas.update()  # Mettre à jour l'affichage
+
+    
