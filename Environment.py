@@ -7,4 +7,3 @@ class Environment:
             (500, 400, 60, 60),  # Obstacle 2
             (700, 200, 40, 40)   # Obstacle 3
         ]
-    
