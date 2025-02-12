@@ -65,7 +65,7 @@ class EnvRobot:
                     self._deplacer_trajectoire_carre()
                 else:
                     if self.controle_clavier:
-                    self._gerer_deplacement_clavier()
+                        self._gerer_deplacement_clavier()
 
             # Effectuer le déplacement et limiter la position du robot
             self.robot.deplacer(self.environnement.obstacles)
@@ -86,7 +86,7 @@ class EnvRobot:
                 # Avancer dans la direction actuelle
                 self.robot.vitesse_roue_gauche = self.robot.vitesse_roue_droite = 5  # Vitesse de déplacement
                 self.cote_parcouru += 1
-             else:
+            else:
               # Après avoir parcouru un côté, tourner de 90°
               self.robot.angle += 90
               self.cote_courant = (self.cote_courant % 4) + 1
