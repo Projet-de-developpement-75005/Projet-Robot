@@ -1,18 +1,36 @@
+import tkinter as tk
 import math
+<<<<<<< HEAD
 import tkinter as tk
 
+=======
+>>>>>>> f7fb46a ( changement des bibliotheques de Interface)
 
 # Configuration des couleurs
 NOIR = "#000000"
 ROUGE = "#FF0000"
 GRIS_FONCE = "#333333"
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> f7fb46a ( changement des bibliotheques de Interface)
+>>>>>>> b42f163 (initialisation des vitesses manuellement)
 # Paramètres de la voiture
 VOITURE_LONGUEUR = 60
 VOITURE_LARGEUR = 30
 ROUE_LARGEUR = 6
 ROUE_LONGUEUR = 12
+<<<<<<< HEAD
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> f7fb46a ( changement des bibliotheques de Interface)
+
+>>>>>>> b42f163 (initialisation des vitesses manuellement)
 class Interface:
     def __init__(self, canvas, largeur, hauteur):
         self.canvas = canvas

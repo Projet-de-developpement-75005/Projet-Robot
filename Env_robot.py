@@ -51,7 +51,12 @@ class EnvRobot:
         def _on_key_release(self, event):
             """Retire la touche relâchée de touches_pressees"""
             self.touches_pressees.discard(event.keysym)
+<<<<<<< HEAD
          def _initialiser_vitesses_manuellement(self):
+=======
+        
+        def _initialiser_vitesses_manuellement(self):
+>>>>>>> b42f163 (initialisation des vitesses manuellement)
             """Initialise les vitesses et la direction du robot en mode classique (manuel)."""
             self.robot.vitesse_roue_gauche = int(input("Entrez la vitesse de la roue gauche (-8 à 8) : "))
             self.robot.vitesse_roue_droite = int(input("Entrez la vitesse de la roue droite (-8 à 8) : "))
