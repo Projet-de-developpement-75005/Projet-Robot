@@ -1,6 +1,9 @@
 import math
 
-# Define constants for the robot size
+# Couleurs
+ROUGE = (200, 0, 0)
+BLEU = (0, 0, 200)
+
 ROBOT_LONGUEUR = 50  # Robot length (in pixels)
 ROBOT_LARGEUR = 30   # Robot width (in pixels)
 
