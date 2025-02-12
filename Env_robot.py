@@ -40,9 +40,9 @@ class EnvRobot:
                 self.controle_clavier = True
 
 
-            # Événements clavier
-            self.root.bind_all("<KeyPress>", self._on_key_press)
-            self.root.bind_all("<KeyRelease>", self._on_key_release)
+        # Événements clavier
+        self.root.bind_all("<KeyPress>", self._on_key_press)
+        self.root.bind_all("<KeyRelease>", self._on_key_release)
     def _on_key_press(self, event):
             """Ajoute la touche pressée à touches_pressees"""
             self.touches_pressees.add(event.keysym)
