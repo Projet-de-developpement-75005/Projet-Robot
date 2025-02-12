@@ -43,21 +43,21 @@ class EnvRobot:
             # Événements clavier
             self.root.bind_all("<KeyPress>", self._on_key_press)
             self.root.bind_all("<KeyRelease>", self._on_key_release)
-        def _on_key_press(self, event):
+    def _on_key_press(self, event):
             """Ajoute la touche pressée à touches_pressees"""
             self.touches_pressees.add(event.keysym)
 
        
-        def _on_key_release(self, event):
+    def _on_key_release(self, event):
             """Retire la touche relâchée de touches_pressees"""
             self.touches_pressees.discard(event.keysym)
-        def _initialiser_vitesses_manuellement(self):
+    def _initialiser_vitesses_manuellement(self):
             """Initialise les vitesses du robot en mode classique (manuel)."""
             self.robot.vitesse_roue_gauche = int(input("Entrez la vitesse de la roue gauche (-8 à 8) : "))
             self.robot.vitesse_roue_droite = int(input("Entrez la vitesse de la roue droite (-8 à 8) : "))
             
 
-        def demarrer_simulation(self):
+    def demarrer_simulation(self):
             """Démarre la simulation, selon le mode de déplacement choisi."""
             while True:
                 if self.mode_deplacement == "1":
@@ -80,7 +80,7 @@ class EnvRobot:
             self.root.update()
             time.sleep(0.02)
 
-        def _deplacer_trajectoire_carre(self):
+    def _deplacer_trajectoire_carre(self):
             """Déplace le robot sur une trajectoire en carré tout en vérifiant les limites."""
             if self.cote_parcouru < self.cote_carre:
                 # Avancer dans la direction actuelle
@@ -92,7 +92,7 @@ class EnvRobot:
               self.cote_courant = (self.cote_courant % 4) + 1
               self.cote_parcouru = 0
 
-        def _gerer_deplacement_clavier(self):
+    def _gerer_deplacement_clavier(self):
             """Gère les déplacements du robot via le clavier en mode classique."""
             if "Up" in self.touches_pressees:
                 self.robot.vitesse_roue_gauche = self.robot.vitesse_roue_droite = 5
