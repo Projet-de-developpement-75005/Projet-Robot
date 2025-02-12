@@ -1,6 +1,5 @@
-import math
 import tkinter as tk
-
+import math
 
 # Configuration des couleurs
 NOIR = "#000000"
@@ -12,6 +11,7 @@ VOITURE_LONGUEUR = 60
 VOITURE_LARGEUR = 30
 ROUE_LARGEUR = 6
 ROUE_LONGUEUR = 12
+
 
 class Interface:
     def __init__(self, canvas, largeur, hauteur):

@@ -51,7 +51,8 @@ class EnvRobot:
         def _on_key_release(self, event):
             """Retire la touche relâchée de touches_pressees"""
             self.touches_pressees.discard(event.keysym)
-         def _initialiser_vitesses_manuellement(self):
+        
+        def _initialiser_vitesses_manuellement(self):
             """Initialise les vitesses et la direction du robot en mode classique (manuel)."""
             self.robot.vitesse_roue_gauche = int(input("Entrez la vitesse de la roue gauche (-8 à 8) : "))
             self.robot.vitesse_roue_droite = int(input("Entrez la vitesse de la roue droite (-8 à 8) : "))
@@ -67,7 +68,7 @@ class EnvRobot:
                     self._deplacer_trajectoire_carre()
                 else:
                     if self.controle_clavier:
-                    self._gerer_deplacement_clavier()
+                        self._gerer_deplacement_clavier()
 
             # Effectuer le déplacement et limiter la position du robot
             self.robot.deplacer(self.environnement.obstacles)
@@ -88,7 +89,7 @@ class EnvRobot:
                 # Avancer dans la direction actuelle
                 self.robot.vitesse_roue_gauche = self.robot.vitesse_roue_droite = 5  # Vitesse de déplacement
                 self.cote_parcouru += 1
-             else:
+            else:
               # Après avoir parcouru un côté, tourner de 90°
               self.robot.angle += 90
               self.cote_courant = (self.cote_courant % 4) + 1
@@ -110,7 +111,7 @@ class EnvRobot:
                 self.robot.vitesse_roue_gauche = 0
                 self.robot.vitesse_roue_droite = 0
             # Calculer le temps écoulé
-              temps_ecoule = time.time() - self.temps_depart
+            temps_ecoule = time.time() - self.temps_depart
 
             # Rafraîchir l'interface avec le temps écoulé
             self.interface.rafraichir_ecran(self.robot, self.environnement.obstacles, temps_ecoule)
