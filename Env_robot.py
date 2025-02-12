@@ -51,18 +51,11 @@ class EnvRobot:
         def _on_key_release(self, event):
             """Retire la touche relâchée de touches_pressees"""
             self.touches_pressees.discard(event.keysym)
-<<<<<<< HEAD
-         def _initialiser_vitesses_manuellement(self):
-=======
-        
         def _initialiser_vitesses_manuellement(self):
->>>>>>> b42f163 (initialisation des vitesses manuellement)
-            """Initialise les vitesses et la direction du robot en mode classique (manuel)."""
+            """Initialise les vitesses du robot en mode classique (manuel)."""
             self.robot.vitesse_roue_gauche = int(input("Entrez la vitesse de la roue gauche (-8 à 8) : "))
             self.robot.vitesse_roue_droite = int(input("Entrez la vitesse de la roue droite (-8 à 8) : "))
             
-            direction = input("Entrez la direction (haut, bas, gauche, droite) : ").lower()
-            self.robot.angle = {"haut": 90, "bas": 270, "gauche": 180, "droite": 0}.get(direction, 90)
 
         def demarrer_simulation(self):
             """Démarre la simulation, selon le mode de déplacement choisi."""
@@ -114,11 +107,4 @@ class EnvRobot:
             else:
                 self.robot.vitesse_roue_gauche = 0
                 self.robot.vitesse_roue_droite = 0
-            # Calculer le temps écoulé
-              temps_ecoule = time.time() - self.temps_depart
-
-            # Rafraîchir l'interface avec le temps écoulé
-            self.interface.rafraichir_ecran(self.robot, self.environnement.obstacles, temps_ecoule)
-            self.clock.tick(30)
-
-    pygame.quit()
+            

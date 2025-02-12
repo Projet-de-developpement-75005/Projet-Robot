@@ -11,6 +11,7 @@ NOIR = "#000000"
 ROUGE = "#FF0000"
 GRIS_FONCE = "#333333"
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -18,6 +19,15 @@ GRIS_FONCE = "#333333"
 
 >>>>>>> f7fb46a ( changement des bibliotheques de Interface)
 >>>>>>> b42f163 (initialisation des vitesses manuellement)
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> f7fb46a ( changement des bibliotheques de Interface)
+=======
+
+>>>>>>> a8b5a9992312964e6d435561c7dfd779549365ad
+>>>>>>> 16e90d664fb290abbb161d3843fd47a49ba4c78b
 # Paramètres de la voiture
 VOITURE_LONGUEUR = 60
 VOITURE_LARGEUR = 30
@@ -27,10 +37,17 @@ ROUE_LONGUEUR = 12
 
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
 =======
 >>>>>>> f7fb46a ( changement des bibliotheques de Interface)
 
 >>>>>>> b42f163 (initialisation des vitesses manuellement)
+=======
+>>>>>>> f7fb46a ( changement des bibliotheques de Interface)
+
+=======
+>>>>>>> a8b5a9992312964e6d435561c7dfd779549365ad
+>>>>>>> 16e90d664fb290abbb161d3843fd47a49ba4c78b
 class Interface:
     def __init__(self, canvas, largeur, hauteur):
         self.canvas = canvas
