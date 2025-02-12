@@ -1,75 +1,108 @@
+import tkinter as tk
 import math
-import pygame # type: ignore
-
 
 # Configuration des couleurs
-NOIR = (0, 0, 0)
-BLANC = (255, 255, 255)
-ROUGE = (255, 0, 0)
-BLEU = (0,0, 255)
+NOIR = "#000000"
+ROUGE = "#FF0000"
+GRIS_FONCE = "#333333"
+
 # Paramètres de la voiture
 VOITURE_LONGUEUR = 60
 VOITURE_LARGEUR = 30
-
+ROUE_LARGEUR = 6
+ROUE_LONGUEUR = 12
 
 class Interface:
-    def __init__(self, largeur, hauteur):
+    def __init__(self, canvas, largeur, hauteur):
+        self.canvas = canvas
         self.largeur = largeur
         self.hauteur = hauteur
-        self.fenetre = pygame.display.set_mode((largeur, hauteur))
-        pygame.display.set_caption("Simulation de Voiture avec Pygame")
-        
-    def afficher_infos(self, voiture, temps_ecoule):
-        """Affiche les informations de vitesse et le temps écoulé en dessous des vitesses."""
-        font = pygame.font.SysFont(None, 30)
-    
-        # Convertir le temps écoulé en format hh:mm:ss
+
+    def afficher_infos(self, robot, temps_ecoule):
+        """Affiche les informations de vitesse et le temps écoulé."""
         heures = int(temps_ecoule // 3600)
         minutes = int((temps_ecoule % 3600) // 60)
         secondes = int(temps_ecoule % 60)
         temps_formate = f"{heures:02d}:{minutes:02d}:{secondes:02d}"
 
-        # Création des textes
-        texte_vitesse_gauche = font.render(f"Vitesse Roue Gauche: {voiture.vitesse_roue_gauche}", True, NOIR)
-        texte_vitesse_droite = font.render(f"Vitesse Roue Droite: {voiture.vitesse_roue_droite}", True, NOIR)
-        texte_temps = font.render(f"Temps écoulé: {temps_formate}", True, NOIR)
+        texte_vitesse_gauche = f"Vitesse Roue Gauche: {robot.vitesse_roue_gauche}"
+        texte_vitesse_droite = f"Vitesse Roue Droite: {robot.vitesse_roue_droite}"
+        texte_temps = f"Temps écoulé: {temps_formate}"
 
-        # Affichage des textes à gauche en haut
-        self.fenetre.blit(texte_vitesse_gauche, (20, 20))
-        self.fenetre.blit(texte_vitesse_droite, (20, 50))
-        self.fenetre.blit(texte_temps, (20, 80))  # Temps écoulé affiché en dessous des vitesses  
+        self.canvas.create_text(20, 20, anchor="nw", text=texte_vitesse_gauche, fill=NOIR)
+        self.canvas.create_text(20, 50, anchor="nw", text=texte_vitesse_droite, fill=NOIR)
+        self.canvas.create_text(20, 80, anchor="nw", text=texte_temps, fill=NOIR)
 
+    def dessiner_voiture(self, robot):
+        """Dessine le robot avec des roues en tenant compte de la rotation."""
+        self.canvas.delete("robot")
 
-    def dessiner_voiture(self, voiture):
-        """Dessine la voiture et ses roues."""
-        # Rotation de la voiture
-        voiture_surface = pygame.Surface((VOITURE_LONGUEUR, VOITURE_LARGEUR), pygame.SRCALPHA)
-        voiture_surface.fill(ROUGE)
-        voiture_surface_rotated = pygame.transform.rotate(voiture_surface, -voiture.angle)
-        voiture_rect = voiture_surface_rotated.get_rect(center=(voiture.x, voiture.y))
-        self.fenetre.blit(voiture_surface_rotated, voiture_rect)
+        # Calculer les coins du rectangle après rotation
+        x, y, angle = robot.x, robot.y, math.radians(robot.angle)
+        cos_a, sin_a = math.cos(angle), math.sin(angle)
 
-        # Dessiner les roues
-        roue_avant_gauche = (
-            voiture.x + math.cos(math.radians(voiture.angle + 90)) * VOITURE_LARGEUR // 2,
-            voiture.y + math.sin(math.radians(voiture.angle + 90)) * VOITURE_LARGEUR // 2,
+        demi_longueur = VOITURE_LONGUEUR / 2
+        demi_largeur = VOITURE_LARGEUR / 2
+
+        # Coins de la voiture avant rotation
+        coins = [
+            (-demi_longueur, -demi_largeur),
+            (demi_longueur, -demi_largeur),
+            (demi_longueur, demi_largeur),
+            (-demi_longueur, demi_largeur),
+        ]
+
+        # Appliquer la rotation aux coins
+        coins_rotates = [
+            (x + cx * cos_a - cy * sin_a, y + cx * sin_a + cy * cos_a)
+            for cx, cy in coins
+        ]
+
+        # Dessiner le corps du robot
+        self.canvas.create_polygon(
+            [coord for point in coins_rotates for coord in point],
+            fill=ROUGE, outline=NOIR, tags="robot"
         )
-        roue_avant_droite = (
-            voiture.x + math.cos(math.radians(voiture.angle - 90)) * VOITURE_LARGEUR // 2,
-            voiture.y + math.sin(math.radians(voiture.angle - 90)) * VOITURE_LARGEUR // 2,
+
+        # Position des roues par rapport au centre
+        positions_roues = [
+            (-demi_longueur + ROUE_LONGUEUR / 2, -demi_largeur - ROUE_LARGEUR / 2),  # Roue avant gauche
+            (-demi_longueur + ROUE_LONGUEUR / 2, demi_largeur + ROUE_LARGEUR / 2),   # Roue avant droite
+            (demi_longueur - ROUE_LONGUEUR / 2, -demi_largeur - ROUE_LARGEUR / 2),   # Roue arrière gauche
+            (demi_longueur - ROUE_LONGUEUR / 2, demi_largeur + ROUE_LARGEUR / 2),    # Roue arrière droite
+        ]
+
+        # Dessiner les roues après rotation
+        for dx, dy in positions_roues:
+            roue_x = x + dx * cos_a - dy * sin_a
+            roue_y = y + dx * sin_a + dy * cos_a
+            self._dessiner_roue(roue_x, roue_y, angle)
+
+    def _dessiner_roue(self, x, y, angle):
+        """Dessine une roue avec la bonne orientation."""
+        cos_a, sin_a = math.cos(angle), math.sin(angle)
+
+        demi_l = ROUE_LONGUEUR / 2
+        demi_w = ROUE_LARGEUR / 2
+
+        # Coins de la roue avant rotation
+        coins = [
+            (-demi_l, -demi_w),
+            (demi_l, -demi_w),
+            (demi_l, demi_w),
+            (-demi_l, demi_w),
+        ]
+
+        # Appliquer la rotation aux coins
+        coins_rotates = [
+            (x + cx * cos_a - cy * sin_a, y + cx * sin_a + cy * cos_a)
+            for cx, cy in coins
+        ]
+
+        # Dessiner la roue
+        self.canvas.create_polygon(
+            [coord for point in coins_rotates for coord in point],
+            fill=GRIS_FONCE, outline=NOIR, tags="robot"
         )
-        pygame.draw.circle(self.fenetre, BLEU, (int(roue_avant_gauche[0]), int(roue_avant_gauche[1])), 5)
-        pygame.draw.circle(self.fenetre, BLEU, (int(roue_avant_droite[0]), int(roue_avant_droite[1])), 5)
-    
-    
-    def dessiner_obstacles(self, obstacles):
-        """Dessine les obstacles."""
-        for obstacle in obstacles:
-            pygame.draw.rect(self.fenetre, NOIR, obstacle)
-    def rafraichir_ecran(self, voiture, obstacles, temps_ecoule):
-        """Rafraîchit l'écran avec les nouvelles informations."""
-        self.fenetre.fill(BLANC)  # Nettoyer l'écran
-        self.dessiner_voiture(voiture)  # Dessiner la voiture
-        self.dessiner_obstacles(obstacles)  # Dessiner les obstacles
-        self.afficher_infos(voiture, temps_ecoule)  # Afficher infos vitesse + temps
-        pygame.display.flip()  # Mettre à jour l'affichage
+
+
