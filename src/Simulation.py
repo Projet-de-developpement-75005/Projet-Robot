@@ -38,6 +38,14 @@ class EnvRobot:
             self.root.update_idletasks()
             self.root.update()
             time.sleep(0.02)
+    def demander_controle_utilisateur(self):
+        print("Voulez-vous entrer manuellement les vitesses des roues ? (o/n)")
+        choix = input().lower()
+        if choix == "o":
+            self.robot.vitesse_roue_gauche = float(input("Entrez la vitesse de la roue gauche (-8 à 8) : "))
+            self.robot.vitesse_roue_droite = float(input("Entrez la vitesse de la roue droite (-8 à 8) : "))
+        
+            
 
     def _deplacer_trajectoire_carre(self):
         """Déplace le robot sur une trajectoire en carré tout en vérifiant les limites."""
