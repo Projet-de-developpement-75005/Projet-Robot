@@ -1,4 +1,3 @@
-import tkinter as tk 
 import time
 from Environment import Environment
 from Robot import Robot
