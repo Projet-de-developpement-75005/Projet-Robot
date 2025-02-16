@@ -61,18 +61,10 @@ class EnvRobot:
             self.cote_courant = (self.cote_courant % 4) + 1
             self.cote_parcouru = 0
 
-    def _gerer_deplacement_clavier(self):
-        """Gère les déplacements du robot via le clavier en mode classique."""
-        if "Up" in self.touches_pressees:
-            self.robot.vitesse_roue_gauche = self.robot.vitesse_roue_droite = 5
-        elif "Down" in self.touches_pressees:
-            self.robot.vitesse_roue_gauche = self.robot.vitesse_roue_droite = -5
-        elif "Left" in self.touches_pressees:
-            self.robot.vitesse_roue_gauche = -3
-            self.robot.vitesse_roue_droite = 3
-        elif "Right" in self.touches_pressees:
-            self.robot.vitesse_roue_gauche = 3
-            self.robot.vitesse_roue_droite = -3
-        else:
-            self.robot.vitesse_roue_gauche = 0
-            self.robot.vitesse_roue_droite = 0
+    def activer_controle_clavier(self):
+        """Ajoute des touches pour contrôler le robot avec ZQSD (ou flèches)."""
+        self.interface.canvas.bind_all("<Up>", lambda e: self.set_vitesse(3, 3))
+        self.interface.canvas.bind_all("<Down>", lambda e: self.set_vitesse(-3, -3))
+        self.interface.canvas.bind_all("<Left>", lambda e: self.set_vitesse(-2, 2))
+        self.interface.canvas.bind_all("<Right>", lambda e: self.set_vitesse(2, -2))
+        self.interface.canvas.bind_all("<space>", lambda e: self.set_vitesse(0, 0))
