@@ -17,27 +17,21 @@ class EnvRobot:
 
 
     def demarrer_simulation(self):
-        """Démarre la simulation, selon le mode de déplacement choisi."""
+        """Démarre la simulation en fonction du mode choisi."""
+        self.temps_depart = time.time()
+
+        if self.mode == 1:
+            self.deplacement_carre()
+        else:
+            self.boucle_simulation()
+
+    def boucle_simulation(self):
         while True:
-            if self.mode_deplacement == "1":
-                # Déplacer le robot sur la trajectoire carrée en respectant les limites
-                self._deplacer_trajectoire_carre()
-            else:
-                if self.controle_clavier:
-                    self._gerer_deplacement_clavier()
-
-            # Effectuer le déplacement et limiter la position du robot
             self.robot.deplacer(self.environnement.obstacles)
-            self.robot.limiter_position(self.largeur, self.hauteur)  # Limiter la position
-
-            # Rafraîchir l'écran de la simulation
+            self.robot.limiter_position(self.largeur, self.hauteur)
             temps_ecoule = time.time() - self.temps_depart
             self.interface.rafraichir_ecran(self.robot, self.environnement.obstacles, temps_ecoule)
-
-            # Mettre à jour l'interface graphique
-            self.root.update_idletasks()
-            self.root.update()
-            time.sleep(0.02)
+            time.sleep(0.03)
     def demander_controle_utilisateur(self):
         print("Voulez-vous entrer manuellement les vitesses des roues ? (o/n)")
         choix = input().lower()
