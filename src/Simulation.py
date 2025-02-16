@@ -47,7 +47,7 @@ class EnvRobot:
         else:
             print("Utilisez les touches du clavier pour contrôler la voiture.")
             self.activer_controle_clavier()
-            
+                
 
     def _deplacer_trajectoire_carre(self):
         """Déplace le robot sur une trajectoire en carré tout en vérifiant les limites."""
@@ -68,3 +68,7 @@ class EnvRobot:
         self.interface.canvas.bind_all("<Left>", lambda e: self.set_vitesse(-2, 2))
         self.interface.canvas.bind_all("<Right>", lambda e: self.set_vitesse(2, -2))
         self.interface.canvas.bind_all("<space>", lambda e: self.set_vitesse(0, 0))
+        
+    def set_vitesse(self, gauche, droite):
+        self.robot.vitesse_roue_gauche = gauche
+        self.robot.vitesse_roue_droite = droite
