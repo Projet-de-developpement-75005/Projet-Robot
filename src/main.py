@@ -1,4 +1,4 @@
-from Env_robot import EnvRobot
+from Simulation import EnvRobot
 
 class Main:
     def __init__(self):
