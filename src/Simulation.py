@@ -44,7 +44,9 @@ class EnvRobot:
         if choix == "o":
             self.robot.vitesse_roue_gauche = float(input("Entrez la vitesse de la roue gauche (-8 à 8) : "))
             self.robot.vitesse_roue_droite = float(input("Entrez la vitesse de la roue droite (-8 à 8) : "))
-        
+        else:
+            print("Utilisez les touches du clavier pour contrôler la voiture.")
+            self.activer_controle_clavier()
             
 
     def _deplacer_trajectoire_carre(self):
