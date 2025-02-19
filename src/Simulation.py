@@ -1,7 +1,7 @@
 import time
 from Interface import Interface
 from Robot import Robot
-from Controller import Controleur
+from Controller import Controller
 
 class EnvRobot:
     def __init__(self, canvas, largeur=900, hauteur=800, mode=2):
