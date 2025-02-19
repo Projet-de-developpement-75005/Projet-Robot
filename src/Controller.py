@@ -1,11 +1,14 @@
+from Robot import Robot
+import time
 import math
-import time  # Importer time pour gérer le temps
 
 class Controller:
-    def _init_(self, robot, environment):
+    def __init__(self, robot, environnement=None):
         self.robot = robot
-        self.environment = environment
-        self.temps_depart = time.time()  # Stocker le temps de départ
+        self.environnement = environnement  # Ajout de l'environnement
+        self.cote_parcouru = 0
+        self.cote_carre = 100  # Nombre de pas pour parcourir un côté du carré
+        self.cote_courant = 1  # Côté actuel du carré (1 à 4)
 
 def vitesse_roues(self, left_speed, right_speed):
 def deplacer_robot(self):
