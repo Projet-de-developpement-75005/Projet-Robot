@@ -4,14 +4,19 @@ import math
 ROUGE = (200, 0, 0)
 BLEU = (0, 0, 200)
 
-ROBOT_LONGUEUR = 50  # Robot length (in pixels)
-ROBOT_LARGEUR = 30   # Robot width (in pixels)
+ROBOT_LONGUEUR = 50  # Longueur du robot (en pixels)
+ROBOT_LARGEUR = 30   # Largeur du robot (en pixels)
 
 class Robot:
     def __init__(self, x, y):
         self.x = x
         self.y = y
         self.angle = 0  # Orientation du robot
+        self.vitesse_roue_gauche = 0
+        self.vitesse_roue_droite = 0
+
+    def stop(self):
+        """Arrête le robot en mettant les vitesses à zéro."""
         self.vitesse_roue_gauche = 0
         self.vitesse_roue_droite = 0
 
@@ -52,5 +57,3 @@ class Robot:
         """Empêche le robot de sortir des limites de la fenêtre."""
         self.x = max(ROBOT_LONGUEUR // 2, min(self.x, largeur_fenetre - ROBOT_LONGUEUR // 2))
         self.y = max(ROBOT_LARGEUR // 2, min(self.y, hauteur_fenetre - ROBOT_LARGEUR // 2))
-
-    
