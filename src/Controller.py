@@ -20,7 +20,25 @@ class Controller:
         else:
             print("Utilisez les touches du clavier pour contrôler la voiture.")
             self.activer_controle_clavier(self.environnement.interface.canvas)  # Activer le contrôle clavier
-            
+
+    def deplacement_carre(self):
+        """Déplace le robot sur une trajectoire en carré tout en vérifiant les limites."""
+        if self.cote_parcouru < self.cote_carre:
+            # Avancer dans la direction actuelle
+            self.robot.vitesse_roue_gauche = 5  # Vitesse de déplacement
+            self.robot.vitesse_roue_droite = 5
+            # Déplacer le robot avec les obstacles (s'ils existent)
+            obstacles = self.environnement.obstacles if self.environnement else []
+            self.robot.deplacer(obstacles)
+            self.cote_parcouru += 1
+        else:
+            # Après avoir parcouru un côté, tourner de 90°
+            self.robot.angle += 90
+            self.cote_courant = (self.cote_courant % 4) + 1
+            self.cote_parcouru = 0
+            # Réinitialiser les vitesses pour le nouveau côté
+            self.robot.vitesse_roue_gauche = 0
+            self.robot.vitesse_roue_droite = 0
 def vitesse_roues(self, left_speed, right_speed):
 def deplacer_robot(self):
 def verif_collision(self):
