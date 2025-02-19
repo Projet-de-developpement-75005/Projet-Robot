@@ -1,14 +1,14 @@
 import time
-from Environment import Environment
-from Robot import Robot
 from Interface import Interface
+from Robot import Robot
+from Controller import Controleur
 
 class EnvRobot:
     def __init__(self, canvas, largeur=900, hauteur=800, mode=2):
         self.largeur = largeur
-        self.hauteur = hauteur
-        self.environnement = Environment(self.largeur, self.hauteur)
+        self.hauteur = hauteur      
         self.robot = Robot(self.largeur // 2, self.hauteur // 2)
+        self.controleur = Controleur(self.robot, self)  # Passer self (envi
         self.interface = Interface(canvas, self.largeur, self.hauteur)
 
         self.mode = mode
