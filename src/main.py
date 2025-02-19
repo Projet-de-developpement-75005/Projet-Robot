@@ -2,11 +2,12 @@ import tkinter as tk
 from Simulation import EnvRobot
 
 class Main:
-    def _init_(self):
+    def __init__(self):
         self.root = tk.Tk()
         self.root.title("Simulation Robot")
         self.canvas = tk.Canvas(self.root, width=900, height=800, bg="white")
         self.canvas.pack()
+
         print("Choisissez un mode :")
         print("1 - Mode Carré (le robot se déplace automatiquement en carré)")
         print("2 - Mode Classique (contrôle au clavier ou avec des vitesses)")
@@ -18,6 +19,6 @@ class Main:
         self.simulation.demarrer_simulation()
         self.root.mainloop()
 
-    if name == "main":
-        app = Main()
-        app.run()
+if __name__ == "__main__":
+    app = Main()
+    app.run()
