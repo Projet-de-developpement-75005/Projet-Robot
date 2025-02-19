@@ -36,12 +36,12 @@ class EnvRobot:
             self.boucle_simulation()
 
     def boucle_simulation(self):
+        """Gère la simulation dans le mode classique."""
         while True:
-            self.robot.deplacer(self.environnement.obstacles)
-            self.robot.limiter_position(self.largeur, self.hauteur)
-            temps_ecoule = time.time() - self.temps_depart
-            self.interface.rafraichir_ecran(self.robot, self.environnement.obstacles, temps_ecoule)
+            self.controleur.deplacer(self.obstacles)  # Déplacer le robot avec les obstacles
+            self.interface.rafraichir_ecran(self.robot, self.obstacles, time.time() - self.temps_depart)
             time.sleep(0.03)
+
     def demander_controle_utilisateur(self):
         print("Voulez-vous entrer manuellement les vitesses des roues ? (o/n)")
         choix = input().lower()
