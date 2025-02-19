@@ -12,8 +12,13 @@ class EnvRobot:
         self.interface = Interface(canvas, self.largeur, self.hauteur)
 
         self.mode = mode
-        if self.mode == 2:
-            self.demander_controle_utilisateur()
+        if self.mode == 1:
+            self.cote_parcouru = 0
+            self.cote_carre = 100
+            self.cote_courant = 1
+        elif self.mode == 2:
+            self.controleur.activer_controle_clavier(canvas)
+
 
 
     def demarrer_simulation(self):
