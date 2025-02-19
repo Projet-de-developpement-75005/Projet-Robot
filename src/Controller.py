@@ -39,15 +39,15 @@ class Controller:
             self.robot.vitesse_roue_gauche = 0
             self.robot.vitesse_roue_droite = 0
 
-        def deplacement_manuel(self, vitesse_gauche, vitesse_droite):
+    def deplacement_manuel(self, vitesse_gauche, vitesse_droite):
             """Permet de contrôler le robot manuellement."""
             self.robot.vitesse_roue_gauche = vitesse_gauche
             self.robot.vitesse_roue_droite = vitesse_droite
 
-        def arreter_robot(self):
+    def arreter_robot(self):
             """Arrête le robot."""
             self.robot.stop()
-        def activer_controle_clavier(self, canvas):
+    def activer_controle_clavier(self, canvas):
             """Ajoute des touches pour contrôler le robot avec ZQSD (ou flèches)."""
             canvas.bind_all("<Up>", lambda e: self.deplacement_manuel(3, 3))
             canvas.bind_all("<Down>", lambda e: self.deplacement_manuel(-3, -3))
@@ -55,12 +55,12 @@ class Controller:
             canvas.bind_all("<Right>", lambda e: self.deplacement_manuel(2, -2))
             canvas.bind_all("<space>", lambda e: self.arreter_robot())
         
-        def deplacer(self, obstacles):
+    def deplacer(self, obstacles):
             """Déplace le robot en fonction de la situation."""
             self.robot.deplacer(obstacles)
             self.robot.limiter_position(900, 800)  # Ajuster selon la taille de la fenêtre de simulation
             
-        def boucle_simulation(self, interface):
+    def boucle_simulation(self, interface):
             """Boucle de simulation, déplace le robot et le met à jour."""
             while True:
                 # Si le robot est en mode carré, on gère le déplacement en carré
