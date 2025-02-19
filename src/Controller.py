@@ -39,8 +39,15 @@ class Controller:
             # Réinitialiser les vitesses pour le nouveau côté
             self.robot.vitesse_roue_gauche = 0
             self.robot.vitesse_roue_droite = 0
+
+        def deplacement_manuel(self, vitesse_gauche, vitesse_droite):
+            """Permet de contrôler le robot manuellement."""
+            self.robot.vitesse_roue_gauche = vitesse_gauche
+            self.robot.vitesse_roue_droite = vitesse_droite
+
+        def arreter_robot(self):
+            """Arrête le robot."""
+            self.robot.stop()
 def vitesse_roues(self, left_speed, right_speed):
 def deplacer_robot(self):
 def verif_collision(self):
-def _deplacer_trajectoire_carre(self):
-def _gerer_deplacement_clavier(self):
