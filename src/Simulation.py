@@ -18,7 +18,12 @@ class EnvRobot:
             self.cote_courant = 1
         elif self.mode == 2:
             self.controleur.activer_controle_clavier(canvas)
-
+        # Ajout des obstacles
+        self.obstacles = [
+            (200, 300, 50, 50),  # Obstacle 1: (x, y, largeur, hauteur)
+            (500, 400, 60, 60),  # Obstacle 2
+            (700, 200, 40, 40)   # Obstacle 3
+        ]
 
 
     def demarrer_simulation(self):
