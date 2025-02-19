@@ -17,7 +17,7 @@ class EnvRobot:
             self.cote_carre = 100
             self.cote_courant = 1
         elif self.mode == 2:
-            self.controleur.activer_controle_clavier(canvas)
+            self.controller.activer_controle_clavier(canvas)
         # Ajout des obstacles
         self.obstacles = [
             (200, 300, 50, 50),  # Obstacle 1: (x, y, largeur, hauteur)
@@ -30,15 +30,15 @@ class EnvRobot:
         """Démarre la simulation en fonction du mode choisi."""
         self.temps_depart = time.time()
         if self.mode == 1:
-            self.controleur.boucle_simulation(self.interface)  # Passer l'interface à la boucle
+            self.controller.boucle_simulation(self.interface)  # Passer l'interface à la boucle
         else:
-            self.controleur.demander_controle_utilisateur()  # Demander à l'utilisateur s'il veut entrer les vitesses
+            self.controller.demander_controle_utilisateur()  # Demander à l'utilisateur s'il veut entrer les vitesses
             self.boucle_simulation()
 
     def boucle_simulation(self):
         """Gère la simulation dans le mode classique."""
         while True:
-            self.controleur.deplacer(self.obstacles)  # Déplacer le robot avec les obstacles
+            self.controller.deplacer(self.obstacles)  # Déplacer le robot avec les obstacles
             self.interface.rafraichir_ecran(self.robot, self.obstacles, time.time() - self.temps_depart)
             time.sleep(0.03)
 
