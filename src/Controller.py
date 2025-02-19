@@ -1,7 +1,6 @@
 from Robot import Robot
 import time
 import math
-
 class Controller:
     def __init__(self, robot, environnement=None):
         self.robot = robot
@@ -48,6 +47,10 @@ class Controller:
         def arreter_robot(self):
             """Arrête le robot."""
             self.robot.stop()
-def vitesse_roues(self, left_speed, right_speed):
-def deplacer_robot(self):
-def verif_collision(self):
+        def activer_controle_clavier(self, canvas):
+            """Ajoute des touches pour contrôler le robot avec ZQSD (ou flèches)."""
+            canvas.bind_all("<Up>", lambda e: self.deplacement_manuel(3, 3))
+            canvas.bind_all("<Down>", lambda e: self.deplacement_manuel(-3, -3))
+            canvas.bind_all("<Left>", lambda e: self.deplacement_manuel(-2, 2))
+            canvas.bind_all("<Right>", lambda e: self.deplacement_manuel(2, -2))
+            canvas.bind_all("<space>", lambda e: self.arreter_robot())
