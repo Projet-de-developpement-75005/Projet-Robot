@@ -29,10 +29,10 @@ class EnvRobot:
     def demarrer_simulation(self):
         """Démarre la simulation en fonction du mode choisi."""
         self.temps_depart = time.time()
-
         if self.mode == 1:
-            self.deplacement_carre()
+            self.controleur.boucle_simulation(self.interface)  # Passer l'interface à la boucle
         else:
+            self.controleur.demander_controle_utilisateur()  # Demander à l'utilisateur s'il veut entrer les vitesses
             self.boucle_simulation()
 
     def boucle_simulation(self):
