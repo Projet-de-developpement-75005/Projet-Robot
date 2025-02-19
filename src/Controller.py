@@ -54,3 +54,8 @@ class Controller:
             canvas.bind_all("<Left>", lambda e: self.deplacement_manuel(-2, 2))
             canvas.bind_all("<Right>", lambda e: self.deplacement_manuel(2, -2))
             canvas.bind_all("<space>", lambda e: self.arreter_robot())
+        
+        def deplacer(self, obstacles):
+            """Déplace le robot en fonction de la situation."""
+            self.robot.deplacer(obstacles)
+            self.robot.limiter_position(900, 800)  # Ajuster selon la taille de la fenêtre de simulation
