@@ -59,3 +59,13 @@ class Controller:
             """Déplace le robot en fonction de la situation."""
             self.robot.deplacer(obstacles)
             self.robot.limiter_position(900, 800)  # Ajuster selon la taille de la fenêtre de simulation
+            
+        def boucle_simulation(self, interface):
+            """Boucle de simulation, déplace le robot et le met à jour."""
+            while True:
+                # Si le robot est en mode carré, on gère le déplacement en carré
+                self.deplacement_carre()
+                self.robot.limiter_position(900, 800)  # Limiter la position pour éviter les débordements
+                # Rafraîchir l'interface graphique
+                interface.rafraichir_ecran(self.robot, self.environnement.obstacles, time.time() - self.environnement.temps_depart)
+                time.sleep(0.03)
