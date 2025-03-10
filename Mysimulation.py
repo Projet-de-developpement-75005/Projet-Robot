@@ -41,5 +41,3 @@ class EnvRobot:
             self.controller.deplacer(self.obstacles)  # Déplacer le robot avec les obstacles
             self.interface.rafraichir_ecran(self.robot, self.obstacles, time.time() - self.temps_depart)
             time.sleep(0.03)
-
-    
