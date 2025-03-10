@@ -11,3 +11,9 @@ class Robot:
         self.x += distance * cos(radians(self.direction))
         self.y += distance * sin(radians(self.direction))
 
+    def rotate(self, angle):
+        """Fait tourner le robot (en degrés)."""
+        self.direction = (self.direction + angle) % 360
+
+    def __str__(self):
+        return f"Robot(pos=({self.x:.2f}, {self.y:.2f}), dir={self.direction}°)"
