@@ -37,3 +37,28 @@ class DessinerCarre:
         for _ in range(4):
             self.robot.move(longueur_cote)
             self.robot.rotate(90)
+
+
+class Controller:
+    def __init__(self, robot, obstacles):
+        self.robot = robot
+        self.obstacles = obstacles
+        self.deplacement = Deplacement(robot)
+        self.capteur = CapteurDistance(robot, obstacles)
+        self.dessinateur = DessinerCarre(robot)
+
+    def deplacer_robot(self, distance):
+        """Déplace le robot."""
+        self.deplacement.deplacer(distance)
+
+    def tourner_robot(self, angle):
+        """Fait tourner le robot."""
+        self.deplacement.tourner(angle)
+
+    def verifier_distance(self):
+        """Retourne la distance entre le robot et l'obstacle."""
+        return self.capteur.obtenir_distance()
+
+    def dessiner_carre(self, longueur_cote):
+        """Fait dessiner un carré au robot."""
+        self.dessinateur.dessiner(longueur_cote)
