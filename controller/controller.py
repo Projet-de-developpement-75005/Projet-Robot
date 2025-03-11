@@ -1,13 +1,27 @@
 from math import cos, sin, radians, sqrt
+from Model.update_model import check_collision
+from Model.robot import Robot
 
 class Deplacement:
-    def __init__(self, robot):
+    def __init__(self, robot,arena):
         self.robot = robot
+        self.arena = arena
 
     def deplacer(self, distance):
         """Fait avancer le robot dans la direction actuelle."""
-        self.robot.x += distance * cos(radians(self.robot.direction))
-        self.robot.y += distance * sin(radians(self.robot.direction))
+        new_x = self.robot.x + distance * cos(radians(self.robot.direction))
+        new_y = self.robot.y + distance * sin(radians(self.robot.direction))
+
+        for obstacle in self.arena.obstacles:
+            if check_collision(Robot(new_x, new_y, self.robot.direction), obstacle):
+                print(f"🚨 Collision anticipée avec {obstacle}, déplacement annulé !")
+                return  # Annule le déplacement
+
+        if 0 <= new_x <= self.arena.width and 0 <= new_y <= self.arena.height:
+            self.robot.x = new_x
+            self.robot.y = new_y
+        else:
+            print("🚧 Le robot atteint les limites de l'arène et s'arrête !")
 
     def tourner(self, angle):
         """Fait tourner le robot."""
@@ -40,10 +54,11 @@ class DessinerCarre:
             self.deplacement.tourner(90)
 
 class Controller:
-    def __init__(self, robot, obstacles):
+    def __init__(self, robot, obstacles,arena):
         self.robot = robot
         self.obstacles = obstacles
-        self.deplacement = Deplacement(robot)
+        self.arena = arena
+        self.deplacement = Deplacement(robot,arena)
         self.capteur = CapteurDistance(robot, obstacles)
         self.dessinateur = DessinerCarre(robot, self.deplacement)
 
