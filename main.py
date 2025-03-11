@@ -15,10 +15,15 @@ def main():
     robot = Robot(x=50, y=50, direction=0)
     
     # Ajout d'obstacles
-    obstacles = [Obstacle(100, 100, 10), Obstacle(150, 50, 5)]
+    obstacles = [Obstacle(100, 100, 10), Obstacle(150, 150, 5)]
     for obs in obstacles:
         arena.add_obstacle(obs)
     
+
+    # Demande à l'utilisateur
+    mode_affichage = input("Voulez-vous utiliser l'affichage graphique ? (o/n) : ").strip().lower() == 'o'
+    dessiner_carre = input("Voulez-vous que le robot dessine un carré ? (o/n) : ").strip().lower() == 'o'
+
     # Initialisation du contrôleur et de la vue
     controller = Controller(robot, obstacles,arena)
     view = View2D(arena, robot, mode_affichage=True)
@@ -40,14 +45,19 @@ def main():
                 
                 view.update()  # Mettre à jour l'affichage graphique
                 time.sleep(1)  # Pause pour observer le mouvement
+
+                if dessiner_carre:
+                    controller.dessiner_carre(longueur_cote=30)  # Longueur du côté du carré
+
         except KeyboardInterrupt:
             print("\nArrêt du programme.")
     
     # Lancer la simulation en parallèle avec Tkinter
-    thread = threading.Thread(target=simulation, daemon=True)
+    thread = threading.Thread(target=simulation)
     thread.start()
     
-    view.run()  # Lance l'interface graphique
+    if mode_affichage:
+        view.run()  # Lance l'interface graphique
 
 
 if __name__ == "__main__":
