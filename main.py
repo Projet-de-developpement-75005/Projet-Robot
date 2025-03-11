@@ -43,8 +43,8 @@ def main():
 
 
     # Dessiner un carré
-print("Le robot dessine un carré :")
-controller.dessiner_carre(20)
+    print("Le robot dessine un carré :")
+    controller.dessiner_carre(20)
 
-if __name__ == "__main__":
-    main()
+    if __name__ == "__main__":
+        main()
