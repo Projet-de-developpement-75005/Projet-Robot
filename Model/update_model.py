@@ -5,8 +5,9 @@ def update_model(arena, robot):
     for obstacle in arena.obstacles:
         if check_collision(robot, obstacle):
             print(f"⚠️ Collision détectée avec {obstacle}!")
-            return
+            return False
     print("✅ Aucun obstacle rencontré.")
+    return True
     
 def check_collision(robot, obstacle):
     """Vérifie si le robot entre en collision avec un obstacle."""
