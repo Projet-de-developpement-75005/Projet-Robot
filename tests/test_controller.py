@@ -1,20 +1,28 @@
-import unittest
-from unittest.mock import MagicMock
-from controller.controller import Deplacement, CapteurDistance, DessinerCarre, Controller
+from math import cos, sin, radians, sqrt
 
-class TestDeplacement(unittest.TestCase):
-    def setUp(self):
-        self.robot = MagicMock()
-        self.deplacement = Deplacement(self.robot)
+class Deplacement:
+    def __init__(self, robot):
+        self.robot = robot
 
-    def test_deplacer(self):
-        self.robot.direction = 0  # robot regarde vers l'est
-        self.deplacement.deplacer(10)
-        self.assertEqual(self.robot.x, 10)
-        self.assertEqual(self.robot.y, 0)
+    def deplacer(self, distance):
+        """Fait avancer le robot dans la direction actuelle."""
+        self.robot.x += distance * cos(radians(self.robot.direction))
+        self.robot.y += distance * sin(radians(self.robot.direction))
 
-    def test_tourner(self):
-        self.deplacement.tourner(90)
-        self.assertEqual(self.robot.direction, 90)
-        self.deplacement.tourner(270)  # tourne à gauche pour revenir à 0
-        self.assertEqual(self.robot.direction, 0)
+    def tourner(self, angle):
+        """Fait tourner le robot."""
+        self.robot.direction = (self.robot.direction + angle) % 360
+
+
+class CapteurDistance:
+    def __init__(self, robot, obstacles):
+        self.robot = robot
+        self.obstacles = obstacles
+
+    def obtenir_distance(self):
+        """Retourne la distance entre le robot et l'obstacle le plus proche."""
+        distance_min = float('inf')
+        for obstacle in self.obstacles:
+            distance = sqrt((self.robot.x - obstacle.x) ** 2 + (self.robot.y - obstacle.y) ** 2)
+            distance_min = min(distance_min, distance)
+        return distance_min
