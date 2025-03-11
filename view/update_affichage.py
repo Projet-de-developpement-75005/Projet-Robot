@@ -1,23 +1,31 @@
-# update_affichage.py
-def update_affichage(canvas, robot_id, robot, mode_affichage):
+def update_affichage(canvas, robot_parts, robot, mode_affichage):
     """
-    Met à jour l'affichage du robot sur le canevas tkinter.
-    Cette fonction déplace le robot en fonction de ses coordonnées actuelles.
+    Met à jour l'affichage du robot sous forme d'une voiture avec 4 roues.
     """
     if mode_affichage:
-        # Supprime l'ancienne position du robot
-        canvas.delete(robot_id)
+        x, y = robot.x, robot.y
+        car_width = 30
+        car_height = 15
+        wheel_radius = 5
 
-        # Met à jour la position du robot
-        new_x1 = robot.x - 5
-        new_y1 = robot.y - 5
-        new_x2 = robot.x + 5
-        new_y2 = robot.y + 5
+        # Mettre à jour le corps de la voiture (rectangle)
+        canvas.coords(
+            robot_parts["body"], 
+            x - car_width // 2, y - car_height // 2, 
+            x + car_width // 2, y + car_height // 2
+        )
 
-        # Redessine le robot à la nouvelle position
-        robot_id = canvas.create_oval(new_x1, new_y1, new_x2, new_y2, fill="blue")
-
-        # Redessine l'arène si nécessaire (optionnel selon votre gestion)
-        # canvas.update()
-
-        # Vous pouvez ajouter des conditions supplémentaires si vous avez besoin d'autres mises à jour
+        # Mettre à jour les roues (cercles)
+        wheels_positions = [
+            (x - car_width // 2, y - car_height // 2),  # Avant gauche
+            (x + car_width // 2, y - car_height // 2),  # Avant droit
+            (x - car_width // 2, y + car_height // 2),  # Arrière gauche
+            (x + car_width // 2, y + car_height // 2)   # Arrière droit
+        ]
+        
+        for i, (wx, wy) in enumerate(wheels_positions):
+            canvas.coords(
+                robot_parts[f"wheel_{i}"], 
+                wx - wheel_radius, wy - wheel_radius, 
+                wx + wheel_radius, wy + wheel_radius
+            )
