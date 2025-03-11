@@ -27,17 +27,21 @@ def main():
     print(f"Après déplacement : {robot}")
     
     
+    start_time = time.time()  # Début du chronomètre
     
-    # Déplacement en continu
-    while True:
-        controller.deplacer_robot(5)
-        update_model(arena, robot)
-        print(f"Position actuelle : {robot}")
-        distance = controller.verifier_distance()
-        print(f"Distance au plus proche obstacle : {distance:.2f}")
-        update_model(arena, robot)
-        time.sleep(1)  # Pause pour observer le mouvement
-    
+    try:
+        while True:
+            controller.deplacer_robot(5)
+            update_model(arena, robot)
+            distance = controller.verifier_distance()
+            time = time.time() - start_time  # Temps écoulé
+
+            print(f"Position : {robot}, Distance obstacle : {distance:.2f}, Temps écoulé : {time:.2f}s")
+            time.sleep(1)  # Pause pour observer le mouvement
+    except KeyboardInterrupt:
+        print("\nArrêt du programme.")
+
+
     # Dessiner un carré
 print("Le robot dessine un carré :")
 controller.dessiner_carre(20)
