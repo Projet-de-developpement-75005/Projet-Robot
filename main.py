@@ -34,9 +34,9 @@ def main():
             controller.deplacer_robot(5)
             update_model(arena, robot)
             distance = controller.verifier_distance()
-            time = time.time() - start_time  # Temps écoulé
+            timee = time.time() - start_time  # Temps écoulé
 
-            print(f"Position : {robot}, Distance obstacle : {distance:.2f}, Temps écoulé : {time:.2f}s")
+            print(f"Position : {robot}, Distance obstacle : {distance:.2f}, Temps écoulé : {timee:.2f}s")
             time.sleep(1)  # Pause pour observer le mouvement
     except KeyboardInterrupt:
         print("\nArrêt du programme.")
@@ -46,5 +46,5 @@ def main():
     print("Le robot dessine un carré :")
     controller.dessiner_carre(20)
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
