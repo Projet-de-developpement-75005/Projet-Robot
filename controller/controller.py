@@ -29,14 +29,15 @@ class CapteurDistance:
 
 
 class DessinerCarre:
-    def __init__(self, robot):
+    def __init__(self, robot, deplacement):
         self.robot = robot
-        
+        self.deplacement = deplacement
 
     def dessiner(self, longueur_cote):
         """Fait dessiner un carré au robot."""
         for _ in range(4):
-            
+            self.deplacement.deplacer(longueur_cote)
+            self.deplacement.tourner(90)
 
 class Controller:
     def __init__(self, robot, obstacles):
@@ -44,7 +45,7 @@ class Controller:
         self.obstacles = obstacles
         self.deplacement = Deplacement(robot)
         self.capteur = CapteurDistance(robot, obstacles)
-        self.dessinateur = DessinerCarre(robot)
+        self.dessinateur = DessinerCarre(robot, self.deplacement)
 
     def deplacer_robot(self, distance):
         """Déplace le robot."""
