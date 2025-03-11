@@ -1,6 +1,6 @@
 import tkinter as tk
 import time
-from update_affichage import update_affichage
+from .update_affichage import update_affichage
 
 class View2D:
     def __init__(self, arena, robot, mode_affichage=True):
