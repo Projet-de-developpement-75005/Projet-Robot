@@ -27,7 +27,7 @@ class View2D:
 
         # Taille de la voiture
         car_width = 30
-        car_height = 15
+        car_height = 30
         wheel_radius = 5
 
         # Dessiner le corps de la voiture
@@ -39,10 +39,9 @@ class View2D:
 
         # Dessiner les roues
         wheels_positions = [
-            (self.robot.x - car_width // 2, self.robot.y - car_height // 2),  # Avant gauche
-            (self.robot.x + car_width // 2, self.robot.y - car_height // 2),  # Avant droit
-            (self.robot.x - car_width // 2, self.robot.y + car_height // 2),  # Arrière gauche
-            (self.robot.x + car_width // 2, self.robot.y + car_height // 2)   # Arrière droit
+            (self.robot.x , self.robot.y - car_width // 2),  # Avant gauche
+            (self.robot.x , self.robot.y + car_width // 2),  # Avant droit
+           
         ]
         
         wheels = [
@@ -58,8 +57,7 @@ class View2D:
             "body": body,
             "wheel_0": wheels[0],
             "wheel_1": wheels[1],
-            "wheel_2": wheels[2],
-            "wheel_3": wheels[3]
+            
         }
 
     def update(self):
