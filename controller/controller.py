@@ -31,13 +31,12 @@ class CapteurDistance:
 class DessinerCarre:
     def __init__(self, robot):
         self.robot = robot
+        
 
     def dessiner(self, longueur_cote):
         """Fait dessiner un carré au robot."""
         for _ in range(4):
-            self.robot.move(longueur_cote)
-            self.robot.rotate(90)
-
+            
 
 class Controller:
     def __init__(self, robot, obstacles):
