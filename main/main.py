@@ -1,4 +1,4 @@
-from model import Arena, Robot, Obstacle, update_model
+from Model import Arena, Robot, Obstacle, update_model
 from controller import Controller
 import time
 
