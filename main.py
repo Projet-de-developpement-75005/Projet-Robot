@@ -20,7 +20,7 @@ def main():
         arena.add_obstacle(obs)
     
     # Initialisation du contrôleur et de la vue
-    controller = Controller(robot, obstacles)
+    controller = Controller(robot, obstacles,arena)
     view = View2D(arena, robot, mode_affichage=True)
     
     # Fonction de mise à jour continue du modèle et de l'affichage
@@ -28,6 +28,9 @@ def main():
         start_time = time.time()  # Début du chronomètre
         try:
             while True:
+                if not update_model(arena, robot):  
+                    break  # Stoppe la boucle en cas de collision
+                
                 controller.deplacer_robot(5)
                 update_model(arena, robot)
                 distance = controller.verifier_distance()
