@@ -26,3 +26,14 @@ class CapteurDistance:
             distance = sqrt((self.robot.x - obstacle.x) ** 2 + (self.robot.y - obstacle.y) ** 2)
             distance_min = min(distance_min, distance)
         return distance_min
+
+
+class DessinerCarre:
+    def __init__(self, robot):
+        self.robot = robot
+
+    def dessiner(self, longueur_cote):
+        """Fait dessiner un carré au robot."""
+        for _ in range(4):
+            self.robot.move(longueur_cote)
+            self.robot.rotate(90)
