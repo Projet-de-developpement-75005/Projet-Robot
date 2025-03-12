@@ -64,6 +64,15 @@ class View2D:
         """Met à jour l'affichage du robot sous forme de voiture."""
         update_affichage(self.canvas, self.robot_parts, self.robot, self.mode_affichage)
 
+    def update_periodically(self):
+        """Met à jour l'affichage toutes les 100 ms."""
+        self.update()
+        self.root.after(100, self.update_periodically)  # Planifier la prochaine mise à jour
+
     def run(self):
         if self.mode_affichage:
-            self.root.mainloop()
+            print("🖥️ Lancement de l'affichage graphique...")
+            self.update_periodically()  # Démarrer la mise à jour continue
+            self.root.mainloop()  # Lancer Tkinter
+        else:
+            print(" Exécution en mode console sans affichage graphique")
