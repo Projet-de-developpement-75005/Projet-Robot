@@ -1,4 +1,5 @@
 import math
+
 class Robot:
     def __init__(self, x, y, orientation, vitesse_gauche, vitesse_droite, diametre_roue, distance_roues):
         self.x = x  # Position en X
@@ -8,6 +9,7 @@ class Robot:
         self.vitesse_droite = vitesse_droite  # Vitesse de la roue droite
         self.diametre_roue = diametre_roue
         self.distance_roues = distance_roues
+        self.rayon = distance_roues / 2  # Rayon du robot pour la détection de collision
     def mettre_a_jour_position(self, delta_t):
         # Mise à jour de la position et de l'orientation du robot en fonction des vitesses des roues
         vitesse_moyenne = (self.vitesse_gauche + self.vitesse_droite) / 2
