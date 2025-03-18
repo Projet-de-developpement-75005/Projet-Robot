@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 class Arene:
     def _init_(self, largeur, hauteur):
         self.largeur = largeur
@@ -6,27 +6,21 @@ class Arene:
         self.obstacles = []
         self.robot = None
 
+    def ajouter_robot(self, robot):
+        self.robot = robot
+
+    def ajouter_obstacle(self, obstacle):
+        self.obstacles.append(obstacle)
+
+    def mise_a_jour(self, delta_t):
+        if self.robot:
+            self.robot.mise_a_jour(delta_t)
+            for obstacle in self.obstacles:
+                if obstacle.est_en_collision(self.robot.x, self.robot.y):
+                    print("Collision détectée ! Le robot doit s'arrêter.")
+                    self.robot.vitesse_gauche = 0
+                    self.robot.vitesse_droite = 0
+
+
+
     
-
-
-
-
-
-
-    
-=======
-class Arena:
-    def __init__(self, width=400, height=400, scale=1):
-        """
-        Initialise l'arène avec ses dimensions et un facteur de mise à l'échelle.
-        """
-        self.width = width
-        self.height = height
-        self.scale = scale
-        self.objets = []  # On pourra ajouter des obstacles ou autres objets
-
-    def add_object(self, obj):
-        """Ajoute un objet à l'arène."""
-        self.objets.append(obj)
->>>>>>> 4a5f64ca772eada80f389441d7f800450aff36f7
-
