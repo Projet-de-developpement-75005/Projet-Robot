@@ -1,3 +1,1 @@
 from .controller import SquareDrawer
-
-

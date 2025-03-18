@@ -1,7 +1,7 @@
 class SquareDrawer:
     def __init__(self, robot, side_length=100):
         """
-        Constructeur qui initialise le contrôleur pour dessiner un carré.
+        Initialise le contrôleur pour dessiner un carré avec le robot.
         
         Args:
             robot (Robot): instance du robot à déplacer.
@@ -11,24 +11,21 @@ class SquareDrawer:
         self.side_length = side_length
         self.current_side = 0
         self.distance_moved = 0
-        self.step = 5  # Pas de déplacement à chaque mise à jour
-
+        self.step = 5  # Correspond au pas de déplacement lors du dessin du carré
         self.done = False
 
     def update(self):
         """
-        Met à jour la commande : si la distance parcourue sur le côté actuel 
-        est inférieure à la longueur désirée, avance ; sinon, effectue une rotation de 90°.
+        Met à jour le dessin : si le côté n'est pas complet, avance ;
+        sinon, effectue une rotation de 90° pour passer au côté suivant.
         """
         if self.done:
             return
 
-        # Avancer si le côté n'est pas encore complet
         if self.distance_moved < self.side_length:
             self.robot.move_forward(self.step)
             self.distance_moved += self.step
         else:
-            # Terminé un côté, on tourne de 90 degrés et on réinitialise
             self.robot.rotate(90)
             self.distance_moved = 0
             self.current_side += 1
@@ -36,7 +33,5 @@ class SquareDrawer:
                 self.done = True
 
     def is_done(self):
-        """
-        Retourne True si le carré est entièrement dessiné.
-        """
+        """Retourne True si le dessin du carré est terminé."""
         return self.done
