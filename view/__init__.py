@@ -1,1 +1,1 @@
-from .view_2d import GUI
+from .view_2d import View
