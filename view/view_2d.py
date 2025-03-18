@@ -3,8 +3,8 @@ import math
 from Model.arene import Arene
 
 class View(tk.Tk):
-    def _init_(self, arene):
-        super()._init_()
+    def __init__(self, arene):
+        super().__init__()
         self.title("Simulation Robot")
         self.arene = arene
         # Pour être sûr que le canevas recouvre toute la fenêtre
