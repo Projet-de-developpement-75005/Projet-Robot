@@ -1,105 +1,48 @@
 import tkinter as tk
-import time
+from math import cos, sin, radians
 
-class View2D:
-    def __init__(self, arena, robot, mode_affichage=True):
+class GUI:
+    def __init__(self, arena, robot):
+        """
+        Interface graphique utilisant Tkinter pour afficher l'arène, le robot et ses traces.
+        
+        Args:
+            arena (Arena): instance de l'arène.
+            robot (Robot): instance du robot.
+        """
         self.arena = arena
         self.robot = robot
-        self.mode_affichage = mode_affichage
-        
-        if self.mode_affichage:
-            self.root = tk.Tk()
-            self.root.title("Simulation Robot")
-            self.canvas = tk.Canvas(self.root, width=self.arena.width, height=self.arena.height, bg="white")
-            self.canvas.pack()
-            self.draw_arena()
-        
-    def draw_arena(self):
-        """Dessine l'arène, les obstacles et initialise la voiture du robot."""
-        # Dessiner les obstacles
-        for obstacle in self.arena.obstacles:
-            self.canvas.create_oval(
-                obstacle.x - obstacle.radius, obstacle.y - obstacle.radius,
-                obstacle.x + obstacle.radius, obstacle.y + obstacle.radius,
-                fill="red"
-            )
+        self.window = tk.Tk()
+        self.window.title("Simulation Robot 2D")
+        self.canvas = tk.Canvas(self.window, width=arena.width, height=arena.height, bg="white")
+        self.canvas.pack()
+        self.robot_item = None
 
-        # Taille de la voiture
-        car_width = 30
-        car_height = 30
-        wheel_radius = 5
+    def draw(self):
+        """Met à jour l'affichage : trace le parcours et dessine le robot."""
+        # Dessiner la trace du robot
+        if len(self.robot.trace) >= 2:
+            # Supprimer l'ancienne trace
+            self.canvas.delete("trace")
+            points = []
+            for (x, y) in self.robot.trace:
+                points.extend([x, y])
+            self.canvas.create_line(points, fill="blue", width=2, tags="trace")
 
-        # Dessiner le corps de la voiture
-        body = self.canvas.create_rectangle(
-            self.robot.x - car_width // 2, self.robot.y - car_height // 2, 
-            self.robot.x + car_width // 2, self.robot.y + car_height // 2,
-            fill="blue"
-        )
+        # Dessiner le robot comme un cercle
+        if self.robot_item is not None:
+            self.canvas.delete(self.robot_item)
+        r = self.robot.rayon
+        x, y = self.robot.x, self.robot.y
+        self.robot_item = self.canvas.create_oval(x - r, y - r, x + r, y + r, fill="red")
 
-        # Dessiner les roues
-        wheels_positions = [
-            (self.robot.x , self.robot.y - car_width // 2),  # Avant gauche
-            (self.robot.x , self.robot.y + car_width // 2),  # Avant droit
-           
-        ]
-        
-        wheels = [
-            self.canvas.create_oval(
-                wx - wheel_radius, wy - wheel_radius, 
-                wx + wheel_radius, wy + wheel_radius, 
-                fill="black"
-            ) for wx, wy in wheels_positions
-        ]
+        # Dessiner une ligne indiquant la direction du robot
+        self.canvas.delete("dir")
+        dx = r * 2 * cos(radians(self.robot.direction))
+        dy = r * 2 * sin(radians(self.robot.direction))
+        self.canvas.create_line(x, y, x + dx, y + dy, fill="black", width=2, tags="dir")
+        self.canvas.update()
 
-        # Stocker les éléments du robot
-        self.robot_parts = {
-            "body": body,
-            "wheel_0": wheels[0],
-            "wheel_1": wheels[1],
-            
-        }
-
-    def update(self):
-        """Met à jour l'affichage du robot sous forme de voiture."""
-        update_affichage(self.canvas, self.robot_parts, self.robot, self.mode_affichage)
-
-    def update_periodically(self):
-        """Met à jour l'affichage toutes les 100 ms."""
-        self.update()
-        self.root.after(100, self.update_periodically)  # Planifier la prochaine mise à jour
-
-    def run(self):
-        if self.mode_affichage:
-            print("🖥️ Lancement de l'affichage graphique...")
-            self.update_periodically()  # Démarre la mise à jour continue
-            self.root.mainloop()  # Lance Tkinter pour afficher la fenêtre
-        else:
-            print("Affichage graphique désactivé")
-    
-    def update_affichage(canvas, robot_parts, robot, mode_affichage):
-        if mode_affichage:
-            x, y = robot.x, robot.y
-            car_width = 30
-            car_height = 30
-            wheel_radius = 5
-
-            # Mettre à jour le corps de la voiture (rectangle)
-            canvas.coords(
-                robot_parts["body"], 
-                x - car_width // 2, y - car_height // 2, 
-                x + car_width // 2, y + car_height // 2
-            )
-
-            #Mettre à jour les roues (cercles)
-            wheels_positions = [
-                (x , y - car_width // 2),  # Avant gauche
-                (x , y + car_width // 2),  # Avant droit
-            ]
-        
-            for i, (wx, wy) in enumerate(wheels_positions):
-                wheel_key = "wheel_left" if i == 0 else "wheel_right"
-                canvas.coords(
-                    robot_parts[f"wheel_{i}"], 
-                    wx - wheel_radius, wy - wheel_radius, 
-                    wx + wheel_radius, wy + wheel_radius
-                )
+    def mainloop(self):
+        """Lance la boucle principale de Tkinter."""
+        self.window.mainloop()
