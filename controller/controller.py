@@ -1,37 +1,61 @@
-class SquareDrawer:
-    def __init__(self, robot, side_length=100):
-        """
-        Initialise le contrôleur pour dessiner un carré avec le robot.
-        
-        Args:
-            robot (Robot): instance du robot à déplacer.
-            side_length (int): longueur d'un côté du carré.
-        """
+class Controller:
+    def __init__(self, robot):
         self.robot = robot
-        self.side_length = side_length
-        self.current_side = 0
-        self.distance_moved = 0
-        self.step = 5  # Correspond au pas de déplacement lors du dessin du carré
-        self.done = False
 
-    def update(self):
-        """
-        Met à jour le dessin : si le côté n'est pas complet, avance ;
-        sinon, effectue une rotation de 90° pour passer au côté suivant.
-        """
-        if self.done:
-            return
+    def appliquer_strategie(self, strategie):
+        strategie.executer(self.robot)
 
-        if self.distance_moved < self.side_length:
-            self.robot.move_forward(self.step)
-            self.distance_moved += self.step
+
+class StrategieAvancer:
+    def __init__(self, distance, vitesse):
+        self.distance = distance
+        self.vitesse = vitesse
+
+    def executer(self, robot):
+        robot.vitesse_gauche = self.vitesse
+        robot.vitesse_droite = self.vitesse
+
+
+class StrategieTourner:
+    def __init__(self, angle, vitesse):
+        self.angle = angle
+        self.vitesse = vitesse
+
+    def executer(self, robot):
+        if self.angle > 0:
+            robot.vitesse_gauche = -self.vitesse
+            robot.vitesse_droite = self.vitesse
         else:
-            self.robot.rotate(90)
-            self.distance_moved = 0
-            self.current_side += 1
-            if self.current_side >= 4:
-                self.done = True
+            robot.vitesse_gauche = self.vitesse
+            robot.vitesse_droite = -self.vitesse
 
-    def is_done(self):
-        """Retourne True si le dessin du carré est terminé."""
-        return self.done
+
+class StrategieSequentielle:
+    def __init__(self):
+        self.strategies = [
+            StrategieAvancer(50, 10),
+            StrategieTourner(90, 5),
+            StrategieAvancer(50, 10),
+            StrategieTourner(90, 5),
+            StrategieAvancer(50, 10),
+            StrategieTourner(90, 5),
+            StrategieAvancer(50, 10),
+            StrategieTourner(90, 5)
+        ]
+
+    def executer(self, robot):
+        for strategie in self.strategies:
+            strategie.executer(robot)
+
+
+class CapteurDistance:
+    def __init__(self, robot, obstacles):
+        self.robot = robot
+        self.obstacles = obstacles
+
+    def mesurer_distance(self):
+        distances = [
+            ((obstacle.x - self.robot.x)**2 + (obstacle.y - self.robot.y)**2)**0.5
+            for obstacle in self.obstacles
+        ]
+        return min(distances) if distances else float('inf')
