@@ -177,12 +177,26 @@ if __name__ == "__main__":
     # Redéfinition de la méthode de mise à jour de l'arène
     def mise_a_jour_arene(self, delta_t):
         if self.robot:
-            self.robot.mettre_a_jour_position(delta_t)
-            for obs in self.obstacles:
-                if obs.est_en_collision(self.robot.x, self.robot.y):
+            # Calculer la nouvelle position du robot
+            nouvelle_x = self.robot.x + self.robot.vitesse_gauche * delta_t * math.cos(self.robot.orientation)
+            nouvelle_y = self.robot.y + self.robot.vitesse_gauche * delta_t * math.sin(self.robot.orientation)
+
+            # Vérifier les collisions avec les obstacles
+            collision = False
+            for obstacle in self.obstacles:
+                if obstacle.est_en_collision(nouvelle_x, nouvelle_y, self.robot.rayon):
                     print("Collision détectée ! Le robot doit s'arrêter.")
-                    self.robot.vitesse_gauche = 0
-                    self.robot.vitesse_droite = 0
+                    collision = True
+                    break
+
+            # Si aucune collision n'est détectée, mettre à jour la position
+            if not collision:
+                self.robot.x = nouvelle_x
+                self.robot.y = nouvelle_y
+            else:
+                # Arrêter le robot en cas de collision
+                self.robot.vitesse_gauche = 0
+                self.robot.vitesse_droite = 0
     Arene.mise_a_jour = mise_a_jour_arene
     
     sim = Simulation(use_graphics=use_graphics)
