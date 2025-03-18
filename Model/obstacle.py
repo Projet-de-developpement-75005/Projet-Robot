@@ -1,5 +1,5 @@
 class Obstacle:
-    def _init_(self, x, y, largeur, hauteur):
+    def __init__(self, x, y, largeur, hauteur):
         self.x = x
         self.y = y
         self.largeur = largeur
