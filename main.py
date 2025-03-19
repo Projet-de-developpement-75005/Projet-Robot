@@ -13,7 +13,7 @@ ARENE_HAUTEUR = 500
 
 class Simulation:
     def __init__(self, use_graphics=True):
-        # Création de l'arène et du robot positionné au centre
+        # Création de l'arène et positionnement du robot au centre
         self.arene = Arene(ARENE_LARGEUR, ARENE_HAUTEUR)
         self.robot = Robot(
             x=ARENE_LARGEUR / 2,
@@ -24,8 +24,9 @@ class Simulation:
             diametre_roue=10,
             distance_roues=20
         )
+        # Ajout d'obstacles
         obstacle1 = Obstacle(100, 100, 50, 50)
-        obstacle2 = Obstacle(300, 200, 30, 60)
+        obstacle2 = Obstacle(100, 200, 30, 60)
         self.arene.ajouter_obstacle(obstacle1)
         self.arene.ajouter_obstacle(obstacle2)
         self.arene.ajouter_robot(self.robot)
@@ -34,7 +35,7 @@ class Simulation:
         self.robot.angle_roue_droite = 0.0
 
         self.use_graphics = use_graphics
-        # Liste des commandes pour dessiner le carré
+        # Gestion de la séquence pour dessiner le carré
         self.commands = None
         self.current_command_index = 0
         self.command_time_remaining = 0
@@ -55,31 +56,30 @@ class Simulation:
 
     def demarrer_carre(self, event=None):
         """
-        Définit une séquence de commandes pour que le robot "dessine" un carré.
-        Chaque cycle comporte :
+        Définit la séquence de commandes pour que le robot "dessine" un carré.
+        Chaque côté consiste en :
          - Une phase d'avance (50 pixels à 10 px/s)
-         - Une phase de virage en arc (vitesse de base 10 et décalage delta = 5)
+         - Une phase de virage de 90° (calculé à partir d'une vitesse de base et d'un delta)
         """
         avancer_duration = 50 / 10.0  # 5 secondes
         delta = 5
-        # Calcul de la durée pour tourner 90° :
+        # Durée pour tourner 90° : (π/2) divisé par la vitesse de rotation (2*delta / distance_roues)
         tourner_duration = (math.pi / 2) / ((2 * delta) / self.robot.distance_roues)
         
-        # Construction de la séquence pour dessiner un carré (une fois)
         self.commands = []
         for _ in range(4):
             self.commands.append({"type": "avancer", "vitesse": 10, "duration": avancer_duration})
             self.commands.append({"type": "tourner", "vitesse": 10, "delta": delta, "duration": tourner_duration})
         self.current_command_index = 0
         self.command_time_remaining = self.commands[0]["duration"]
-        # Réinitialiser le trace (on garde le premier point)
+        # Réinitialise le trace tout en gardant le premier point
         self.trace_points = [(self.robot.x, self.robot.y)]
 
     def update_strategy(self, delta_t):
         """
-        Applique la commande active pendant sa durée.
+        Applique la commande active durant sa durée.
         Pour "avancer", les deux roues tournent à la même vitesse.
-        Pour "tourner", on fixe : vitesse gauche = vitesse + delta, vitesse droite = vitesse - delta.
+        Pour "tourner", on ajuste les vitesses différemment.
         Lorsque le temps est écoulé, on passe à la commande suivante.
         """
         if self.commands is None or self.current_command_index >= len(self.commands):
@@ -121,9 +121,9 @@ class Simulation:
         if self.commands is not None:
             self.update_strategy(delta_t)
         
-        # Mise à jour de la position et de l'orientation du robot
+        # Mise à jour de la position et de l'orientation via la méthode mise_a_jour d'arene.py
         self.arene.mise_a_jour(delta_t)
-        # Ajoute la position actuelle au trace
+        # Ajout de la position actuelle au trace
         self.trace_points.append((self.robot.x, self.robot.y))
 
         # Mise à jour de l'animation des roues (optionnel)
@@ -147,7 +147,6 @@ class Simulation:
             self.view.mainloop()
             self.running = False
         else:
-            # Mode console : la séquence démarre immédiatement
             self.demarrer_carre()
             print("Mode console. Séquence démarrée. Appuyez sur Ctrl+C pour arrêter.")
             last_time = time.time()
@@ -173,31 +172,5 @@ class Simulation:
 if __name__ == "__main__":
     choix = input("Voulez-vous activer l'affichage graphique ? (o/n) : ")
     use_graphics = choix.strip().lower() in ('o', 'oui', 'y', 'yes')
-    
-    # Redéfinition de la méthode de mise à jour de l'arène
-    def mise_a_jour_arene(self, delta_t):
-        if self.robot:
-            # Calculer la nouvelle position du robot
-            nouvelle_x = self.robot.x + self.robot.vitesse_gauche * delta_t * math.cos(self.robot.orientation)
-            nouvelle_y = self.robot.y + self.robot.vitesse_gauche * delta_t * math.sin(self.robot.orientation)
-
-            # Vérifier les collisions avec les obstacles
-            collision = False
-            for obstacle in self.obstacles:
-                if obstacle.est_en_collision(nouvelle_x, nouvelle_y, self.robot.rayon):
-                    print("Collision détectée ! Le robot doit s'arrêter.")
-                    collision = True
-                    break
-
-            # Si aucune collision n'est détectée, mettre à jour la position
-            if not collision:
-                self.robot.x = nouvelle_x
-                self.robot.y = nouvelle_y
-            else:
-                # Arrêter le robot en cas de collision
-                self.robot.vitesse_gauche = 0
-                self.robot.vitesse_droite = 0
-    Arene.mise_a_jour = mise_a_jour_arene
-    
     sim = Simulation(use_graphics=use_graphics)
     sim.run()
