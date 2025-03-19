@@ -3,6 +3,11 @@ import math
 class Robot:
     def __init__(self, x, y, orientation, vitesse_gauche, vitesse_droite, diametre_roue, distance_roues):
         self.x = x  # Position en X
+        self.y =import math
+
+class Robot:
+    def __init__(self, x, y, orientation, vitesse_gauche, vitesse_droite, diametre_roue, distance_roues):
+        self.x = x  # Position en X
         self.y = y  # Position en Y
         self.orientation = orientation  # Angle en radians
         self.vitesse_gauche = vitesse_gauche  # Vitesse de la roue gauche
@@ -66,6 +71,73 @@ class Robot:
         
         La méthode convertit les vitesses angulaires en vitesses linéaires grâce au diamètre de la roue.
         """
+        # Calcul du rayon de la roue à partir du diamètre
+        rayon_roue = self.diametre_roue / 2
+        
+        # Conversion des vitesses angulaires (stockées dans self) en vitesses linéaires
+        vitesse_lineaire_gauche = rayon_roue * self.vitesse_gauche
+        vitesse_lineaire_droite = rayon_roue * self.vitesse_droite
+        
+        # Calcul de la vitesse linéaire moyenne et du changement d'orientation
+        vitesse_moyenne = (vitesse_lineaire_gauche + vitesse_lineaire_droite) / 2
+        delta_orientation = (vitesse_lineaire_droite - vitesse_lineaire_gauche) / self.distance_roues
+        
+        # Mise à jour de l'orientation et de la position
+        self.orientation += delta_orientation * dt
+        self.x += vitesse_moyenne * dt * math.cos(self.orientation)
+        self.y += vitesse_moyenne * dt * math.sin(self.orientation)
+        
+        print(f"Avancer => Position: ({self.x:.2f}, {self.y:.2f}), Orientation: {math.degrees(self.orientation):.2f}°") y  # Position en Y
+        self.orientation = orientation  # Angle en radians
+        self.vitesse_gauche = vitesse_gauche  # Vitesse de la roue gauche
+        self.vitesse_droite = vitesse_droite  # Vitesse de la roue droite
+        self.diametre_roue = diametre_rou
+        self.distance_roues = distance_roues
+        self.rayon = distance_roues / 2  # Rayon du robot pour la détection de collision
+        
+        # Attribut pour suivre la distance totale parcourue
+        self.distance_parcourue = 0.0
+
+    def mettre_a_jour_position(self, delta_t):
+        # Calcul de la vitesse moyenne
+        vitesse_moyenne = (self.vitesse_gauche + self.vitesse_droite) / 2.0
+        
+        # Calcul du changement d'orientation
+        delta_orientation = (self.vitesse_droite - self.vitesse_gauche) / self.distance_roues
+        self.orientation += delta_orientation * delta_t
+        
+        # Mise à jour de la position selon l'orientation mise à jour
+        self.x += vitesse_moyenne * delta_t * math.cos(self.orientation)
+        self.y += vitesse_moyenne * delta_t * math.sin(self.orientation)
+        
+        # Mise à jour de la distance parcourue
+        # On applique la règle : distance = vitesse * temps.
+        # On prend la valeur absolue pour toujours accumuler la distance positive parcourue.
+        self.distance_parcourue += abs(vitesse_moyenne * delta_t)
+
+    def set_vitesses(self, vitesse_gauche, vitesse_droite):
+        print("Mise à jour des vitesses: Gauche =", vitesse_gauche, "| Droite =", vitesse_droite)
+        self.vitesse_gauche = vitesse_gauche
+        self.vitesse_droite = vitesse_droite
+
+    def get_distance(self):
+        """
+        Retourne la distance totale parcourue par le robot.
+        Tourne le robot de l'angle spécifié (en degrés).
+        Un angle positif effectue une rotation anti-horaire.
+        Cette méthode met à jour instantanément l'orientation du robot.
+        """
+        # Conversion de l'angle en radians
+        angle_rad = math.radians(angle)
+        self.orientation += angle_rad
+
+    def avancer(self, dt):
+        """
+        Déplace le robot en utilisant ses vitesses angulaires stockées.
+
+        dt : intervalle de temps pendant lequel les roues tournent (en secondes)
+        
+        La méthode convertit les vitesses angulaires en vitesses linéaires grâce au diamètre de la roue."""
         # Calcul du rayon de la roue à partir du diamètre
         rayon_roue = self.diametre_roue / 2
         
