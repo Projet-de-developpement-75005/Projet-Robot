@@ -57,11 +57,61 @@ class Robot:
         # Conversion de l'angle en radians
         angle_rad = math.radians(angle)
         self.orientation += angle_rad
+
         
     def get_vitesses_angulaires(self):
         vitesse_angulaire_gauche = self.vitesse_gauche / (self.diametre_roue / 2)
         vitesse_angulaire_droite = self.vitesse_droite / (self.diametre_roue / 2)
         return (vitesse_angulaire_gauche, vitesse_angulaire_droite)
         
+
+    
+
+
+    def avancer(self, dt):
+        """
+        Déplace le robot en utilisant ses vitesses angulaires stockées.
+
+        dt : intervalle de temps pendant lequel les roues tournent (en secondes)
+        
+        La méthode convertit les vitesses angulaires en vitesses linéaires grâce au diamètre de la roue.
+        """
+        # Calcul du rayon de la roue à partir du diamètre
+        rayon_roue = self.diametre_roue / 2
+        
+        # Conversion des vitesses angulaires (stockées dans self) en vitesses linéaires
+        vitesse_lineaire_gauche = rayon_roue * self.vitesse_gauche
+        vitesse_lineaire_droite = rayon_roue * self.vitesse_droite
+        
+        # Calcul de la vitesse linéaire moyenne et du changement d'orientation
+        vitesse_moyenne = (vitesse_lineaire_gauche + vitesse_lineaire_droite) / 2
+        delta_orientation = (vitesse_lineaire_droite - vitesse_lineaire_gauche) / self.distance_roues
+        
+        # Mise à jour de l'orientation et de la position
+        self.orientation += delta_orientation * dt
+        self.x += vitesse_moyenne * dt * math.cos(self.orientation)
+        self.y += vitesse_moyenne * dt * math.sin(self.orientation)
+        
+        print(f"Avancer => Position: ({self.x:.2f}, {self.y:.2f}), Orientation: {math.degrees(self.orientation):.2f}°") y  # Position en Y
+        self.orientation = orientation  # Angle en radians
+        self.vitesse_gauche = vitesse_gauche  # Vitesse de la roue gauche
+        self.vitesse_droite = vitesse_droite  # Vitesse de la roue droite
+        self.diametre_roue = diametre_rou
+        self.distance_roues = distance_roues
+        self.rayon = distance_roues / 2  # Rayon du robot pour la détection de collision
+        
+        # Attribut pour suivre la distance totale parcourue
+        self.distance_parcourue = 0.0
+
+    def get_distance(self):
+        """
+        Retourne la distance totale parcourue par le robot.
+        Tourne le robot de l'angle spécifié (en degrés).
+        Un angle positif effectue une rotation anti-horaire.
+        Cette méthode met à jour instantanément l'orientation du robot.
+        """
+        # Conversion de l'angle en radians
+        angle_rad = math.radians(angle)
+        self.orientation += angle_rad
 
     
