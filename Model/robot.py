@@ -110,5 +110,5 @@ class Robot:
         
         print(f"Avancer => Position: ({self.x:.2f}, {self.y:.2f}), Orientation: {math.degrees(self.orientation):.2f}°") 
 
-
-    
+    def get_x_step(self):
+        return self.x
