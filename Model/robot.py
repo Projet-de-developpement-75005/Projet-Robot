@@ -18,4 +18,9 @@ class Robot:
         self.orientation += delta_orientation * delta_t
         self.x += vitesse_moyenne * delta_t * math.cos(self.orientation)
         self.y += vitesse_moyenne * delta_t * math.sin(self.orientation)
+        
+    def set_vitesses(self, vitesse_gauche, vitesse_droite):
+        print("Mise à jour des vitesses: Gauche =", vitesse_gauche, "| Droite =", vitesse_droite)
+        self.vitesse_gauche = vitesse_gauche
+        self.vitesse_droite = vitesse_droite
     
