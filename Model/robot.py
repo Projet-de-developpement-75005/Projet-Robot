@@ -48,15 +48,31 @@ class Robot:
                     return d  # Obstacle détecté à la distance d
         return max_range
     
-    def tourner(self, angle):
+    def tourner(self, dt):
         """
-        Tourne le robot de l'angle spécifié (en degrés).
-        Un angle positif effectue une rotation anti-horaire.
-        Cette méthode met à jour instantanément l'orientation du robot.
+        Fait tourner le robot sur l'intervalle de temps dt en utilisant ses vitesses angulaires.
+        
+        dt : intervalle de temps pendant lequel les roues tournent (en secondes)
+        
+        La méthode convertit les vitesses angulaires en vitesses linéaires grâce au rayon de la roue,
+        calcule le changement d'orientation (delta_orientation) et met à jour l'attribut orientation.
+        On suppose que, pour tourner sur place, les vitesses des roues sont réglées de manière opposée.
         """
-        # Conversion de l'angle en radians
-        angle_rad = math.radians(angle)
-        self.orientation += angle_rad
+        # Calcul du rayon de la roue à partir du diamètre
+        rayon_roue = self.diametre_roue / 2
+        
+        # Conversion des vitesses angulaires en vitesses linéaires
+        vitesse_lineaire_gauche = rayon_roue * self.vitesse_gauche
+        vitesse_lineaire_droite = rayon_roue * self.vitesse_droite
+        
+        # Calcul du changement d'orientation en fonction de la différence de vitesses linéaires
+        delta_orientation = (vitesse_lineaire_droite - vitesse_lineaire_gauche) / self.distance_roues
+        
+        # Mise à jour de l'orientation
+        self.orientation += delta_orientation * dt
+        
+        print(f"Tourner => Orientation: {math.degrees(self.orientation):.2f}°")
+
 
         
     def get_vitesses_angulaires(self):
