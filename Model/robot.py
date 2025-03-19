@@ -47,6 +47,15 @@ class Robot:
                 if dist <= obs.radius:
                     return d  # Obstacle détecté à la distance d
         return max_range
+    
+    def tourner(self, angle):
+        """
+        Tourne le robot de l'angle spécifié (en degrés).
+        Un angle positif effectue une rotation anti-horaire.
+        Cette méthode met à jour instantanément l'orientation du robot.
+        """
+        # Conversion de l'angle en radians
+        angle_rad = math.radians(angle)
+        self.orientation += angle_rad
 
-    def __str__(self):
-        return f"Robot(x={self.x:.2f}, y={self.y:.2f}, orientation={self.orientation:.2f} rad)"
+    
