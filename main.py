@@ -26,7 +26,7 @@ class Simulation:
         )
         # Ajout d'obstacles
         obstacle1 = Obstacle(100, 100, 50, 50)
-        obstacle2 = Obstacle(100, 200, 30, 60)
+        obstacle2 = Obstacle(200, 200, 30, 60)
         self.arene.ajouter_obstacle(obstacle1)
         self.arene.ajouter_obstacle(obstacle2)
         self.arene.ajouter_robot(self.robot)
@@ -43,33 +43,38 @@ class Simulation:
         # Liste des points de la trajectoire (pour tracer le trait vert)
         self.trace_points = []
 
-        # Création de la vue si nécessaire
+        # Création de la vue si l'affichage graphique est activé
         self.view = None
         if self.use_graphics:
             self.view = View(self.arene)
             # Appuyer sur Entrée dans la fenêtre lancera la séquence
             self.view.bind("<Return>", self.demarrer_carre)
-            # Démarrer le thread d'affichage console
-            self.console_thread = Thread(target=self.afficher_console)
-            self.console_thread.daemon = True
-            self.console_thread.start()
+        
+        # Lancement du thread d'affichage console (toujours actif)
+        self.console_thread = Thread(target=self.afficher_console)
+        self.console_thread.daemon = True
+        self.console_thread.start()
 
     def demarrer_carre(self, event=None):
         """
         Définit la séquence de commandes pour que le robot "dessine" un carré.
         Chaque côté consiste en :
-         - Une phase d'avance (50 pixels à 10 px/s)
+         - Une phase d'avance (50 pixels à 20 px/s)
          - Une phase de virage de 90° (calculé à partir d'une vitesse de base et d'un delta)
         """
-        avancer_duration = 50 / 10.0  # 5 secondes
-        delta = 5
-        # Durée pour tourner 90° : (π/2) divisé par la vitesse de rotation (2*delta / distance_roues)
+        # Vitesse de déplacement augmentée à 20 px/s
+        vitesse_base = 20
+        avancer_duration = 50 / vitesse_base  # 50 pixels en 2.5 secondes
+        # Pour tourner, on augmente également la vitesse (delta) pour accélérer le virage
+        delta = 10
+        # Calcul de la durée pour tourner 90° :
+        # formule : tourner_duration = (π/2) / ( (2*delta) / distance_roues )
         tourner_duration = (math.pi / 2) / ((2 * delta) / self.robot.distance_roues)
         
         self.commands = []
         for _ in range(4):
-            self.commands.append({"type": "avancer", "vitesse": 10, "duration": avancer_duration})
-            self.commands.append({"type": "tourner", "vitesse": 10, "delta": delta, "duration": tourner_duration})
+            self.commands.append({"type": "avancer", "vitesse": vitesse_base, "duration": avancer_duration})
+            self.commands.append({"type": "tourner", "vitesse": vitesse_base, "delta": delta, "duration": tourner_duration})
         self.current_command_index = 0
         self.command_time_remaining = self.commands[0]["duration"]
         # Réinitialise le trace tout en gardant le premier point
@@ -147,6 +152,7 @@ class Simulation:
             self.view.mainloop()
             self.running = False
         else:
+            # Mode console : la séquence démarre immédiatement
             self.demarrer_carre()
             print("Mode console. Séquence démarrée. Appuyez sur Ctrl+C pour arrêter.")
             last_time = time.time()
