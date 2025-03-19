@@ -26,7 +26,7 @@ class Simulation:
         )
         # Ajout d'obstacles
         obstacle1 = Obstacle(100, 100, 50, 50)
-        obstacle2 = Obstacle(200, 200, 30, 60)
+        obstacle2 = Obstacle(100, 200, 30, 60)
         self.arene.ajouter_obstacle(obstacle1)
         self.arene.ajouter_obstacle(obstacle2)
         self.arene.ajouter_robot(self.robot)
@@ -62,13 +62,10 @@ class Simulation:
          - Une phase d'avance (50 pixels à 20 px/s)
          - Une phase de virage de 90° (calculé à partir d'une vitesse de base et d'un delta)
         """
-        # Vitesse de déplacement augmentée à 20 px/s
-        vitesse_base = 20
+        vitesse_base = 20  # Vitesse de déplacement en pixels par seconde
         avancer_duration = 50 / vitesse_base  # 50 pixels en 2.5 secondes
-        # Pour tourner, on augmente également la vitesse (delta) pour accélérer le virage
-        delta = 10
-        # Calcul de la durée pour tourner 90° :
-        # formule : tourner_duration = (π/2) / ( (2*delta) / distance_roues )
+        delta = 10  # Valeur de décalage pour le virage
+        # Durée pour tourner 90° :
         tourner_duration = (math.pi / 2) / ((2 * delta) / self.robot.distance_roues)
         
         self.commands = []
@@ -77,19 +74,22 @@ class Simulation:
             self.commands.append({"type": "tourner", "vitesse": vitesse_base, "delta": delta, "duration": tourner_duration})
         self.current_command_index = 0
         self.command_time_remaining = self.commands[0]["duration"]
-        # Réinitialise le trace tout en gardant le premier point
+        # Réinitialise le trace en gardant le point de départ
         self.trace_points = [(self.robot.x, self.robot.y)]
 
     def update_strategy(self, delta_t):
         """
-        Applique la commande active durant sa durée.
+        Applique la commande active pendant sa durée.
         Pour "avancer", les deux roues tournent à la même vitesse.
         Pour "tourner", on ajuste les vitesses différemment.
-        Lorsque le temps est écoulé, on passe à la commande suivante.
+        Une fois la séquence terminée, le robot s'arrête.
         """
-        if self.commands is None or self.current_command_index >= len(self.commands):
-            self.demarrer_carre()  # redémarre la séquence
+        if self.commands is None:
+            # Plus de commandes : le robot reste arrêté
+            self.robot.vitesse_gauche = 0
+            self.robot.vitesse_droite = 0
             return
+
         cmd = self.commands[self.current_command_index]
         if cmd["type"] == "avancer":
             self.robot.vitesse_gauche = cmd["vitesse"]
@@ -99,6 +99,7 @@ class Simulation:
             delta = cmd["delta"]
             self.robot.vitesse_gauche = v + delta
             self.robot.vitesse_droite = v - delta
+
         self.command_time_remaining -= delta_t
         if self.command_time_remaining <= 0:
             leftover = -self.command_time_remaining
@@ -107,7 +108,10 @@ class Simulation:
                 self.command_time_remaining = self.commands[self.current_command_index]["duration"]
                 self.update_strategy(leftover)
             else:
-                self.demarrer_carre()
+                # Fin de la séquence : on arrête le robot
+                self.commands = None
+                self.robot.vitesse_gauche = 0
+                self.robot.vitesse_droite = 0
 
     def afficher_console(self):
         """Affiche en continu la position, l'orientation et les vitesses du robot."""
@@ -123,15 +127,13 @@ class Simulation:
         delta_t = current_time - self.last_time
         self.last_time = current_time
 
-        if self.commands is not None:
-            self.update_strategy(delta_t)
-        
-        # Mise à jour de la position et de l'orientation via la méthode mise_a_jour d'arene.py
+        self.update_strategy(delta_t)
+        # Mise à jour de la position et de l'orientation via la méthode mise_a_jour de arene.py
         self.arene.mise_a_jour(delta_t)
-        # Ajout de la position actuelle au trace
+        # Ajoute le point actuel au trace
         self.trace_points.append((self.robot.x, self.robot.y))
 
-        # Mise à jour de l'animation des roues (optionnel)
+        # Animation des roues (optionnel)
         left_dist = self.robot.vitesse_gauche * delta_t
         right_dist = self.robot.vitesse_droite * delta_t
         r = self.robot.diametre_roue / 2
@@ -152,7 +154,7 @@ class Simulation:
             self.view.mainloop()
             self.running = False
         else:
-            # Mode console : la séquence démarre immédiatement
+            # Mode console : lancer la séquence et l'exécuter en boucle
             self.demarrer_carre()
             print("Mode console. Séquence démarrée. Appuyez sur Ctrl+C pour arrêter.")
             last_time = time.time()
@@ -161,8 +163,7 @@ class Simulation:
                     current_time = time.time()
                     delta_t = current_time - last_time
                     last_time = current_time
-                    if self.commands is not None:
-                        self.update_strategy(delta_t)
+                    self.update_strategy(delta_t)
                     self.arene.mise_a_jour(delta_t)
                     left_dist = self.robot.vitesse_gauche * delta_t
                     right_dist = self.robot.vitesse_droite * delta_t
@@ -179,4 +180,6 @@ if __name__ == "__main__":
     choix = input("Voulez-vous activer l'affichage graphique ? (o/n) : ")
     use_graphics = choix.strip().lower() in ('o', 'oui', 'y', 'yes')
     sim = Simulation(use_graphics=use_graphics)
+    # Pour lancer directement le dessin du carré, on peut appeler demarrer_carre()
+    sim.demarrer_carre()
     sim.run()
