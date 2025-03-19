@@ -92,17 +92,7 @@ class Robot:
         self.x += vitesse_moyenne * dt * math.cos(self.orientation)
         self.y += vitesse_moyenne * dt * math.sin(self.orientation)
         
-        print(f"Avancer => Position: ({self.x:.2f}, {self.y:.2f}), Orientation: {math.degrees(self.orientation):.2f}°") y  # Position en Y
+        print(f"Avancer => Position: ({self.x:.2f}, {self.y:.2f}), Orientation: {math.degrees(self.orientation):.2f}°") 
 
-    def get_distance(self):
-        """
-        Retourne la distance totale parcourue par le robot.
-        Tourne le robot de l'angle spécifié (en degrés).
-        Un angle positif effectue une rotation anti-horaire.
-        Cette méthode met à jour instantanément l'orientation du robot.
-        """
-        # Conversion de l'angle en radians
-        angle_rad = math.radians(angle)
-        self.orientation += angle_rad
 
     
