@@ -93,15 +93,6 @@ class Robot:
         self.y += vitesse_moyenne * dt * math.sin(self.orientation)
         
         print(f"Avancer => Position: ({self.x:.2f}, {self.y:.2f}), Orientation: {math.degrees(self.orientation):.2f}°") y  # Position en Y
-        self.orientation = orientation  # Angle en radians
-        self.vitesse_gauche = vitesse_gauche  # Vitesse de la roue gauche
-        self.vitesse_droite = vitesse_droite  # Vitesse de la roue droite
-        self.diametre_roue = diametre_rou
-        self.distance_roues = distance_roues
-        self.rayon = distance_roues / 2  # Rayon du robot pour la détection de collision
-        
-        # Attribut pour suivre la distance totale parcourue
-        self.distance_parcourue = 0.0
 
     def get_distance(self):
         """
