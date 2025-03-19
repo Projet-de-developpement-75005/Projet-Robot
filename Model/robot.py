@@ -112,3 +112,6 @@ class Robot:
 
     def get_x_step(self):
         return self.x
+
+    def get_y_step(self):
+        return self.y
