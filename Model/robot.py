@@ -14,6 +14,9 @@ class Robot:
     
     
     def mettre_a_jour_position(self, delta_t):
+        # Sauvegarde de la position avant déplacement
+        old_x, old_y = self.x, self.y
+
         # Mise à jour de la position et de l'orientation du robot en fonction des vitesses des roues
         vitesse_moyenne = (self.vitesse_gauche + self.vitesse_droite) / 2
         delta_orientation = (self.vitesse_droite - self.vitesse_gauche) / self.distance_roues
@@ -21,6 +24,12 @@ class Robot:
         self.orientation += delta_orientation * delta_t
         self.x += vitesse_moyenne * delta_t * math.cos(self.orientation)
         self.y += vitesse_moyenne * delta_t * math.sin(self.orientation)
+        
+        # Calcul et mise à jour de la distance parcourue durant ce déplacement
+        dx = self.x - old_x
+        dy = self.y - old_y
+        self.distance_parcourue += math.sqrt(dx**2 + dy**2)
+
         
     def set_vitesses(self, vitesse_gauche, vitesse_droite):
         print("Mise à jour des vitesses: Gauche =", vitesse_gauche, "| Droite =", vitesse_droite)
