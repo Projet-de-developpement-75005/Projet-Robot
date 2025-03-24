@@ -30,7 +30,7 @@ class Robot:
         dy = self.y - old_y
         self.distance_parcourue += math.sqrt(dx**2 + dy**2)
 
-        
+
     def set_vitesses(self, vitesse_gauche, vitesse_droite):
         print("Mise à jour des vitesses: Gauche =", vitesse_gauche, "| Droite =", vitesse_droite)
         self.vitesse_gauche = vitesse_gauche
@@ -104,6 +104,8 @@ class Robot:
         
         La méthode convertit les vitesses angulaires en vitesses linéaires grâce au diamètre de la roue.
         """
+        old_x, old_y = self.x, self.y
+
         # Calcul du rayon de la roue à partir du diamètre
         rayon_roue = self.diametre_roue / 2
         
@@ -119,6 +121,11 @@ class Robot:
         self.orientation += delta_orientation * dt
         self.x += vitesse_moyenne * dt * math.cos(self.orientation)
         self.y += vitesse_moyenne * dt * math.sin(self.orientation)
+
+        # Mise à jour de la distance parcourue
+        dx = self.x - old_x
+        dy = self.y - old_y
+        self.distance_parcourue += math.sqrt(dx**2 + dy**2)
         
         print(f"Avancer => Position: ({self.x:.2f}, {self.y:.2f}), Orientation: {math.degrees(self.orientation):.2f}°") 
 
@@ -127,3 +134,9 @@ class Robot:
 
     def get_y_step(self):
         return self.y
+    
+    def get_distance(self):
+        """
+        Retourne la distance totale parcourue par le robot depuis son initialisation.
+        """
+        return self.distance_parcourue
