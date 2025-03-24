@@ -43,4 +43,13 @@ class Proxy_Virtuel:
 
 	def get_vitAng(self):
 		return self.robot.get_vitesses_angulaires()
+	
+	def tourner(self, dps):
+		delta = (self.dist_roue * np.abs(dps)) / self.rayon_roue / 2
+		if dps > 0:
+			self.set_vitesse(delta, -delta)
+		else:
+			self.set_vitesse(-delta, delta)
+		self.update()
+
 
