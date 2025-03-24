@@ -10,6 +10,9 @@ class Robot:
         self.diametre_roue = diametre_roue
         self.distance_roues = distance_roues
         self.rayon = distance_roues / 2  # Rayon du robot pour la détection de collision
+        self.distance_parcourue = 0.0 # pour cumuler la distance parcourue
+    
+    
     def mettre_a_jour_position(self, delta_t):
         # Mise à jour de la position et de l'orientation du robot en fonction des vitesses des roues
         vitesse_moyenne = (self.vitesse_gauche + self.vitesse_droite) / 2
