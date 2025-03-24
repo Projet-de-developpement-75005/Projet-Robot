@@ -52,4 +52,14 @@ class Proxy_Virtuel:
 			self.set_vitesse(-delta, delta)
 		self.update()
 
+	def reset(self):
+		self.reset_angle()
+		self.reset_distance()
+
+	def update(self):
+		now = time.time()
+		self.update_distance()
+		self.update_angle()
+		self.last_update = now
+
 
