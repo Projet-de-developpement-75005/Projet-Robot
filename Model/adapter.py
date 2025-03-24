@@ -37,3 +37,10 @@ class Proxy_Virtuel:
 		else:
 			ang1, ang2 = self.get_vitAng()
 			self.angle_parcouru += (now - self.last_update) * (ang1 - ang2) * self.rayon / self.dist_roue * 180 / np.pi
+
+	def get_capteur_distance(self):
+		return self.robot.capteur_distance(self.obstacles)
+
+	def get_vitAng(self):
+		return self.robot.get_vitesses_angulaires()
+
