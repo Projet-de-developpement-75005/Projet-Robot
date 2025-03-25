@@ -62,7 +62,7 @@ class Proxy_Virtuel:
 		self.update_angle()
 		self.last_update = now
 
-class Proxy_Virtuel:
+class Proxy_Reel:
 
 	def __init__(self, robot):
 		print("init")
