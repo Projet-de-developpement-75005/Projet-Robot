@@ -1,61 +1,105 @@
-class Controller:
-    def __init__(self, robot):
-        self.robot = robot
-
-    def appliquer_strategie(self, strategie):
-        strategie.executer(self.robot)
-
+import math
 
 class StrategieAvancer:
     def __init__(self, distance, vitesse):
         self.distance = distance
         self.vitesse = vitesse
+        self.distance_initiale = None
 
-    def executer(self, robot):
-        robot.vitesse_gauche = self.vitesse
-        robot.vitesse_droite = self.vitesse
+    def start(self, robot):
+        self.distance_initiale = robot.get_distance()
+        robot.set_vitesses(self.vitesse, self.vitesse)
 
+    def update(self, robot, dt):
+        robot.avancer(dt)
+        if (robot.get_distance() - self.distance_initiale) >= self.distance:
+            return True  # La distance a été parcourue
+        return False
+
+    def stop(self, robot):
+        robot.set_vitesses(0, 0)
 
 class StrategieTourner:
     def __init__(self, angle, vitesse):
-        self.angle = angle
+        self.angle = angle  # en degrés
         self.vitesse = vitesse
+        self.orientation_initiale = None
 
-    def executer(self, robot):
+    def start(self, robot):
+        self.orientation_initiale = robot.orientation
         if self.angle > 0:
-            robot.vitesse_gauche = -self.vitesse
-            robot.vitesse_droite = self.vitesse
+            robot.set_vitesses(-self.vitesse, self.vitesse)
         else:
-            robot.vitesse_gauche = self.vitesse
-            robot.vitesse_droite = -self.vitesse
+            robot.set_vitesses(self.vitesse, -self.vitesse)
 
+    def update(self, robot, dt):
+        robot.tourner(dt)
+        angle_tourne = abs(robot.orientation - self.orientation_initiale)
+        if angle_tourne >= math.radians(abs(self.angle)):
+            return True
+        return False
+
+    def stop(self, robot):
+        robot.set_vitesses(0, 0)
+
+class StrategieConditionnelle:
+    def __init__(self, strategie1, strategie2):
+        """
+        Combine deux stratégies : par exemple, une stratégie d'avancer (strategie1)
+        suivie d'une stratégie de tourner (strategie2).
+        """
+        self.strategie1 = strategie1
+        self.strategie2 = strategie2
+        self.phase = 1  # 1 pour stratégie1, 2 pour stratégie2
+
+    def start(self, robot):
+        self.strategie1.start(robot)
+
+    def update(self, robot, dt):
+        if self.phase == 1:
+            if self.strategie1.update(robot, dt):
+                self.strategie1.stop(robot)
+                self.phase = 2
+                self.strategie2.start(robot)
+        if self.phase == 2:
+            if self.strategie2.update(robot, dt):
+                self.strategie2.stop(robot)
+                return True  # Les deux stratégies sont terminées
+        return False
+
+    def stop(self, robot):
+        if self.phase == 1:
+            self.strategie1.stop(robot)
+        else:
+            self.strategie2.stop(robot)
 
 class StrategieSequentielle:
-    def __init__(self):
-        self.strategies = [
-            StrategieAvancer(50, 10),
-            StrategieTourner(90, 5),
-            StrategieAvancer(50, 10),
-            StrategieTourner(90, 5),
-            StrategieAvancer(50, 10),
-            StrategieTourner(90, 5),
-            StrategieAvancer(50, 10),
-            StrategieTourner(90, 5)
-        ]
+    def __init__(self, liste_strategies_conditionnelles):
+        """
+        liste_strategies_conditionnelles : liste de stratégies conditionnelles.
+        Chaque stratégie conditionnelle doit s'assurer de réaliser une action complète
+        (par exemple, avancer puis tourner) avant que la suivante ne démarre.
+        """
+        self.liste = liste_strategies_conditionnelles
+        self.index = 0
 
-    def executer(self, robot):
-        for strategie in self.strategies:
-            strategie.executer(robot)
+    def start(self, robot):
+        if self.liste:
+            self.index = 0
+            # Démarre la première stratégie conditionnelle de la liste
+            self.liste[self.index].start(robot)
 
+    def update(self, robot, dt):
+        if self.index < len(self.liste):
+            finished = self.liste[self.index].update(robot, dt)
+            if finished:
+                self.liste[self.index].stop(robot)
+                self.index += 1
+                if self.index < len(self.liste):
+                    # Démarre la stratégie conditionnelle suivante
+                    self.liste[self.index].start(robot)
+        return self.index >= len(self.liste)
 
-class CapteurDistance:
-    def __init__(self, robot, obstacles):
-        self.robot = robot
-        self.obstacles = obstacles
-
-    def mesurer_distance(self):
-        distances = [
-            ((obstacle.x - self.robot.x)**2 + (obstacle.y - self.robot.y)**2)**0.5
-            for obstacle in self.obstacles
-        ]
-        return min(distances) if distances else float('inf')
+    def stop(self, robot):
+        if self.index < len(self.liste):
+            self.liste[self.index].stop(robot)
