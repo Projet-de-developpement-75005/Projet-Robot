@@ -74,3 +74,17 @@ class Proxy_Virtuel:
 		self.angle_parcouru = 0
 		self.last_update = 0
 		self.angle_depart = self.robot.theta
+
+	def set_vitesse(self, dps1, dps2):
+		self.robot.vitAngG = dps1 / 20
+		self.robot.vitAngD = dps2 / 20
+		self.update()
+
+	def update_distance(self):
+		now = time.time()
+		if self.last_update == 0:
+			self.last_update = now
+		else:
+			ang_g, ang_d = self.get_vitAng()
+			delta = self.robot.rayon_roue * (now - self.last_update) * (ang_g + ang_d) / 2
+			self.distance_parcourue += delta
