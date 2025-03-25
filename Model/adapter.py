@@ -120,3 +120,14 @@ class Proxy_Virtuel:
 			self.set_vitesse(delta, -delta)
 		else:
 			self.set_vitesse(-delta, delta)
+
+	def reset(self):
+		self.reset_angle()
+		self.reset_distance()
+
+	def update(self):
+		now = time.time()
+		self.update_distance()
+		self.update_angle()
+		self.last_Ang = self.robot.get_motor_position()
+		self.last_update = now
