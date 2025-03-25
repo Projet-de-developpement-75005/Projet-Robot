@@ -62,4 +62,15 @@ class Proxy_Virtuel:
 		self.update_angle()
 		self.last_update = now
 
+class Proxy_Virtuel:
 
+	def __init__(self, robot, env):
+		self.robot = robot
+		self.env = env
+		self.dist_roue = self.robot.dist_roue
+		self.rayon = self.robot.rayon
+		self.rayon_roue = self.robot.rayon_roue
+		self.distance_parcourue = 0
+		self.angle_parcouru = 0
+		self.last_update = 0
+		self.angle_depart = self.robot.theta
