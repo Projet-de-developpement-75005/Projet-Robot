@@ -5,33 +5,41 @@ class Robot:
         self.x = x  # Position en X
         self.y = y  # Position en Y
         self.orientation = orientation  # Angle en radians
-        self.vitesse_gauche = vitesse_gauche  # Vitesse de la roue gauche
-        self.vitesse_droite = vitesse_droite  # Vitesse de la roue droite
-        self.diametre_roue = diametre_roue
-        self.distance_roues = distance_roues
-        self.rayon = distance_roues / 2  # Rayon du robot pour la détection de collision
-        self.distance_parcourue = 0.0 # pour cumuler la distance parcourue
-    
+        self.vitesse_gauche = vitesse_gauche  # Vitesse linéaire de la roue gauche (m/s)
+        self.vitesse_droite = vitesse_droite  # Vitesse linéaire de la roue droite (m/s)
+        self.diametre_roue = diametre_roue  # Diamètre de la roue (m)
+        self.distance_roues = distance_roues  # Distance entre les roues (m)
+        self.rayon = distance_roues / 2  # Rayon du robot pour la détection de collision (m)
+        self.distance_parcourue = 0.0  # Distance totale parcourue (m)
     
     def mettre_a_jour_position(self, delta_t):
+        """
+        Met à jour la position et l'orientation du robot en fonction des vitesses linéaires.
+        delta_t : intervalle de temps pendant lequel les vitesses sont appliquées (en secondes)
+        """
         # Sauvegarde de la position avant déplacement
         old_x, old_y = self.x, self.y
 
-        # Mise à jour de la position et de l'orientation du robot en fonction des vitesses des roues
+        # Calcul de la vitesse linéaire moyenne
         vitesse_moyenne = (self.vitesse_gauche + self.vitesse_droite) / 2
+        
+        # La vitesse angulaire (rad/s) est calculée à partir de la différence des vitesses linéaires
         delta_orientation = (self.vitesse_droite - self.vitesse_gauche) / self.distance_roues
 
+        # Mise à jour de l'orientation et de la position
         self.orientation += delta_orientation * delta_t
         self.x += vitesse_moyenne * delta_t * math.cos(self.orientation)
         self.y += vitesse_moyenne * delta_t * math.sin(self.orientation)
         
-        # Calcul et mise à jour de la distance parcourue durant ce déplacement
+        # Mise à jour de la distance parcourue
         dx = self.x - old_x
         dy = self.y - old_y
         self.distance_parcourue += math.sqrt(dx**2 + dy**2)
-
-
+    
     def set_vitesses(self, vitesse_gauche, vitesse_droite):
+        """
+        Met à jour les vitesses linéaires des roues.
+        """
         print("Mise à jour des vitesses: Gauche =", vitesse_gauche, "| Droite =", vitesse_droite)
         self.vitesse_gauche = vitesse_gauche
         self.vitesse_droite = vitesse_droite
@@ -62,61 +70,36 @@ class Robot:
     
     def tourner(self, dt):
         """
-        Fait tourner le robot sur l'intervalle de temps dt en utilisant ses vitesses angulaires.
+        Fait tourner le robot sur l'intervalle de temps dt en utilisant ses vitesses linéaires.
+        On suppose que pour tourner sur place, les vitesses sont réglées de manière opposée.
         
-        dt : intervalle de temps pendant lequel les roues tournent (en secondes)
-        
-        La méthode convertit les vitesses angulaires en vitesses linéaires grâce au rayon de la roue,
-        calcule le changement d'orientation (delta_orientation) et met à jour l'attribut orientation.
-        On suppose que, pour tourner sur place, les vitesses des roues sont réglées de manière opposée.
+        dt : intervalle de temps pendant lequel les vitesses sont appliquées (en secondes)
         """
-        # Calcul du rayon de la roue à partir du diamètre
-        rayon_roue = self.diametre_roue / 2
-        
-        # Conversion des vitesses angulaires en vitesses linéaires
-        vitesse_lineaire_gauche = rayon_roue * self.vitesse_gauche
-        vitesse_lineaire_droite = rayon_roue * self.vitesse_droite
-        
-        # Calcul du changement d'orientation en fonction de la différence de vitesses linéaires
-        delta_orientation = (vitesse_lineaire_droite - vitesse_lineaire_gauche) / self.distance_roues
-        
-        # Mise à jour de l'orientation
+        # Calcul de la vitesse angulaire à partir des vitesses linéaires
+        delta_orientation = (self.vitesse_droite - self.vitesse_gauche) / self.distance_roues
         self.orientation += delta_orientation * dt
-        
         print(f"Tourner => Orientation: {math.degrees(self.orientation):.2f}°")
-
-
-        
-    def get_vitesses_angulaires(self):
-        vitesse_angulaire_gauche = self.vitesse_gauche / (self.diametre_roue / 2)
-        vitesse_angulaire_droite = self.vitesse_droite / (self.diametre_roue / 2)
-        return (vitesse_angulaire_gauche, vitesse_angulaire_droite)
-        
-
     
-
-
+    def get_vitesses_angulaires(self):
+        """
+        Retourne les vitesses angulaires des roues en rad/s, calculées à partir des vitesses linéaires.
+        """
+        rayon_roue = self.diametre_roue / 2
+        vitesse_angulaire_gauche = self.vitesse_gauche / rayon_roue
+        vitesse_angulaire_droite = self.vitesse_droite / rayon_roue
+        return (vitesse_angulaire_gauche, vitesse_angulaire_droite)
+    
     def avancer(self, dt):
         """
-        Déplace le robot en utilisant ses vitesses angulaires stockées.
-
-        dt : intervalle de temps pendant lequel les roues tournent (en secondes)
-        
-        La méthode convertit les vitesses angulaires en vitesses linéaires grâce au diamètre de la roue.
+        Déplace le robot en appliquant ses vitesses linéaires sur un intervalle dt (en secondes).
         """
         old_x, old_y = self.x, self.y
 
-        # Calcul du rayon de la roue à partir du diamètre
-        rayon_roue = self.diametre_roue / 2
-        
-        # Conversion des vitesses angulaires (stockées dans self) en vitesses linéaires
-        vitesse_lineaire_gauche = rayon_roue * self.vitesse_gauche
-        vitesse_lineaire_droite = rayon_roue * self.vitesse_droite
-        
-        # Calcul de la vitesse linéaire moyenne et du changement d'orientation
-        vitesse_moyenne = (vitesse_lineaire_gauche + vitesse_lineaire_droite) / 2
-        delta_orientation = (vitesse_lineaire_droite - vitesse_lineaire_gauche) / self.distance_roues
-        
+        # Calcul de la vitesse linéaire moyenne
+        vitesse_moyenne = (self.vitesse_gauche + self.vitesse_droite) / 2
+        # Calcul de la vitesse angulaire (rad/s) pour mettre à jour l'orientation
+        delta_orientation = (self.vitesse_droite - self.vitesse_gauche) / self.distance_roues
+
         # Mise à jour de l'orientation et de la position
         self.orientation += delta_orientation * dt
         self.x += vitesse_moyenne * dt * math.cos(self.orientation)
@@ -127,8 +110,8 @@ class Robot:
         dy = self.y - old_y
         self.distance_parcourue += math.sqrt(dx**2 + dy**2)
         
-        print(f"Avancer => Position: ({self.x:.2f}, {self.y:.2f}), Orientation: {math.degrees(self.orientation):.2f}°") 
-
+        print(f"Avancer => Position: ({self.x:.2f}, {self.y:.2f}), Orientation: {math.degrees(self.orientation):.2f}°")
+    
     def get_x_step(self):
         return self.x
 
