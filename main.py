@@ -18,7 +18,16 @@ obstacle = Obstacle(x=200, y=60, largeur=150, hauteur=100)
 obstacle2 = Obstacle(x=400, y=350, largeur=70, hauteur=160)
 
 
+# Demande à l'utilisateur le type d'affichage
+print("Choisissez le mode d'affichage :")
+print("1 - Affichage 2D")
+print("2 - Affichage 3D")
+choix_affichage = input("Entrez 1 ou 2 : ").strip()
 
+if choix_affichage == "2":
+    mode_affichage = "3d"
+else:
+    mode_affichage = "2d"
 
 
 # Instanciation de l'adapter selon le mode choisi
