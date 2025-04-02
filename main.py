@@ -89,7 +89,4 @@ elif mode == "virtuel" and affichage == "3d":
     view3d = View3D(arene, robot)
     view3d.run_simulation(controller, strategie_sequentielle, dt)
 
-# === MODE REEL ===
-elif mode == "reel":
-    controller.appliquer_strategie(strategie_sequentielle, dt)
-    print("Stratégie terminée.")
+
