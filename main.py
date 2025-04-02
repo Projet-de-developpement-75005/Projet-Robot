@@ -34,7 +34,7 @@ else:
 # === INITIALISATION COMMUNE ===
 robot = Robot(x=500, y=400, orientation=0, vitesse_gauche=0, vitesse_droite=0, diametre_roue=20, distance_roues=40)
 obstacle = Obstacle(x=200, y=60, largeur=150, hauteur=100)
-obstacle2 = Obstacle(x=400, y=350, largeur=70, hauteur=160)
+obstacle2 = Obstacle(x=350, y=350, largeur=70, hauteur=160)
 
 if mode == "virtuel":
     adapter = Proxy_Virtuel(robot, obstacles=[obstacle, obstacle2])
