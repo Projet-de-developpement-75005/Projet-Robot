@@ -1,5 +1,5 @@
 import time
-import numpy as np
+
 
 class Proxy_Virtuel:
     def __init__(self, robot, obstacles):
@@ -24,12 +24,7 @@ class Proxy_Virtuel:
     
     def get_distance(self):
         return self.robot.get_distance()
-    
-    def capteur_distance(self):
-        return self.robot.capteur_distance(self.obstacles)
-    
-    def get_vitesses_angulaires(self):
-        return self.robot.get_vitesses_angulaires()
+
     
     def update(self):
         self.last_update = time.time()
@@ -61,11 +56,6 @@ class Proxy_Reel:
     def get_distance(self):
         return self.robot.get_distance()  # Adaptez si vous avez un autre moyen de mesurer la distance
     
-    def capteur_distance(self):
-        return self.robot.get_distance()  # Remplacez par la lecture d'un capteur réel si nécessaire
-    
-    def get_vitesses_angulaires(self):
-        return self.robot.get_vitesses_angulaires()
     
     def update(self):
         self.last_update = time.time()
