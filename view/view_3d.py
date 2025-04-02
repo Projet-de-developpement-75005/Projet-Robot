@@ -33,3 +33,18 @@ class View3D:
         plt.draw()
         plt.pause(0.01)
 
+    def run_simulation(self, controller, strategie, dt):
+        strategie.start(controller.adapter)
+    
+        while not strategie.update(controller.adapter, dt):
+            if not plt.fignum_exists(self.fig.number):
+                print("Fenêtre fermée par l'utilisateur.")
+                break  # Sort de la boucle si la fenêtre a été fermée
+
+            self.trace.append((self.robot.x, self.robot.y))
+            self.draw_robot()
+            time.sleep(dt)
+
+        strategie.stop(controller.adapter)
+        print("Stratégie terminée.")
+        plt.close(self.fig)  # Ferme proprement la figure s'il reste quelque chose
