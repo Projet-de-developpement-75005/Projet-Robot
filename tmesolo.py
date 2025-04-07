@@ -13,6 +13,7 @@ arene1.ajouter_obstacle(obstacle2)
 arene1.ajouter_obstacle(obstacle3)
 robot = Robot(x=10, y=10, orientation=0, vitesse_gauche=0, vitesse_droite=0, diametre_roue=20, distance_roues=40)
 def q1_1():
+    #ce qui est demandé est fait en dehors de la fonction
     for i in range(100):
         arene1.mise_a_jour(0.1)
         time.sleep(0.1)
@@ -52,6 +53,17 @@ def q1_2():
             break
         arene1.mise_a_jour(0.1)
         time.sleep(0.1)
+def q1_3():
+    #on active le dessin de la trace
+    robot.dessine(True)
+    for i in range(100): #on se deplace tout droit avec la trace
+        arene1.mise_a_jour(0.1)
+        time.sleep(0.05)
+    robot.dessine(False) #on desactive le crayon
+    for j in range(50): #le robot continue a avancer mais sans dessiner la trace
+        arene1.mise_a_jour(0.1)
+        time.sleep(0.05)
 if __name__ == "__main__":
     q1_1()
     q1_2()
+    q1_3()
