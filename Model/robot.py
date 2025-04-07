@@ -15,9 +15,11 @@ class Robot:
         self.crayon_baisse = False
         self.trace = [] #la liste pour la trace
 
-    
+    #ajout pour la q1.3
+    def dessine(self, b: bool):
+        self.crayon_baisse = b
 
-    
+
     def set_vitesses(self, vitesse_gauche, vitesse_droite):
         """
         Met à jour les vitesses linéaires des roues.
