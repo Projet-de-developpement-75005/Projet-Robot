@@ -14,10 +14,21 @@ class Robot:
         #pour la q1.3
         self.crayon_baisse = False
         self.trace = [] #la liste pour la trace
+        self.crayon_baisse = False
+        #pour la q1.4
+        self.couleur_trace = "blue"  #couleur bleue active
+        self.couleurs_trace = []  #liste traces pour les couleurs
+
 
     #ajout pour la q1.3
     def dessine(self, b: bool):
         self.crayon_baisse = b
+
+    def rouge(self):
+        self.couleur_trace = "red"
+
+    def bleu(self):
+        self.couleur_trace = "blue"
 
 
     def set_vitesses(self, vitesse_gauche, vitesse_droite):
