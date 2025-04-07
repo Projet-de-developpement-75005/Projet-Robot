@@ -3,7 +3,6 @@ from Model.arene import Arene
 from Model.robot import Robot
 from Model.adapter import Proxy_Virtuel, Proxy_Reel
 from Model.obstacle import Obstacle
-from view.view_3d import View3D
 from controller.controller import (
     Controller,
     StrategieAvancer,
@@ -33,11 +32,12 @@ else:
 
 # === INITIALISATION COMMUNE ===
 robot = Robot(x=500, y=400, orientation=0, vitesse_gauche=0, vitesse_droite=0, diametre_roue=20, distance_roues=40)
-obstacle = Obstacle(x=200, y=60, largeur=150, hauteur=100)
-obstacle2 = Obstacle(x=350, y=350, largeur=70, hauteur=160)
+obstacle = Obstacle(x=450, y=60, largeur=70, hauteur=70)
+obstacle2 = Obstacle(x=450, y=300, largeur=70, hauteur=70)
+obstacle3 = Obstacle(x=450, y=600, largeur=70, hauteur=70)
 
 if mode == "virtuel":
-    adapter = Proxy_Virtuel(robot, obstacles=[obstacle, obstacle2])
+    adapter = Proxy_Virtuel(robot, obstacles=[obstacle, obstacle2,obstacle3])
 else:
     adapter = Proxy_Reel(robot)
 
@@ -59,6 +59,8 @@ if mode == "virtuel" and affichage == "2d":
     arene.ajouter_robot(robot)
     arene.ajouter_obstacle(obstacle)
     arene.ajouter_obstacle(obstacle2)
+    arene.ajouter_obstacle(obstacle3)
+
     view = View(arene)
     trace_points = []
 
@@ -86,7 +88,7 @@ elif mode == "virtuel" and affichage == "3d":
     arene.ajouter_robot(robot)
     arene.ajouter_obstacle(obstacle)
     arene.ajouter_obstacle(obstacle2)
-    view3d = View3D(arene, robot)
-    view3d.run_simulation(controller, strategie_sequentielle, dt)
+    arene.ajouter_obstacle(obstacle3)
+
 
 
