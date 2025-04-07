@@ -3,6 +3,14 @@ import math
 from Model.arene import Arene
 from Model.robot import Robot
 from Model.obstacle import Obstacle
+from view.view_3d import View3D
+from controller.controller import (
+    Controller,
+    StrategieAvancer,
+    StrategieTourner,
+    StrategieConditionnelle,
+    StrategieSequentielle
+)
 #je cree l'arene, les obstacles et le robot directement pour ne pas avoir a les creer pour chaque fonction
 arene1=Arene(largeur=900, hauteur=800)
 obstacle1 = Obstacle(x=450, y=400, largeur=150, hauteur=100)
@@ -63,6 +71,15 @@ def q1_3():
     for j in range(50): #le robot continue a avancer mais sans dessiner la trace
         arene1.mise_a_jour(0.1)
         time.sleep(0.05)
+    view = View(arene1)
+    def boucle():
+        arene1.mise_a_jour(0.1)
+        view.update_affichage(robot)
+        if robot.x < arene1.largeur - 10:
+            view.after(100, boucle)
+
+    boucle()
+    view.mainloop()
 if __name__ == "__main__":
     q1_1()
     q1_2()
