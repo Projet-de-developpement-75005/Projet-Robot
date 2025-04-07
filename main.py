@@ -9,84 +9,53 @@ from controller.controller import (
     StrategieAvancer,
     StrategieTourner,
     StrategieConditionnelle,
-    StrategieSequentielle
+    StrategieSequentielle,
+    StrategieDemiTour
 )
 
-# === CHOIX DE MODE & AFFICHAGE ===
-mode = "virtuel"  # ou "reel"
-dt = 0.05  # intervalle de temps (en secondes)
-
-# Demande du type d'affichage
-print("Choisissez le mode d'affichage :")
-print("1 - Affichage 2D")
-print("2 - Affichage 3D")
-choix_affichage = input("Entrez 1 ou 2 : ").strip()
-
-if choix_affichage == "2":
-    affichage = "3d"
-elif choix_affichage == "1":
-    affichage = "2d"
-else:
-    print("Erreur : il faut choisir 1 ou 2.")
-    exit()  # Termine le programme proprement
+# 
+mode = "virtuel"  
+dt = 0.01  # intervalle de temps (en secondes)
 
 
-# === INITIALISATION COMMUNE ===
-robot = Robot(x=500, y=400, orientation=0, vitesse_gauche=0, vitesse_droite=0, diametre_roue=20, distance_roues=40)
-obstacle = Obstacle(x=200, y=60, largeur=150, hauteur=100)
-obstacle2 = Obstacle(x=350, y=350, largeur=70, hauteur=160)
 
-if mode == "virtuel":
-    adapter = Proxy_Virtuel(robot, obstacles=[obstacle, obstacle2])
-else:
-    adapter = Proxy_Reel(robot)
 
-# Création des stratégies pour dessiner un carré
-liste_strategies = []
-for _ in range(4):
-    strat_avancer = StrategieAvancer(distance=120, vitesse=50)
-    strat_tourner = StrategieTourner(angle_degres=90, vitesse=10)
-    strat_conditionnelle = StrategieConditionnelle(strat_avancer, strat_tourner)
-    liste_strategies.append(strat_conditionnelle)
+# question 1
+robot = Robot(x=50, y=700, orientation=0, vitesse_gauche=0, vitesse_droite=0, diametre_roue=20, distance_roues=40)
+obstacle1 = Obstacle(x=470, y=50, largeur=70, hauteur=70)
+obstacle2 = Obstacle(x=470, y=400, largeur=70, hauteur=70)
+obstacle3 = Obstacle(x=470, y=700, largeur=70, hauteur=70)
 
-strategie_sequentielle = StrategieSequentielle(liste_strategies)
-controller = Controller(adapter)
 
-# === MODE VIRTUEL AVEC AFFICHAGE 2D ===
-if mode == "virtuel" and affichage == "2d":
-    from view.view_2d import View
-    arene = Arene(largeur=950, hauteur=800)
-    arene.ajouter_robot(robot)
-    arene.ajouter_obstacle(obstacle)
-    arene.ajouter_obstacle(obstacle2)
-    view = View(arene)
-    trace_points = []
+adapter = Proxy_Virtuel(robot, obstacles=[obstacle1, obstacle2,obstacle3])
+strategie = StrategieDemiTour(max_tours=10, distance=100, vitesse=50)
+strategie.start(adapter)
 
-    strategie_sequentielle.start(adapter)
 
-    def update_simulation():
-        finished = strategie_sequentielle.update(adapter, dt)
-        arene.mise_a_jour(dt)
-        trace_points.append((robot.x, robot.y))
-        view.update_affichage(robot, trace_points)
 
-        if not finished:
-            view.after(int(dt * 1000), update_simulation)
+from view.view_2d import View
+arene = Arene(largeur=950, hauteur=800)
+arene.ajouter_robot(robot)
+arene.ajouter_obstacle(obstacle1)
+arene.ajouter_obstacle(obstacle2)
+arene.ajouter_obstacle(obstacle3)
+view = View(arene)
+#trace_points = []
+
+    #strategie_sequentielle.start(adapter)
+
+def update_simulation():
+        termine = strategie.update(robot, 0.05)
+        arene.mise_a_jour(0.05)
+        view.update_affichage(robot)
+
+        if not termine:
+            view.after(50, update_simulation)
         else:
-            strategie_sequentielle.stop(adapter)
-            print("Stratégie terminée, le robot a dessiné un carré.")
+            print("strategie terminee.")
 
-    update_simulation()
-    view.mainloop()
+update_simulation()
+view.mainloop()
 
-# === MODE VIRTUEL AVEC AFFICHAGE 3D ===
-elif mode == "virtuel" and affichage == "3d":
-    
-    arene = Arene(largeur=950, hauteur=800)
-    arene.ajouter_robot(robot)
-    arene.ajouter_obstacle(obstacle)
-    arene.ajouter_obstacle(obstacle2)
-    view3d = View3D(arene, robot)
-    view3d.run_simulation(controller, strategie_sequentielle, dt)
 
 

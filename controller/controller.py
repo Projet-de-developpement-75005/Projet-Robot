@@ -36,7 +36,6 @@ class StrategieAvancer:
         adapter.set_vitesses(0, 0)
 
 
-import math
 
 class StrategieTourner:
     def __init__(self, angle_degres, vitesse):
@@ -50,6 +49,7 @@ class StrategieTourner:
         self.orientation_cible = None
 
     def start(self, adapter):
+        print("test pour savoir si trouner est appelee")
         # On mémorise l'orientation de départ
         self.orientation_initiale = adapter.robot.orientation
         # On calcule l'orientation cible (en radians)
@@ -146,3 +146,49 @@ class StrategieSequentielle:
     def stop(self, adapter):
         if self.index < len(self.liste):
             self.liste[self.index].stop(adapter)
+
+
+
+
+
+#question 1.2
+
+class StrategieDemiTour:
+    def __init__(self, max_tours=10, distance=0, vitesse=50):
+        self.max_tours = max_tours
+        self.distance = distance
+        self.vitesse = vitesse
+        self.tours_effectues = 0
+        self.phase = 0  #1  = avancer 2 = tourner
+        self.strategie = None
+
+    def start(self, adapter):
+        print("avancer")
+        self.strategie = StrategieAvancer(distance=self.distance, vitesse=self.vitesse)
+        self.strategie.start(adapter)
+
+    def update(self, adapter, dt):
+        if self.tours_effectues >= self.max_tours:
+            adapter.set_vitesses(0, 0)
+            return True  # strategiee tirmine
+
+        if self.strategie.update(adapter, dt):
+            self.strategie.stop(adapter)
+
+            if self.phase == 1:
+                print("demi-tour")
+                self.strategie = StrategieTourner(angle_degres=180, vitesse=self.vitesse)
+                self.phase = 2
+            else:
+                print(" avancer ")
+                self.strategie = StrategieAvancer(distance=self.distance, vitesse=self.vitesse)
+                self.phase = 1
+                self.tours_effectues += 1
+
+            self.strategie.start(adapter)
+
+        return False
+
+    def stop(self, adapter):
+        if self.strategie:
+            self.strategie.stop(adapter)
