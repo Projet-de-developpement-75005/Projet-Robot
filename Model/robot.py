@@ -2,15 +2,19 @@ import math
 
 class Robot:
     def __init__(self, x, y, orientation, vitesse_gauche, vitesse_droite, diametre_roue, distance_roues):
-        self.x = x  # Position en X
-        self.y = y  # Position en Y
-        self.orientation = orientation  # Angle en radians
-        self.vitesse_gauche = vitesse_gauche  # Vitesse linéaire de la roue gauche (m/s)
-        self.vitesse_droite = vitesse_droite  # Vitesse linéaire de la roue droite (m/s)
-        self.diametre_roue = diametre_roue  # Diamètre de la roue (m)
-        self.distance_roues = distance_roues  # Distance entre les roues (m)
-        self.rayon = distance_roues / 2  # Rayon du robot pour la détection de collision (m)
-        self.distance_parcourue = 0.0  # Distance totale parcourue (m)
+        self.x = x
+        self.y = y
+        self.orientation = orientation
+        self.vitesse_gauche = vitesse_gauche
+        self.vitesse_droite = vitesse_droite
+        self.diametre_roue = diametre_roue
+        self.distance_roues = distance_roues
+        self.rayon = distance_roues / 2
+        self.distance_parcourue = 0.0
+        #pour la q1.3
+        self.crayon_baisse = False
+        self.trace = [] #la liste pour la trace
+
     
 
     
