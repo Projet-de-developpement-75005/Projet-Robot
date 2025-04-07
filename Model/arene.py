@@ -36,6 +36,11 @@ class Arene:
                 self.robot.x = nouvelle_x
                 self.robot.y = nouvelle_y
                 self.robot.orientation = nouvelle_orientation
+
+                #q1.3 on enregistre la trace si le crayon est baisse
+                if self.robot.crayon_baisse:
+                    self.robot.trace.append((nouvelle_x, nouvelle_y))
+
             else:
                 self.robot.vitesse_gauche = 0
                 self.robot.vitesse_droite = 0
