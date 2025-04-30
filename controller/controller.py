@@ -32,8 +32,6 @@ class StrategieAvancer:
             return True  # La distance a été parcourue
         return False
 
-    def stop(self, adapter):
-        adapter.set_vitesses(0, 0)
 
 
 import math
