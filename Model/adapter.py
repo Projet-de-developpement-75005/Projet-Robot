@@ -1,61 +1,64 @@
 import time
+from time import pi
 
-
-class Proxy_Virtuel:
+class adapterVirtuel:
     def __init__(self, robot, obstacles):
         self.robot = robot
-        self.obstacles = obstacles
-        self.dist_roue = robot.distance_roues
-        self.rayon = robot.rayon
-        self.rayon_roue = robot.diametre_roue / 2
-        self.last_update = time.time()
-
-    # On propose ici une interface commune aux stratégies :
-    def set_vitesses(self, v1, v2):
-        self.robot.set_vitesses(v1, v2)
+        self.obstcales = obstcales 
+        self.angle = 0
+        self.distance = 0
+        self.derniere_maj= time.time()
+        
+        if robot:
+            self.ecart_roue=robot.ecart_roue
+            self.rayon_robot= robot.rayon
+            self.rayon_roue= robot.taille_roue /2
+            
     
-    def avancer(self, dt):
+    def difinir_vitesse(self,v_gauche, v_droite):
+        if self.robot:
+            self.robot.set_vitesses(v_gauche,v_droite)
+        self.derniere_maj=time.time()
+        
+    def get_dt(self):
+        current_time=time.time()
+        dt=current_time=self.derniere_maj
+        self.derniere_maj=current_time
+        return dt
+    
+    def update(self):
+        self.last_update = time.time()
+        
+    def avancer(self):
+        dt=self.get_dt()
         self.robot.avancer(dt)
         self.update()
-    
-    def tourner(self, dt):
+        
+    def tourner(self):
+        dt=self.get_dt()
         self.robot.tourner(dt)
         self.update()
     
-    def get_distance(self):
-        return self.robot.get_distance()
-
+    def dist_parcourue(self):
+        dt=self.get_dt()
+        vit_moyenne=(self.robot.vitesse_g+self.robot.vitesse_d)/2
+        dist=vit_moyenne * dt
+        self.distance+=dist
+        return self.distance
     
-    def update(self):
-        self.last_update = time.time()
-
-
-class Proxy_Reel:
-    def __init__(self, robot):
-        # Ici, on suppose que le robot réel possède certains attributs (sinon adaptez)
-        self.robot = robot
-        self.dist_roue = getattr(robot, "WHEEL_BASE_WIDTH", robot.distance_roues)
-        self.rayon = self.dist_roue / 2
-        self.rayon_roue = getattr(robot, "WHEEL_DIAMETER", robot.diametre_roue) / 2
-        self.last_update = time.time()
-
-    def set_vitesses(self, v1, v2):
-        # Pour un robot réel, on envoie directement la commande aux moteurs
-        self.robot.set_motor_dps(self.robot._gpg.MOTOR_LEFT, v1)
-        self.robot.set_motor_dps(self.robot._gpg.MOTOR_RIGHT, v2)
+    def get_ang_parcourue(self):
+        dt=self.get_dt()
+        dt_vitesse=self.robot.vitesse_d-self.robot.vitesse_g
+        angle=(dt_vitesse/self.distance) * dt
+        self.angle+=angle
+        return math.degrees(self.angle) 
+        
+           
     
-    def avancer(self, dt):
-        # Dans le cas réel, on suppose que la commande est envoyée et on attend dt
-        time.sleep(dt)
-        self.update()
-    
-    def tourner(self, dt):
-        time.sleep(dt)
-        self.update()
-    
-    def get_distance(self):
-        return self.robot.get_distance()  # Adaptez si vous avez un autre moyen de mesurer la distance
-    
-    
-    def update(self):
-        self.last_update = time.time()
+        
+        
+        
+        
+        
+            
+        
