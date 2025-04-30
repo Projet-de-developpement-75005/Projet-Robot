@@ -29,7 +29,7 @@ class StrategieAvancer:
     def update(self, adapter, dt):
         adapter.avancer(dt)
         if (adapter.get_distance() - self.distance_initiale) >= self.distance:
-            return True  # La distance a été parcourue
+            return True  
         return False
 
     def stop(self, adapter):
