@@ -32,10 +32,10 @@ class Robot:
         x_prec=self.pos_x
         y_prec=self.pos_y
         
-        vitesse_moyenne=sum(self.vitesse_d,self.vitesse_g) / 2
+        vitesse_moyenne=(self.vitesse_d+self.vitesse_g) / 2
         
-        self.pos_x=vitesse_moyenne * math.cos(self.angle_orientaion) *dt
-        self.pos_y=vitesse_moyenne * math.sin(self.angle_orientaion) * dt
+        self.pos_x+=vitesse_moyenne * math.cos(self.angle_orientaion) *dt
+        self.pos_y+=vitesse_moyenne * math.sin(self.angle_orientaion) * dt
         
         dx=self.pos_x - x_prec
         dy=self.pos_y - y_prec
@@ -44,13 +44,14 @@ class Robot:
         
         print(f"Nouvelle coord x :{self.pos_x} et cood y :{self.pos_y} | la distance parcourue est :{self.distance: .3f}m")
         
+
     
     def rotation(self,dt):
         
         if self.vitesse_d != self.vitesse_g:
             delta_angle=(self.vitesse_d - self.vitesse_g)/self.distance *dt
             self.angle_orientaion+=delta_angle
-            self.angle_orientaion %= (2*math.pi) #nprmalisation entre 0 et 2pi
+            self.angle_orientaion %= (2*math.pi) #normalisation entre 0 et 2pi
             print(f"Rotation : Angle={math.degrees(self.angle_orientaion):.1f}")#convertit des angles exprimé en radians en degré
         
         
