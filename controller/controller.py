@@ -2,8 +2,8 @@ import math
 import time
 
 class Controller:
-    def __init__(self,adapteur):
-        self.adapteur=adapteur
+    def __init__(self,adapter):
+        self.adapter=adapter
         
         
     def applique_strategie(self,strategie):
@@ -18,11 +18,39 @@ class Controller:
             delta_time=moment_actuel - moment_precedent 
             moment_precedent=moment_actuel
             
-            termine=strategie.update(self.adapteur,delta_time)
+            termine=strategie.update(self.adapter,delta_time)
             if termine:
                 break
             
         strategie.stop(self.adapter)
+    def run_simulation(self, strategie, view=None):
+        self.applique_strategie(strategie)
+        dernier_temps = time.time()
+        active = True
+
+        print("Simulation démarrée !")
+
+        while active:
+            temps_actuel = time.time()
+            dt = temps_actuel - dernier_temps
+            dernier_temps = temps_actuel
+
+            termine = strategie.update(self.adapter, dt)
+            if termine:
+                active = False
+
+            self.adapter.update()
+
+            robot = self.adapter.robot
+            print(f"Robot -> x:{robot.pos_x:.2f}, y:{robot.pos_y:.2f}, angle:{robot.angle_orientaion:.2f}")
+
+            if view:
+                view.update_affichage()
+
+            time.sleep(0.2)
+
+        strategie.stop(self.adapter)
+        print("Simulation terminée !")
         
 class StrategieAvance:
     def __init__(self,distance_cible,vitesse):
@@ -31,18 +59,18 @@ class StrategieAvance:
         self.depart=None
         
     def start(self,adapter):
-        self.depart=adapter.get_distance()
-        adapter.set_vitesses(self.vitesse,self.vitesse)
+        self.depart=adapter.dist_parcourue()
+        adapter.definir_vitesse(self.vitesse,self.vitesse)
         
     def update(self,adapter,dt):
-        adapter.avancer()
-        distance_actuelle=adapter.get_distance()
+        adapter.avancer(dt)
+        distance_actuelle=adapter.dist_parcourue()
         if(distance_actuelle -self.depart)>=self.distance_cible:
             return True
         return False
     
     def stop(self,adapter):
-        adapter.set_vitesses(0,0)
+        adapter.definir_vitesse(0,0)
         
 
 
@@ -54,28 +82,28 @@ class StrategieTourner:
         self.angle_cible=None
         
     def start(self,adapter):
-        self.angle_depart=adapter.robot.orientation
+        self.angle_depart=adapter.robot.angle_orientaion
         self.angle_cible=self.angle_depart+math.radians(self.angle_deg)
         
         if self.angle_deg >0:
-            adapter.set_vitesses(-self.vitesse,self.vitesse)
+            adapter.definir_vitesse(-self.vitesse,self.vitesse)
             
         else:
-            adapter.set_vitesses(self.vitesse,-self.vitesse)
+            adapter.definir_vitesse(self.vitesse,-self.vitesse)
             
     def update(self,adapter,dt):
         adapter.tourner()
-        angle_courant=adapter.robot.orientation
+        angle_courant=adapter.robot.angle_orientaion
         difference=self.angle_cible-angle_courant
         
         if(self.angle_deg >0 and difference<=0) or (self.angle_deg <0 and difference>=0):
-            adapter.robot.orientation=self.angle_cible
+            adapter.robot.angle_orientaion=self.angle_cible
             
             return True
         return False
     
     def stop(self,adapter):
-        adapter.set_vitesses(0,0)
+        adapter.definir_vitesse(0,0)
         
         
 class StrategieConditionnelle:
@@ -114,7 +142,7 @@ class StrategieConditionnelle:
 class StrategieSequentielle:
     def __init__(self,liste_etapes):
         self.etapes=liste_etapes
-        self.position=
+        self.position=0
         
     def start(self,adapter):
         if len(self.etapes) >0:
