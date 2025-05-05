@@ -1,6 +1,6 @@
-from .arene import Arene
+from .arene import Arene,Obstacle
 from .robot import Robot
-from .obstacle import Obstacle
+from.adapter import AdapterVirtuel
 
 
 
