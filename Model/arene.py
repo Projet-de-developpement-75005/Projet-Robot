@@ -1,7 +1,7 @@
 import math
 
 class Obstacle:
-    def __init_(self,x,y,larg,longueur):
+    def __init__(self,x,y,larg,longueur):
         self.x=x
         self.y=y
         self.larg=larg
