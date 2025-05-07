@@ -52,7 +52,7 @@ class Robot:
             delta_angle=(self.vitesse_d - self.vitesse_g)/self.distance *dt
             self.angle_orientaion+=delta_angle
             self.angle_orientaion %= (2*math.pi) #normalisation entre 0 et 2pi
-            print(f"Rotation : Angle={math.degrees(self.angle_orientaion):.1f}")#convertit des angles exprimé en radians en degré
+            print(f"Rotation : Angle={math.degrees(self.angle_orientaion):.1f}")#convertit des angles exprime en radians en degre
         
         
     def update(self):
