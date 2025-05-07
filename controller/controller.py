@@ -24,11 +24,11 @@ class Controller:
             
         strategie.stop(self.adapter)
     def run_simulation(self, strategie, view=None):
-        self.applique_strategie(strategie)
         dernier_temps = time.time()
         active = True
 
         print("Simulation démarrée !")
+        strategie.start(self.adapter)
 
         while active:
             temps_actuel = time.time()
@@ -47,7 +47,7 @@ class Controller:
             if view:
                 view.update_affichage()
 
-            time.sleep(0.2)
+            time.sleep(0.1)
 
         strategie.stop(self.adapter)
         print("Simulation terminée !")
@@ -56,12 +56,12 @@ class StrategieAvance:
     def __init__(self,distance_cible,vitesse):
         self.distance_cible=distance_cible
         self.vitesse=vitesse
-        self.depart=None
+        self.depart=0.0
         
     def start(self,adapter):
         self.depart=adapter.dist_parcourue()
         adapter.definir_vitesse(self.vitesse,self.vitesse)
-        
+    
     def update(self,adapter,dt):
         adapter.avancer(dt)
         distance_actuelle=adapter.dist_parcourue()
@@ -151,7 +151,7 @@ class StrategieSequentielle:
             
             
     def update(self,adapter,dt):
-        while self.position <len(self.etapes):
+        if self.position <len(self.etapes):
             fini=self.etapes[self.position].update(adapter,dt)
             if fini:
                 self.etapes[self.position].stop(adapter)
@@ -159,8 +159,7 @@ class StrategieSequentielle:
                 if self.position <len(self.etapes):
                     self.etapes[self.position].start(adapter)
                     
-            else:
-                break
+
             
         return self.position >=len(self.etapes)
     
