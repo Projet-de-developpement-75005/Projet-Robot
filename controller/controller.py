@@ -88,33 +88,28 @@ class StrategieConditionnelle:
         self.condition_fonction=condition_fonction
         self.action1=action1
         self.action2=action2
-        self.action.courante=None
+        self.action_courante=None
         self.condition_evaluee=False
         
     def start(self,adapter):
-        self.action1.start(adapter)
+        if self.condition_fonction(adapter):
+            self.action_courante=self.action1
+        else:
+            self.action_courante = self.action2
+        self.action_courante.start(adapter)
+        self.condition_evaluee = True
         
-    def update(self,adapter,dt):       
-        if self.etape==1:
-            fini1=self.action1.update(adapter,dt)
-            if fini1:
-                self.action1.stop(adapter)
-                self.etape=2
-                self.action2.start(adapter)
-                
-        if self.etape==2:
-            fini2=self.action2.update(adapter,dt)
-            if fini2:
-                self.action2.stop(adapter)
+    def update(self,adapter):       
+        if self.action_courante:
+            fini=self.action_courante.update(adapter)
+            if fini:
+                self.action_courante.stop(adapter)
                 return True
-        
-        return False
+        return False       
     
     def stop(self,adapter):
-        if self.etape==1:
-            self.action1.stop(adapter)
-        else:
-            self.action2.stop(adapter)
+        if self.action_courante:
+            self.action_courante.stop(adapter)
             
             
             
