@@ -55,9 +55,6 @@ class Robot:
             print(f"Rotation : Angle={math.degrees(self.angle_orientation):.1f}")#convertit des angles exprime en radians en degre
         
         
-    def update(self):
-        self.last_update = time.time()
-        
         
         
         
