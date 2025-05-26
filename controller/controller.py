@@ -84,10 +84,12 @@ class StrategieTourner:
         
         
 class StrategieConditionnelle:
-    def __init__(self,action1,action2):
+    def __init__(self,condition_fonction,action1,action2):
+        self.condition_fonction=condition_fonction
         self.action1=action1
         self.action2=action2
-        self.etape=1
+        self.action.courante=None
+        self.condition_evaluee=False
         
     def start(self,adapter):
         self.action1.start(adapter)
