@@ -4,25 +4,7 @@ import time
 class Controller:
     def __init__(self,adapter):
         self.adapter=adapter
-        
-        
-    def applique_strategie(self,strategie):
-        """applique la strategie  en lancant start une fois ,appelant update
-        et puis stop a la fin"""
-        
-        strategie.start(self.adapter)
-        moment_precedent=time.time()
-        
-        for i in range(1000): #boucle de securite en cas de bug
-            moment_actuel=time.time()
-            delta_time=moment_actuel - moment_precedent 
-            moment_precedent=moment_actuel
-            
-            termine=strategie.update(self.adapter,delta_time)
-            if termine:
-                break
-            
-        strategie.stop(self.adapter)
+    
     def run_simulation(self, strategie, view=None):
         dernier_temps = time.time()
         active = True
