@@ -42,7 +42,7 @@ class Controller:
             self.adapter.update()
 
             robot = self.adapter.robot
-            print(f"Robot -> x:{robot.pos_x:.2f}, y:{robot.pos_y:.2f}, angle:{robot.angle_orientaion:.2f}")
+            print(f"Robot -> x:{robot.pos_x:.2f}, y:{robot.pos_y:.2f}, angle:{robot.angle_orientation:.2f}")
 
             if view:
                 view.update_affichage()
@@ -82,7 +82,7 @@ class StrategieTourner:
         self.angle_cible=None
         
     def start(self,adapter):
-        self.angle_depart=adapter.robot.angle_orientaion
+        self.angle_depart=adapter.robot.angle_orientation
         self.angle_cible=self.angle_depart+math.radians(self.angle_deg)
         
         if self.angle_deg >0:
@@ -93,11 +93,11 @@ class StrategieTourner:
             
     def update(self,adapter,dt):
         adapter.tourner()
-        angle_courant=adapter.robot.angle_orientaion
+        angle_courant=adapter.robot.angle_orientation
         difference=self.angle_cible-angle_courant
         
         if(self.angle_deg >0 and difference<=0) or (self.angle_deg <0 and difference>=0):
-            adapter.robot.angle_orientaion=self.angle_cible
+            adapter.robot.angle_orientation=self.angle_cible
             
             return True
         return False
