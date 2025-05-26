@@ -6,7 +6,6 @@ class AdapterVirtuel:
         self.robot = robot
         self.obstacles = obstacles
         self.angle = 0
-        self.distance = 0
         self.derniere_maj= time.time()
         
         if robot:
@@ -45,7 +44,7 @@ class AdapterVirtuel:
     def get_ang_parcourue(self):
         dt=self.get_dt()
         dt_vitesse=self.robot.vitesse_d-self.robot.vitesse_g
-        angle=(dt_vitesse/self.distance) * dt
+        angle=(dt_vitesse/self.robot.ecart_roue) * dt
         self.angle+=angle
         return math.degrees(self.angle) 
         
