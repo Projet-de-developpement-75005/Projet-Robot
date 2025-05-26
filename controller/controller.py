@@ -63,7 +63,7 @@ class StrategieAvance:
         adapter.definir_vitesse(self.vitesse,self.vitesse)
     
     def update(self,adapter,dt):
-        adapter.avancer(dt)
+        adapter.avancer()
         distance_actuelle=adapter.dist_parcourue()
         if(distance_actuelle -self.depart)>=self.distance_cible:
             return True
