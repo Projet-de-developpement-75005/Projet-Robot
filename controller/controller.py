@@ -6,18 +6,13 @@ class Controller:
         self.adapter=adapter
     
     def run_simulation(self, strategie, view=None):
-        dernier_temps = time.time()
         active = True
 
         print("Simulation démarrée !")
         strategie.start(self.adapter)
 
         while active:
-            temps_actuel = time.time()
-            dt = temps_actuel - dernier_temps
-            dernier_temps = temps_actuel
-
-            termine = strategie.update(self.adapter, dt)
+            termine = strategie.update(self.adapter)
             if termine:
                 active = False
 
@@ -44,7 +39,7 @@ class StrategieAvance:
         self.depart=adapter.dist_parcourue()
         adapter.definir_vitesse(self.vitesse,self.vitesse)
     
-    def update(self,adapter,dt):
+    def update(self,adapter):
         adapter.avancer()
         distance_actuelle=adapter.dist_parcourue()
         if(distance_actuelle -self.depart)>=self.distance_cible:
@@ -73,7 +68,7 @@ class StrategieTourner:
         else:
             adapter.definir_vitesse(self.vitesse,-self.vitesse)
             
-    def update(self,adapter,dt):
+    def update(self,adapter):
         adapter.tourner()
         angle_courant=adapter.robot.angle_orientation
         difference=self.angle_cible-angle_courant
@@ -132,9 +127,9 @@ class StrategieSequentielle:
             self.etapes[self.position].start(adapter)
             
             
-    def update(self,adapter,dt):
+    def update(self,adapter):
         if self.position <len(self.etapes):
-            fini=self.etapes[self.position].update(adapter,dt)
+            fini=self.etapes[self.position].update(adapter)
             if fini:
                 self.etapes[self.position].stop(adapter)
                 self.position+=1
