@@ -13,7 +13,7 @@ class Robot:
         self.ecart_roue=ecart_roue
         self.rayon=ecart_roue / 2
         self.distance=0.0
-        self.last_update=0
+        
         
         
     def set_vitesses(self, new_vitesse_g, new_vitesse_d):
