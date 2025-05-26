@@ -49,7 +49,7 @@ class Robot:
     def rotation(self,dt):
         
         if self.vitesse_d != self.vitesse_g:
-            delta_angle=(self.vitesse_d - self.vitesse_g)/self.rayon *dt
+            delta_angle=(self.vitesse_d - self.vitesse_g)/self.ecart_roue *dt
             self.angle_orientation+=delta_angle
             self.angle_orientation %= (2*math.pi) #normalisation entre 0 et 2pi
             print(f"Rotation : Angle={math.degrees(self.angle_orientation):.1f}")#convertit des angles exprime en radians en degre
