@@ -2,11 +2,11 @@ import math
 import time
 
 class Robot:
-    def __init__(self, pos_x, pos_y,angle_orientaion, vitesse_g, vitesse_d,taille_roue, ecart_roue, distance):
+    def __init__(self, pos_x, pos_y,angle_orientation, vitesse_g, vitesse_d,taille_roue, ecart_roue):
         
         self.pos_x=pos_x
         self.pos_y=pos_y
-        self.angle_orientaion=angle_orientaion
+        self.angle_orientation=angle_orientation
         self.vitesse_d=vitesse_d
         self.vitesse_g=vitesse_g
         self.taille_roue=taille_roue
@@ -34,8 +34,8 @@ class Robot:
         
         vitesse_moyenne=(self.vitesse_d+self.vitesse_g) / 2
         
-        self.pos_x+=vitesse_moyenne * math.cos(self.angle_orientaion) *dt
-        self.pos_y+=vitesse_moyenne * math.sin(self.angle_orientaion) * dt
+        self.pos_x+=vitesse_moyenne * math.cos(self.angle_orientation) *dt
+        self.pos_y+=vitesse_moyenne * math.sin(self.angle_orientation) * dt
         
         dx=self.pos_x - x_prec
         dy=self.pos_y - y_prec
@@ -49,10 +49,10 @@ class Robot:
     def rotation(self,dt):
         
         if self.vitesse_d != self.vitesse_g:
-            delta_angle=(self.vitesse_d - self.vitesse_g)/self.distance *dt
-            self.angle_orientaion+=delta_angle
-            self.angle_orientaion %= (2*math.pi) #normalisation entre 0 et 2pi
-            print(f"Rotation : Angle={math.degrees(self.angle_orientaion):.1f}")#convertit des angles exprime en radians en degre
+            delta_angle=(self.vitesse_d - self.vitesse_g)/self.rayon *dt
+            self.angle_orientation+=delta_angle
+            self.angle_orientation %= (2*math.pi) #normalisation entre 0 et 2pi
+            print(f"Rotation : Angle={math.degrees(self.angle_orientation):.1f}")#convertit des angles exprime en radians en degre
         
         
     def update(self):
