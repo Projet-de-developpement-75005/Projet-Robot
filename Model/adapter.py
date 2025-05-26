@@ -22,7 +22,7 @@ class AdapterVirtuel:
         
     def get_dt(self):
         current_time=time.time()
-        dt=current_time=self.derniere_maj
+        dt=current_time -self.derniere_maj
         self.derniere_maj=current_time
         return dt
     
