@@ -40,7 +40,7 @@ class View(tk.Tk):
         l = L + self.robot.taille_roue
         half_L = L / 2
         half_l = l / 2
-        theta = self.robot.angle_orientaion
+        theta = self.robot.angle_orientation
         cos_t = math.cos(theta)
         sin_t = math.sin(theta)
 
