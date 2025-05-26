@@ -4,7 +4,7 @@ from Model.adapter import AdapterVirtuel
 from controller.controller import Controller, StrategieSequentielle, StrategieAvance, StrategieTourner
 from view.view_2d import View
 
-robot = Robot(pos_x=300, pos_y=300, angle_orientaion=0, vitesse_g=0, vitesse_d=0, taille_roue=10, ecart_roue=40, distance=0)
+robot = Robot(pos_x=300, pos_y=300, angle_orientation=0, vitesse_g=0, vitesse_d=0, taille_roue=10, ecart_roue=40)
 arene = Arene(largeur=600, hauteur=600)
 obstacle1=Obstacle(x=300,y=200,larg=50,longueur=50)
 obstacle2=Obstacle(x=100,y=40,larg=50,longueur=50)
