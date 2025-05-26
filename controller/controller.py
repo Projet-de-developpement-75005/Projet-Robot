@@ -89,7 +89,6 @@ class StrategieConditionnelle:
         self.action1=action1
         self.action2=action2
         self.action_courante=None
-        self.condition_evaluee=False
         
     def start(self,adapter):
         if self.condition_fonction(adapter):
@@ -97,7 +96,6 @@ class StrategieConditionnelle:
         else:
             self.action_courante = self.action2
         self.action_courante.start(adapter)
-        self.condition_evaluee = True
         
     def update(self,adapter):       
         if self.action_courante:
