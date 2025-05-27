@@ -20,21 +20,21 @@ def condition_initiale(adapter):
 # On veut voir visuellement la différence entre les deux choix
 conditionnelle = StrategieConditionnelle(
     condition_fonction=condition_initiale,
-    action1=StrategieAvance(distance_cible=50, vitesse=10),
-    action2=StrategieTourner(angle_deg=90, vitesse_rotation=10)
+    action1=StrategieAvance(distance_cible=50, vitesse=15),
+    action2=StrategieTourner(angle_deg=90, vitesse_rotation=15)
 )
 
 # Enchaînement après la condition (un carré classique)
 strategie = StrategieSequentielle([
     conditionnelle,
-    StrategieAvance(100, 10),
-    StrategieTourner(90, 10),
-    StrategieAvance(100, 10),
-    StrategieTourner(90, 10),
-    StrategieAvance(100, 10),
-    StrategieTourner(90, 10),
-    StrategieAvance(100, 10),
-    StrategieTourner(90, 10)
+    StrategieAvance(100, 15),
+    StrategieTourner(90, 15),
+    StrategieAvance(100, 15),
+    StrategieTourner(90, 15),
+    StrategieAvance(100, 15),
+    StrategieTourner(90, 15),
+    StrategieAvance(100, 15),
+    StrategieTourner(90, 15)
 ])
 
 affichage = input("Voulez-vous activer l'affichage graphique ? (oui/non): ").strip().lower()
