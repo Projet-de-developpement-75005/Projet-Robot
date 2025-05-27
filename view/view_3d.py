@@ -49,6 +49,13 @@ class View3D:
                 
                 
         self.input_handler=Input_handler(self)
-
+    def update_affichage(self):
+        self.robot.position=(self.robot.pos_x,hauteur_r/2,self.robot.pos_y)
+        self.robot.rotationY=-math.degrees(self.robot.angle_orientation)#ursina tourne par defaut dans le sens horaire 
+        
+        self.label.text=f"Pos:({self.robot.pos_x :.1f},{self.robot.pos_y : .1f})\n"+ \
+                        f"Vg :{self.robot.vitesse_g :.1f}, Vd:{self.robot.vitesse_d :.1f}"
+                        
+        self.app.step() #pour mettre a jour la scene
 
         
