@@ -2,8 +2,9 @@ import math
 import time
 
 class Controller:
-    def __init__(self,adapter):
+    def __init__(self,adapter,arene):
         self.adapter=adapter
+        self.arene=arene
     
     def run_simulation(self, strategie, view=None):
         active = True
@@ -17,7 +18,7 @@ class Controller:
                 active = False
 
             self.adapter.update()
-
+            self.arene.gerer_collisions(self.adapter.robot)
             robot = self.adapter.robot
             print(f"Robot -> x:{robot.pos_x:.2f}, y:{robot.pos_y:.2f}, angle:{robot.angle_orientation:.2f}")
 
