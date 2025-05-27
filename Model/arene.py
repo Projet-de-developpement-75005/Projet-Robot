@@ -43,15 +43,4 @@ class Arene:
             if collision:
                 print("Collision détectée!")
                 robot.set_vitesses(0,0)
-                dx = obstacle.x - robot.pos_x
-                dy = obstacle.y - robot.pos_y
-                angle_robot = robot.angle_orientation
-                angle_obstacle = math.atan2(dy, dx)
-                delta_angle = (angle_obstacle - angle_robot + math.pi) % (2 * math.pi) - math.pi
-
-                if -math.pi / 2 <= delta_angle <= math.pi / 2:
-                  robot.set_vitesses(-5,-5)  
-                else:
-                    robot.set_vitesses(5,5)
-
                 break
