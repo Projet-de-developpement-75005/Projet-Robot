@@ -6,7 +6,7 @@ from view.view_2d import View
 
 robot = Robot(pos_x=300, pos_y=300, angle_orientation=0, vitesse_g=0, vitesse_d=0, taille_roue=10, ecart_roue=40)
 arene = Arene(largeur=600, hauteur=600)
-obstacle1=Obstacle(x=350,y=200,larg=50,longueur=50)
+obstacle1=Obstacle(x=380,y=300,larg=50,longueur=50)
 obstacle2=Obstacle(x=100,y=40,larg=50,longueur=50)
 arene.ajout_obstacles(obstacle1)
 arene.ajout_obstacles(obstacle2)
@@ -40,5 +40,5 @@ strategie = StrategieSequentielle([
 affichage = input("Voulez-vous activer l'affichage graphique ? (oui/non): ").strip().lower()
 view = View(arene,robot) if affichage == "oui" else None
 
-controller = Controller(adapter)
+controller = Controller(adapter,arene)
 controller.run_simulation(strategie, view)
