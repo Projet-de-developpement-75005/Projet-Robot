@@ -3,6 +3,7 @@ from Model.arene import Arene,Obstacle
 from Model.adapter import AdapterVirtuel
 from controller.controller import Controller, StrategieSequentielle, StrategieAvance, StrategieTourner, StrategieConditionnelle
 from view.view_2d import View
+from view.view_3d import View3D
 
 robot = Robot(pos_x=300, pos_y=300, angle_orientation=0, vitesse_g=0, vitesse_d=0, taille_roue=10, ecart_roue=40)
 arene = Arene(largeur=600, hauteur=600)
@@ -37,8 +38,15 @@ strategie = StrategieSequentielle([
     StrategieTourner(90, 50)
 ])
 
-affichage = input("Voulez-vous activer l'affichage graphique ? (oui/non): ").strip().lower()
-view = View(arene,robot) if affichage == "oui" else None
+affichage = input("choisissez l'affichage(2D/3D:non): ").strip().lower()
+if affichage == "2d":
+    view = View(arene,robot) 
+    
+elif affichage == "3d":
+    view=View3D(arene,robot)
+    
+else:
+    view = None
 
 controller = Controller(adapter,arene)
 controller.run_simulation(strategie, view)
