@@ -14,7 +14,7 @@ class View3D:
         window.title="Simulation 3D Robot"
         window.borderless=False
         window.fullscreen=False
-        window.exut_botton.visible=True
+        window.exit_button.visible=True
         window.fps_compteur=True #activer l'affichage du nombre de fps
         window.color=color.gray
         
@@ -22,11 +22,11 @@ class View3D:
         hauteur=arene.hauteur
         
         self.sol=Entity(model='plane',texture='white_cube',scale=(largeur,1,hauteur),position=(largeur/2,0,hauteur/2),texture_scale=(largeur/10,hauteur/10),color=color.green)
-        self.robot=Entity(model='cube',color=color.azure,scale=(robot.ecart_roue,hauteur_r,robot.taille_roue),position=(robot.pos_x,hauteur_r/2,robot.pos_y))
+        self.robot_ent=Entity(model='cube',color=color.azure,scale=(robot.ecart_roue,hauteur_r,robot.taille_roue),position=(robot.pos_x,hauteur_r/2,robot.pos_y))
         self.obstacle_entities =[]
         for obs in arene.liste_obstacles:
             obj=Entity(model='cube',
-                       color=color.purple
+                       color=color.pink,
                        scale=(obs.larg,hauteur_o,obs.longueur),
                         position=(obs.x+obs.larg/2,hauteur_o/2,obs.y+obs.longueur/2))
             self.obstacle_entities.append(obj)
@@ -50,8 +50,8 @@ class View3D:
                 
         self.input_handler=Input_handler(self)
     def update_affichage(self):
-        self.robot.position=(self.robot.pos_x,hauteur_r/2,self.robot.pos_y)
-        self.robot.rotationY=-math.degrees(self.robot.angle_orientation)#ursina tourne par defaut dans le sens horaire 
+        self.robot_ent.position=(self.robot.pos_x,hauteur_r/2,self.robot.pos_y)
+        self.robot_ent.rotationY=-math.degrees(self.robot.angle_orientation)#ursina tourne par defaut dans le sens horaire 
         
         self.label.text=f"Pos:({self.robot.pos_x :.1f},{self.robot.pos_y : .1f})\n"+ \
                         f"Vg :{self.robot.vitesse_g :.1f}, Vd:{self.robot.vitesse_d :.1f}"
