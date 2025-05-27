@@ -21,7 +21,7 @@ class View3D:
         largeur=arene.largeur
         hauteur=arene.hauteur
         
-        self.sol=Entity(model='plane',texture='white_cube',scale=(largeur,1,hauteur),position(largeur/2,0,hauteur/2),texture_scale=(largeur/10,hauteur/10),color=color.green)
+        self.sol=Entity(model='plane',texture='white_cube',scale=(largeur,1,hauteur),position=(largeur/2,0,hauteur/2),texture_scale=(largeur/10,hauteur/10),color=color.green)
         self.robot=Entity(model='cube',color=color.azure,scale=(robot.ecart_roue,hauteur_r,robot.taille_roue),position=(robot.pos_x,hauteur_r/2,robot.pos_y))
         self.obstacle_entities =[]
         for obs in arene.liste_obstacles:
