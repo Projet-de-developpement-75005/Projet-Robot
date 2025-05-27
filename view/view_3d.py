@@ -35,5 +35,20 @@ class View3D:
         #pour cacher les elements d'interface par defaut d'Ursina
         camera.ui.enabled=False
         
-        salf.label=Text(text='',origin=(0,18),background=True)
+        self.label=Text(text='',origin=(0,18),background=True)
+        
+        class Input_handler(Entity):
+            def __init__(self,parent_view):
+                super().__init__()
+                self.parent_view=parent_view
+            
+            def input(self,key):
+                if key=='escape':
+                    application.quit()
+                
+                
+                
+        self.input_handler=Input_handler(self)
+
+
         
