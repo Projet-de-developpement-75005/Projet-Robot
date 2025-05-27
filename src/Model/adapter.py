@@ -26,7 +26,7 @@ class AdapterVirtuel:
         return dt
     
     def update(self):
-        self.last_update = time.time()
+        self.derniere_maj = time.time()
         
     def avancer(self):
         dt=self.get_dt()
