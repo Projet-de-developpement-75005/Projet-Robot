@@ -5,11 +5,25 @@ from controller.controller import Controller, StrategieSequentielle, StrategieAv
 from view.view_2d import View
 from view.view_3d import View3D
 
-robot = Robot(pos_x=300, pos_y=300, angle_orientation=0, vitesse_g=0, vitesse_d=0, taille_roue=20, ecart_roue=40)
+import random 
+
+pos_x  = random.randrange(600)
+pos_y  = random.randrange(600)
+robot = Robot(pos_x, pos_y, angle_orientation=0, vitesse_g=0, vitesse_d=0, taille_roue=20, ecart_roue=40)
 arene = Arene(largeur=600, hauteur=600)
 obstacle1=Obstacle(x=380,y=200,larg=50,longueur=50)
 obstacle2=Obstacle(x=100,y=40,larg=50,longueur=50)
-arene.ajout_obstacles(obstacle1)
+#ajout dy myr
+mur1=Obstacle(x=10,y=10,larg=600,longueur=10)
+mur2=Obstacle(x=10,y=10,larg=10,longueur=600)
+mur3=Obstacle(x=590,y=10,larg=10,longueur=600)
+mur4=Obstacle(x=590,y=590,larg=600,longueur=10)
+
+arene.ajout_obstacles(mur1)
+arene.ajout_obstacles(mur2)
+arene.ajout_obstacles(mur3)
+arene.ajout_obstacles(mur4)
+#arene.ajout_obstacles(obstacle1)
 arene.ajout_obstacles(obstacle2)
 adapter = AdapterVirtuel(robot, arene.liste_obstacles)
 
@@ -20,16 +34,14 @@ def condition_initiale(adapter):
 conditionnelle = StrategieConditionnelle(
     condition_fonction=condition_initiale,
     action1=StrategieAvance(distance_cible=90, vitesse=50),
-    action2=StrategieTourner(angle_deg=90, vitesse_rotation=50)
+    action2=StrategieAvance(distance_cible=0,  vitesse=0) 
 )
 strategie = StrategieSequentielle([
     conditionnelle,
-    StrategieTourner(90, 50),
-    StrategieAvance(100, 50),
-    StrategieTourner(90, 50),
-    StrategieAvance(100, 50),
-    StrategieTourner(90, 50),
-    StrategieAvance(100, 50)
+    StrategieAvance(distance_cible=100, vitesse=50),
+    StrategieAvance(distance_cible=100, vitesse=50),
+    StrategieAvance(distance_cible=100, vitesse=50),
+    StrategieAvance(distance_cible=100, vitesse=50)
 ])
 
 affichage = input("choisissez l'affichage(2D/3D:non): ").strip().lower()
