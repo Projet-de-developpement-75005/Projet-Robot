@@ -14,7 +14,7 @@ class Controller:
 
         while active:
             termine = strategie.update(self.adapter)
-            if termine:
+            if termine:                                              
                 active = False
 
             self.adapter.update()
