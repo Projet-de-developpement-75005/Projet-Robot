@@ -14,22 +14,19 @@ arene.ajout_obstacles(obstacle2)
 adapter = AdapterVirtuel(robot, arene.liste_obstacles)
 
 #si le robot a parcouru moins de 1m, on avance 50 ; sinon on tourne 90°
-def condition_initiale(adapter):
-    return adapter.dist_parcourue() < 100
+# Stratégie : faire un triangle équilatéral (3 côtés, 120° de rotation)
+longueur_cote = 100
+vitesse = 50
+vitesse_rotation = 50
+angle_triangle = 120
 
-conditionnelle = StrategieConditionnelle(
-    condition_fonction=condition_initiale,
-    action1=StrategieAvance(distance_cible=90, vitesse=50),
-    action2=StrategieTourner(angle_deg=90, vitesse_rotation=50)
-)
 strategie = StrategieSequentielle([
-    conditionnelle,
-    StrategieTourner(90, 50),
-    StrategieAvance(100, 50),
-    StrategieTourner(90, 50),
-    StrategieAvance(100, 50),
-    StrategieTourner(90, 50),
-    StrategieAvance(100, 50)
+    StrategieAvance(distance_cible=longueur_cote, vitesse=vitesse),
+    StrategieTourner(angle_deg=angle_triangle, vitesse_rotation=vitesse_rotation),
+    StrategieAvance(distance_cible=longueur_cote, vitesse=vitesse),
+    StrategieTourner(angle_deg=angle_triangle, vitesse_rotation=vitesse_rotation),
+    StrategieAvance(distance_cible=longueur_cote, vitesse=vitesse),
+    StrategieTourner(angle_deg=angle_triangle, vitesse_rotation=vitesse_rotation),
 ])
 
 affichage = input("choisissez l'affichage(2D/3D:non): ").strip().lower()
@@ -44,3 +41,4 @@ else:
 
 controller = Controller(adapter,arene)
 controller.run_simulation(strategie, view)
+longeur_cote=100
