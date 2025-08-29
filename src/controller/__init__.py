@@ -1,0 +1,5 @@
+
+from .controller import StrategieSequentielle
+
+
+
